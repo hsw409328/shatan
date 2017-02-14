@@ -2,8 +2,11 @@
 include_once 'public/config.inc.php';
 include_once 'public/config.route.php';
 
+Run::set_login_user('123456789');
+
 $_route = array (
-    'ps/login' => 'v1.ps.login',
+    'other/login' => 'v1.other.login',
+    'fj/index' => 'v1.fj.index',
 );
 
 $_urlParams = $_SERVER ['REQUEST_URI'];

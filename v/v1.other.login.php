@@ -1,3 +1,9 @@
+<?php
+$user = ParamsController::getSessionParams('userDetail');
+if(!empty($user)){
+    Run::show_msg(null,1,'/fj/index');
+}
+?>
 <!--头部-->
 <div class="use_login_top">
     <img src="/public/images/login_bg.jpg" class="use_login_bg"/>
@@ -63,7 +69,13 @@
             'utype': _utype
         };
         AjaxCommon.callback_func = function (data, status) {
-            console.log(data);
+            var _d = eval('(' + data + ')');
+            if (_d.code == '1') {
+                UtilComon.href('/fj/index');
+            } else {
+                alert(_d.msg);
+                return false;
+            }
         };
         AjaxCommon.post();
     });

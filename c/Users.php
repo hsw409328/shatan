@@ -6,23 +6,19 @@ final class UsersController extends Base
     //登录
     public function login()
     {
-        $this->checkValiNum();
+        //$this->checkValiNum();
 
-        $_utype = Run::req('type');
-        $_oid = Run::req('_oid');
+        $_oid = ParamsController::getSessionParams('openid');
 
         $obj = new UsersModel ();
-        $w = ' user_type="' . $_utype . '" and open_id="' . $_oid . '" ';
+        $w = ' open_id="' . $_oid . '" ';
         $res = $obj->getUsers($w, '', '1', '1');
 
-        if ($res) {
-            $userInfo = $this->getUserInfo($res ['id']);
-            $res ['userInfo'] = $userInfo;
+        if (empty($res)) {
             ParamsController::localSetParams('userDetail', $res);
-
-            $this->_jsonEn('1', '登录成功...');
+            return $res;
         } else {
-            $this->_jsonEn('0', '用户名或密码错误');
+            return [];
         }
     }
 
@@ -51,7 +47,7 @@ final class UsersController extends Base
 
         $obj = new UsersModel ();
         $dataArray ['id'] = $this->Sysid();
-        $dataArray ['open_id'] = ParamsController::getSessionParams('open_id');
+        $dataArray ['open_id'] = ParamsController::getSessionParams('openid');
         $dataArray ['mobile_num'] = $_mobile;
         $dataArray ['user_type'] = Run::req('utype');
         $dataArray ['u_nickname'] = '';
