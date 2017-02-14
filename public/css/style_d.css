@@ -1,0 +1,159 @@
+@charset "utf-8";
+/* CSS Document */
+* {
+	margin:0;
+	padding:0;
+}
+input, select, textarea {
+	margin:0;
+	padding:0
+}
+body {
+	-webkit-text-size-adjust:none;
+	background:#fff;
+	min-width:320px;
+	/* [disabled]margin:0;
+*/
+	padding:0;
+	font-family:"microsoft yahei", Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#000;
+}
+.overflow {
+	overflow:hidden;
+	zoom:1;
+}
+ul, li {
+	list-style:none;
+}
+a {
+	text-decoration:none;
+	color:#666
+}
+img, img a {
+	border:0;
+	vertical-align:middle;
+}
+
+.left {
+	float:left
+}
+.right {
+	float:right
+}
+.clear {
+	clear:both;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #ccc;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #ccc;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #ccc;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color:    #ccc;
+}
+.none{opacity: 0;}
+/*在移动端点击后 会出现"暗色"的背景，这时候我们需要在css加入如下代码即可：*/
+a,button,input,optgroup,select,textarea{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+/*去掉input 聚焦边框*/
+input,button,select,textarea{outline:none}
+textarea{resize:none}
+.background1{height:5px;background:#f1f1f1}
+.box{height:100%; width:100%; position:fixed; _position:absolute; top:0; z-index:2;
+	background-color:#000;
+	filter:alpha(opacity=70);
+	-moz-opacity: 0.7;
+	opacity: 0.7; display:none;
+}
+.box_close{height:100%; width:100%; position:fixed; _position:absolute; top:0; z-index:2;
+	background-color:#000;
+	filter:alpha(opacity=70);
+	-moz-opacity: 0.7;
+	opacity: 0.7; display:none;}
+
+
+/*登录页*/
+.use_login_top{ position: relative;}
+.use_login_bg{ width: 100%;}
+.use_login_hp{ position: absolute;bottom:-32px; width: 100%; text-align: center;}
+.use_login_hp img{ width: 60px; text-align: center;border:solid 4px #fff;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
+.use_login_body{margin:70px 3% 10px 3% }
+.use_login_border{ overflow: hidden;zoom:1;}
+.use_login_l{border:#c6c6c6 solid 1px;margin-bottom:15px; float: left; width: 99%;}
+.u_wbh{ width: 80%;}
+.u_wdx{ width: 60%;}
+.u_wdx input{ width: 140px;}
+
+.use_login_g{display: -webkit-box; display: -moz-box; border:#c6c6c6 solid 1px;overflow: hidden;zoom:1;height:40px;margin-bottom:15px; }
+.use_login_g img{ display: block; width: 40px;height:20px;margin-top:10px;}
+.use_login_g input{ border: none;height:40px;line-height:40px;font-size:14px;margin-left:-5px; width: 300px;}
+
+.use_login_l input{height:40px;line-height:40px;padding-left:35px;border:none;font-size:14px;}
+.icon_3{ background: url(../img/icon_3.png) left center no-repeat; background-size:40px 20px; width: 90%;}
+.icon_4{ background: url(../img/icon_21.png) left center no-repeat; background-size:40px 20px}
+.use_login_border .use_see{float:left;height:40px;line-height:20px;color:#83b9ff;margin-left:10px;font-size: 16px;}
+.use_login_border button{ width: 35%;float:right;height:42px;line-height:42px;background: #ffc04d;border: none;color:#fff;font-size:14px;}
+.use_login_border .use_login_dis{background: #eee;color:#999}
+.submit_order {margin:0 3% 20px 3%}
+.submit_order a {display:block;  width:100%; background: #FFC04D; text-align: center;height:40px;line-height:40px;color:#fff;font-size:14px;}
+.submit_order p{color:#999;line-height:20px;margin-top:10px;}
+.dis_xz { width:85%;font-size:14px;height:40px;;line-height:36px;border:#fff solid 1px;-webkit-appearance:none;-moz-appearance:none;color:#666; width: 300px;margin-left:-5px}
+
+
+
+/*分拣列表*/
+.sorting{overflow: hidden;zoom: 1;margin:8% 0 0 3%}
+.sorting li {float: left; width: 46%;margin:0 5% 5% 0;background:#83b9ff;height:170px; text-align: center; position: relative;}
+.sorting li:nth-of-type(even){ margin:0 0 5% 0;}
+.sorting li a{display: block; height:170px;overflow: hidden;zoom:1;}
+.sorting li dl{ margin:30px auto 0;width: 100px;}
+.sorting li dl dt{font-size:20px;color:#fff;line-height:30px;margin-bottom:10px;}
+.sorting li dl dd{color:#fff;line-height:18px;font-size:12px;}
+.sorting li p{ position: absolute;bottom:0; left:0;height:40px; text-align: center;line-height:40px; width: 100%;background:#b1d2fc;color:#666}
+/*分拣内容页*/
+.sorting_detalis_t{padding:3%;border-bottom:#f1f1f1 solid 8px; }
+.sorting_detalis_t dl{position: relative;}
+.sorting_detalis_t dl dt{ width: 80px;height:80px;background: #83B9FF;-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 500%; text-align:center;line-height:80px;color:#fff;font-size:14px;float: left;margin-right:20px;}
+.sorting_detalis_t dl dd{line-height:25px;}
+.sorting_det_bt{margin-top:16px;font-size:16px;}
+.sorting_detalis_t .sorting_det_ok a{ position: absolute;right:0; top:15px; background: #FFC04D;color:#fff;height:50px;font-size:14px;line-height:50px;padding:0 40px;}
+
+.sorting_detalis_b{margin:3%}
+.sorting_detalis_b ul{overflow: hidden;zoom:1;}
+.sorting_detalis_b ul li{float: left;width: 22%;margin:0 4% 4% 0}
+
+.sorting_detalis_b ul li:nth-child(4n+4){margin-right:0;}
+
+.sorting_detalis_b ul li dl{border:#ccc solid 2px; position: relative;}
+.sorting_detalis_b ul li dl.sorting_det_checked{border:#FFC04D solid 2px;}
+
+.sorting_sjx{border-style: solid;border-color:#ffc04d transparent ;
+	border-width:30px 30px 0 0; width:0px;height:0;position: absolute;top:0;left:0;display: none;}
+
+.sorting_detalis_b ul li dl dt img{ width: 100%;}
+.sorting_detalis_b ul li dl dd{ width: 100%;height:40px; background: #ccc;color:#fff; text-align: center;line-height:40px;font-size:14px}
+.sorting_detalis_b ul li dl .sorting_det_color{ background: #83B9FF;}
+
+.sorting_det_bh input{width:90%}
+.sorting_det_color{ background: #FFC04D;}
+
+.sorting_det_add{ display: none;width:50%; background:#fff;z-index: 1000; background: #fff;
+position: fixed;height:352px;left:50%;top:50%;margin-left:-25%;margin-top:-186px;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px; padding:20px}
+.sorting_det_add img{border:#ccc solid 2px; display:block;margin: 20px auto; width: 200px;}
+.sorting_det_adb{font-size:16px; width: 200px;margin:0 auto}
+.sorting_det_adb strong{ display: block;color:#83B9FF;margin-bottom:10px;font-weight:normal}
+.sorting_det_adb span{display: block;line-height:20px;font-size:14px;}
+
+/*.tishi{display: none}*/
+/*配送列表*/
+.dis_list_t{background: #777;color:#fff;padding:5px;position: fixed;top:0;left:0; width: 100%; z-index: 3;}
+.dis_list_t p{font-size:12px;display: inline;line-height:20px;}
+.dis_list_t p a{color:#fff}
