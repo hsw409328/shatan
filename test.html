@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<canvas id="myCanvas" width="600" height="800">Your browser does not support the canvas element.</canvas>
+<script type="text/javascript">
+    var c = document.getElementById("myCanvas");
+
+
+    var cxt = c.getContext("2d");
+    cxt.fillStyle = "#FF0000";
+    cxt.fillRect(0, 0, 150, 75);
+
+    //cxt.moveTo(10,10);
+    //cxt.lineTo(100,80);
+    //cxt.stroke();
+
+    /*
+     cxt.fillStyle="#FF0000";
+     cxt.beginPath();
+     cxt.arc(70,18,15,0,Math.PI*2,true);
+     cxt.closePath();
+     cxt.fill();
+     */
+
+
+    var img = new Image();
+    img.src = "/public/uploadupload/image/20170209/1486645648392148.png"
+    //cxt.drawImage(images,0,0);
+    cxt.strokeStyle = "#FFFFFF";
+    //cxt.drawImage(images,0,0,100,47, 0 , 200, 99, 46);
+    cxt.stroke();
+    var counter_id = 0;
+    for (var i = 0; i < 300; i = i + 60) {
+
+        for (var j = 0; j < 200; j = j + 50) {
+
+
+            var new_c = document.createElement('canvas');
+            new_c.id = 'convas_' + counter_id;
+            //new_c.addEventListener("mousedown",OnMouseDown,false);
+
+            new_c.onmousedown = function () {
+                alert('1');
+
+                /*
+                 new_c.onmousemove = function(event){
+                 new_c.style.left = event.x;
+                 new_c.style.top = event.y;
+                 }*/
+
+            }
+
+            /*
+             new_c.onmouseup = function(event){
+             new_c.onmousemove = null;
+
+             }
+             */
+
+            c.appendChild(new_c);
+            var new_cxt = c.getContext("2d");
+            new_cxt.drawImage(img, i, j, 60, 50, i, j, 59, 49);
+            new_cxt.drawImage(img, i, j, 60, 50);
+            counter_id++;
+
+        }
+
+    }
+
+
+    function OnMouseDown(evt) {
+        alert('1');
+    }
+</script>
+
+</html>

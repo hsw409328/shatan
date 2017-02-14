@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>分拣</title>
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" type="text/css" href="css/style_d.css" />
+	</head>
+	<body>
+    <div class="sorting_detalis_t">
+          <dl class="overflow">
+          	<dt>SY306</dt>
+          	<dd class="sorting_det_bt"><strong><span>红树林酒店</span> <span>自助餐厅门口</span></strong></dd>
+          	<dd><span>三亚</span>·<span>亚龙湾</span></dd>
+          	<dd class="sorting_det_ok"><a href="sorting_index.html">分拣完成</a></dd>
+          </dl>
+    </div>
+    <div class="sorting_detalis_b">
+    	<ul>
+    		<li>
+    			<dl >
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd class="sorting_det_color">0</dd>
+    				<div class="sorting_sjx"></div>
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>-6</dd>
+    				<div class="sorting_sjx"></div>
+    				<!--<div class="tishi">
+    					请输入大疆无人机的编号
+    				</div>-->
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>-5</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    		<li>
+    			<dl>
+    				<dt><img src="images/1.jpg" /></dt>
+    				<dd>0</dd>
+    				<div class="sorting_sjx"></div>
+
+    			</dl>
+    		</li>
+    	</ul>
+    	<div class="use_login_border sorting_det_bh">
+				<div class="use_login_l u_wdx">
+					<input placeholder="请输入大疆无人机的商品编号" type="text" class="icon_4" />
+				</div>
+				<button class="right">提交</button>
+			</div>
+    </div>
+	<div class="box"></div>
+
+    <div class="sorting_det_add">
+         <img src="images/1.jpg"/>
+         <div class="sorting_det_adb">
+         	<strong>已分拣的商品编号:</strong>
+         	<span>608038、608038、608038</span>
+         	<span>608038、608038、608038</span>
+         	<span>608038、608038、608038</span>
+         </div>
+    </div>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript">
+     $(document).ready(function() {
+      $(".sorting_detalis_b ul li dl dd ").click(function(){
+      	$(".box").show();
+      	$(".sorting_det_add").show();
+      })
+      $(".box").click(function(){
+      	$(".box").hide();
+      	$(".sorting_det_add").hide();
+
+      });
+      $(".sorting_detalis_b ul li dl dt ").click(function(){
+      	number=$(this).parents("ul li").index();
+//    	value=$(".sorting_detalis_b ul li").eq(number).find(".tishi").text();
+//    	name=$(".use_login_l input").val();
+//    	$(".use_login_l input").innerHTML=value;
+//    	console.log(value);
+      	$(".sorting_detalis_b ul li").eq(number).find(".sorting_sjx").show();
+      	$(".sorting_detalis_b ul li").eq(number).siblings().find(".sorting_sjx").hide();
+      	$(".sorting_detalis_b ul li").eq(number).find("dl").addClass("sorting_det_checked");
+		$(".sorting_detalis_b ul li").eq(number).siblings().find("dl").removeClass("sorting_det_checked");
+      })
+
+})
+
+    </script>
+	</body>
+</html>
