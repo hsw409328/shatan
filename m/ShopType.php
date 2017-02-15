@@ -1,5 +1,5 @@
 <?php
-final class ShopTypeModel extends Mysql {
+final class ShopTypeModel extends MysqliClass {
 	
 	public $_f = '*';
 	

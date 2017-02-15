@@ -1,5 +1,5 @@
 <?php
-final class CabinetModel extends Mysql {
+final class CabinetModel extends MysqliClass {
 	
 	public $_f = '*';
 	

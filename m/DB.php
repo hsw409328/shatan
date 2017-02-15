@@ -1,6 +1,13 @@
 <?php
-
-class Mysql
+/**
+ * Class Mysqli
+ * Mysqli 数据库操作类
+ * @author Mr.Hao
+ * @date 2017-02-15
+ * @email 409328820@qq.com
+ * @website www.51hsw.com
+ */
+class MysqliClass
 {
 
     private $link_id;
@@ -16,7 +23,9 @@ class Mysql
     private $log = 0;
     private $logfilepath = './';
 
-    //构造函数
+    /**
+     * 初始化mysqli操作
+     */
     public function __construct()
     {
         $this->time = $this->microtime_float();
@@ -29,7 +38,9 @@ class Mysql
         }
     }
 
-    //数据库连接
+    /**
+     * 连接接口具体实现
+     */
     public function connect()
     {
         $this->link_id = mysqli_connect($this->host, $this->user, $this->pwd, $this->database);
@@ -39,7 +50,11 @@ class Mysql
         mysqli_query($this->link_id, "set names " . $this->charset);
     }
 
-    //查询
+    /**
+     * 执行sql的语句
+     * @param $sql mysql语句
+     * @return bool|mysqli_result
+     */
     public function query($sql)
     {
         $this->write_log("查询 " . $sql);
@@ -49,7 +64,11 @@ class Mysql
         return $query;
     }
 
-    //获取一条记录（mysqli_ASSOC，mysqli_NUM，mysqli_BOTH）
+    /**
+     * 查询单条记录
+     * @param $sql mysql查询语句
+     * @return array|null
+     */
     public function get_one($sql)
     {
         $query = $this->query($sql);
@@ -58,7 +77,11 @@ class Mysql
         return $rt;
     }
 
-    //获取全部记录
+    /**
+     * 查询全部记录
+     * @param $sql mysql查询语句
+     * @return array
+     */
     public function get_all($sql)
     {
         $query = $this->query($sql);
@@ -74,7 +97,12 @@ class Mysql
         return $rt;
     }
 
-    //插入
+    /**
+     * 插入数据库操作
+     * @param $table 表名
+     * @param $dataArray 数据字段数组
+     * @return bool
+     */
     public function insert($table, $dataArray)
     {
         $field = "";
@@ -96,7 +124,13 @@ class Mysql
         return true;
     }
 
-    //更新
+    /**
+     * 更新数据表操作
+     * @param $table 表名
+     * @param $dataArray 要更新的字段数组
+     * @param string $condition 条件，必须得设置
+     * @return bool
+     */
     public function update($table, $dataArray, $condition = "")
     {
         if (!is_array($dataArray) || count($dataArray) <= 0) {
@@ -114,7 +148,12 @@ class Mysql
         return true;
     }
 
-    //删除
+    /**
+     * 删除数据表数据操作
+     * @param $table 表名
+     * @param string $condition 条件，必须得设置
+     * @return bool
+     */
     public function delete($table, $condition = "")
     {
         if (empty ($condition)) {
@@ -128,14 +167,22 @@ class Mysql
         return true;
     }
 
-    //返回结果集
+    /**
+     * 返回结果集
+     * @param $query
+     * @return array|null
+     */
     public function fetch_array($query)
     {
         $this->write_log("返回结果集");
         return mysqli_fetch_array($query,MYSQLI_ASSOC);
     }
 
-    //获取记录条数
+    /**
+     * 获取记录数
+     * @param $results
+     * @return int
+     */
     public function num_rows($results)
     {
         if (!is_bool($results)) {
@@ -147,7 +194,9 @@ class Mysql
         }
     }
 
-    //释放结果集
+    /**
+     * 释放结果集
+     */
     public function free_result()
     {
         $void = func_get_args();
@@ -159,7 +208,10 @@ class Mysql
         $this->write_log("释放结果集");
     }
 
-    //获取最后插入的id
+    /**
+     * 获取自增插入的最后一条ID
+     * @return int|string
+     */
     public function insert_id()
     {
         $id = mysqli_insert_id($this->link_id);
@@ -167,14 +219,20 @@ class Mysql
         return $id;
     }
 
-    //关闭数据库连接
+    /**
+     * 关闭数据库连接
+     * @return bool
+     */
     protected function close()
     {
         $this->write_log("已关闭数据库连接");
         return mysqli_close($this->link_id);
     }
 
-    //错误提示
+    /**
+     * mysql 错误提示
+     * @param string $msg
+     */
     private function halt($msg = '')
     {
         $msg .= "\r\n" . mysqli_error();
@@ -182,7 +240,9 @@ class Mysql
         echo $msg;
     }
 
-    //析构函数
+    /**
+     * 释放类的时候执行
+     */
     public function __destruct()
     {
         $this->free_result();
@@ -193,7 +253,10 @@ class Mysql
         }
     }
 
-    //写入日志文件
+    /**
+     * 记录mysql的Log日志
+     * @param string $msg
+     */
     public function write_log($msg = '')
     {
         if ($this->is_log) {
@@ -202,7 +265,10 @@ class Mysql
         }
     }
 
-    //获取毫秒数
+    /**
+     * 获取毫秒级时间
+     * @return float
+     */
     public function microtime_float()
     {
         list ($usec, $sec) = explode(" ", microtime());

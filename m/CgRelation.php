@@ -1,5 +1,5 @@
 <?php
-final class CgRelationModel extends Mysql {
+final class CgRelationModel extends MysqliClass {
 	
 	public $_f = '*';
 	

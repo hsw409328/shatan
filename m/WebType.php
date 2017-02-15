@@ -1,5 +1,5 @@
 <?php
-final class WebTypeModel extends Mysql {
+final class WebTypeModel extends MysqliClass {
 	
 	public $_f = '*';
 	

@@ -1,5 +1,5 @@
 <?php
-final class CBagModel extends Mysql {
+final class CBagModel extends MysqliClass {
 	
 	public $_f = '*';
 	

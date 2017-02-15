@@ -1,5 +1,5 @@
 <?php
-final class GoodsGridRelationModel extends Mysql {
+final class GoodsGridRelationModel extends MysqliClass {
 	
 	public $_f = '*';
 	
