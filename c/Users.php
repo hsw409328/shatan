@@ -56,11 +56,20 @@ final class UsersController extends Base
 
         $res = $obj->addUsers($dataArray);
         if ($res) {
+            $this->_addUsersInfoSys($dataArray['id']);
             ParamsController::localSetParams('userDetail', $dataArray);
             $this->_jsonEn('1', '注册成功');
         } else {
             $this->_jsonEn('0', '注册失败');
         }
+    }
+
+    private function _addUsersInfoSys($_uid)
+    {
+        $obj = new UsersInfoSysModel();
+        $data ['uid'] = $_uid;
+        $rs = $obj->addUsersInfoSys($data);
+        return $rs;
     }
 
     private function _checkMobileValidateNum($_mobile, $_num)
