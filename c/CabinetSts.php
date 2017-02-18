@@ -71,7 +71,7 @@ final class CabinetStsController extends Base
             $cabinet_list = explode(',', $_u_info['u_cabinet']);
             $cabinet_list = implode('","', $cabinet_list);
             $obj = new CabinetStsModel();
-            $rs = $obj->getCabinetSts('c_num in ("' . $cabinet_list . '")');
+            $rs = $obj->getCabinetSts('c_num in ("' . $cabinet_list . '") and created_at like "' . date('Y-m-d') . '%"');
             if (empty($rs)) {
                 return [];
             } else {
@@ -143,7 +143,7 @@ final class CabinetStsController extends Base
             if (!$_return_array) {
                 return count($grid_area);
             } else {
-                return $grid_area;
+                return array_values($grid_area);
             }
         } else {
             //存储不可分拣的格子
@@ -158,7 +158,7 @@ final class CabinetStsController extends Base
                 $_k = array_search($v, $grid_area);
                 unset($grid_area[$_k]);
             }
-            sort($grid_area);
+            $grid_area = array_values($grid_area);
             if (!$_return_array) {
                 return count($grid_area);
             } else {
@@ -213,6 +213,7 @@ final class CabinetStsController extends Base
         if (!empty($ggrRs)) {
             $this->_jsonEn('0', '该商品已经存在，请勿重新添加');
         }
+        //var_dump($rs);exit;
         $w = 'c_num="' . $_c_num . '"  and st_num="' . $_st_num . '"  and grid_num="' . $rs[0] . '" ';
         $ggrRs = $obj->getGoodsGridRelation($w, '', '', '1');
         if (empty($ggrRs)) {

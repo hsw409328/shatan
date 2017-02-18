@@ -12,4 +12,14 @@ final class UsersInfoSysController extends Base
         $obj = new UsersInfoSysModel();
         return $obj->getUsersInfoSys('uid="' . $_uid . '"', '', '', '1');
     }
+
+    /**
+     * 根据柜子查询用户信息
+     *
+     */
+    public function getUserInfoByCabinet($cnum)
+    {
+        $obj = new UsersInfoSysModel();
+        return $obj->getUsersInfoSys('u_cabinet like "%' . $cnum . '%"', '', '', '1');
+    }
 }

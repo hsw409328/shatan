@@ -13,8 +13,8 @@ final class UsersController extends Base
         $obj = new UsersModel ();
         $w = ' open_id="' . $_oid . '" ';
         $res = $obj->getUsers($w, '', '1', '1');
+        if (!empty($res)) {
 
-        if (empty($res)) {
             ParamsController::localSetParams('userDetail', $res);
             return $res;
         } else {
@@ -35,6 +35,21 @@ final class UsersController extends Base
 
         $_mobile = Run::req('mobile');
         $_validate = Run::req('validate');
+        $_utype = Run::req('utype');
+        $_cnum = Run::req('cnum');
+        if ($_utype == '9') {
+            if (empty($_cnum)) {
+                $this->_jsonEn('0', '柜子编号不能为空');
+            } else {
+                $obj = new CabinetController();
+                $rs = $obj->getCabinetDetail($_cnum);
+                if (empty($rs)) {
+                    $this->_jsonEn('0', '柜子编号不存在');
+                }
+
+            }
+        }
+
         $checkRes = $this->checkMobile($_mobile);
         if ($checkRes) {
             $this->_jsonEn('0', '手机号已经存在');
@@ -49,10 +64,11 @@ final class UsersController extends Base
         $dataArray ['id'] = $this->Sysid();
         $dataArray ['open_id'] = ParamsController::getSessionParams('openid');
         $dataArray ['mobile_num'] = $_mobile;
-        $dataArray ['user_type'] = Run::req('utype');
+        $dataArray ['user_type'] = $_utype;
         $dataArray ['u_nickname'] = '';
         $dataArray ['u_head_photo'] = '';
         $dataArray ['created_at'] = date('Y-m-d H:i:s');
+        $dataArray ['u_lately_cabinet'] = $_cnum;
 
         $res = $obj->addUsers($dataArray);
         if ($res) {
@@ -68,6 +84,7 @@ final class UsersController extends Base
     {
         $obj = new UsersInfoSysModel();
         $data ['uid'] = $_uid;
+        $data ['created_at'] = date('Y-m-d H:i:s');
         $rs = $obj->addUsersInfoSys($data);
         return $rs;
     }
@@ -98,6 +115,33 @@ final class UsersController extends Base
         $w = 'open_id="' . $_openid . '"';
         $res = $obj->getUsers($w, '', '1', '1');
         return $res;
+    }
+
+    //发送短信
+    public function sendMobileNum()
+    {
+        $mobile = Run::req('mobile');
+    }
+
+    //保存意见反馈
+    public function addFeedback()
+    {
+        $user = $this->getUserDetail();
+        $obj = new UserFeedbackModel();
+        $msg = Run::req('msg');
+        if (empty($msg)) {
+            $this->_jsonEn('0', '内容不能为空');
+        }
+        $rs = $obj->addUserFeedback([
+            'uid' => $user['id'],
+            'uname' => $user['u_nickname'],
+            'msg' => $msg,
+            'created_at' => date('Y-m-d H:i:s')]);
+        if ($rs) {
+            $this->_jsonEn('1', '感谢您的反馈，我们将及时处理');
+        } else {
+            $this->_jsonEn('0', '系统出现错误');
+        }
     }
 
 }

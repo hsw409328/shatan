@@ -1,6 +1,6 @@
 <?php
 
-final class GoodsModel extends MysqliClass
+final class CabinetPickGoodsStsModel extends MysqliClass
 {
 
     public $_f = '*';
@@ -10,9 +10,9 @@ final class GoodsModel extends MysqliClass
         $this->_f = $f;
     }
 
-    public function getGoods($where = '', $orderby = '', $limit = '', $solo = '')
+    public function getCabinetPickGoodsSts($where = '', $orderby = '', $limit = '', $solo = '')
     {
-        $sql = 'select ' . $this->_f . ' from `goods` ';
+        $sql = 'select ' . $this->_f . ' from `cabinet_pick_goods_sts` ';
         if (!empty ($where)) {
             $sql .= ' where ' . $where;
         }
@@ -32,22 +32,22 @@ final class GoodsModel extends MysqliClass
         return $res;
     }
 
-    public function addGoods($data)
+    public function addCabinetPickGoodsSts($data)
     {
 
-        $res = $this->insert('goods', $data);
+        $res = $this->insert('cabinet_pick_goods_sts', $data);
         return $res;
     }
 
-    public function setGoods($id, $dataArray)
+    public function setCabinetPickGoodsSts($id, $dataArray)
     {
-        $res = $this->update('goods', $dataArray, ' id="' . $id . '" ');
+        $res = $this->update('cabinet_pick_goods_sts', $dataArray, ' id="' . $id . '" ');
         return $res;
     }
 
-    public function delGoods($id)
+    public function delCabinetPickGoodsSts($id)
     {
-        $res = $this->delete('goods', ' id="' . $id . '" ');
+        $res = $this->delete('cabinet_pick_goods_sts', ' id="' . $id . '" ');
         return $res;
     }
 }

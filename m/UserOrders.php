@@ -1,6 +1,6 @@
 <?php
 
-final class GoodsModel extends MysqliClass
+final class UserOrderModel extends MysqliClass
 {
 
     public $_f = '*';
@@ -10,9 +10,9 @@ final class GoodsModel extends MysqliClass
         $this->_f = $f;
     }
 
-    public function getGoods($where = '', $orderby = '', $limit = '', $solo = '')
+    public function getUserOrder($where = '', $orderby = '', $limit = '', $solo = '')
     {
-        $sql = 'select ' . $this->_f . ' from `goods` ';
+        $sql = 'select ' . $this->_f . ' from `user_orders` ';
         if (!empty ($where)) {
             $sql .= ' where ' . $where;
         }
@@ -32,22 +32,22 @@ final class GoodsModel extends MysqliClass
         return $res;
     }
 
-    public function addGoods($data)
+    public function addUserOrder($data)
     {
 
-        $res = $this->insert('goods', $data);
+        $res = $this->insert('user_orders', $data);
         return $res;
     }
 
-    public function setGoods($id, $dataArray)
+    public function setUserOrder($id, $dataArray)
     {
-        $res = $this->update('goods', $dataArray, ' id="' . $id . '" ');
+        $res = $this->update('user_orders', $dataArray, ' id="' . $id . '" ');
         return $res;
     }
 
-    public function delGoods($id)
+    public function delUserOrder($id)
     {
-        $res = $this->delete('goods', ' id="' . $id . '" ');
+        $res = $this->delete('user_orders', ' id="' . $id . '" ');
         return $res;
     }
 }
