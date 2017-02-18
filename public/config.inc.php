@@ -1,7 +1,10 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
-define('APPID', '');
-define('APPSECRET', '');
+define('APP_TITLE', '沙滩柜子');
+define('APPID', '123');
+define('APPSECRET', '123');
+define('APP_PAY_MCHID', '123');
+define('APP_PAY_STR', '123');
 define('TOKEN_URL', 'https://api.weixin.qq.com/sns/oauth2/access_token');
 define('AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize');
 define('REFRESH_TOKEN', 'https://api.weixin.qq.com/sns/oauth2/refresh_token');
@@ -99,7 +102,7 @@ class Run
             $alert_str = "";
         }
         if ($single != 0) {
-            echo "<script>{$alert_str}window.location.href='".APP_WEBSITE."{$url}';</script>";
+            echo "<script>{$alert_str}window.location.href='" . APP_WEBSITE . "{$url}';</script>";
             exit ();
         } else {
             echo "<script>{$alert_str}history.go(-1);</script>";
@@ -176,6 +179,7 @@ class Run
         if (empty($user)) {
             self::show_msg(null, 1, $b);
         }
+        return $user;
     }
 
     public static function getFormatDate($d = null, $f = 'Y-m-d')
