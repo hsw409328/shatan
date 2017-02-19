@@ -2,7 +2,7 @@
 include_once 'public/config.inc.php';
 include_once 'public/config.route.php';
 //session_destroy();
-Run::set_login_user('test1');
+//Run::set_login_user('test1');
 
 $_route = array(
     'other/login' => 'v1.other.login',
