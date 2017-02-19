@@ -52,7 +52,7 @@ final class WechatCallback
     {
         if (is_array($this->_resouce)) {
             //执行跳转
-            Run::show_msg('', '1', APP_WEBSITE . $this->_req ['tpl']);
+            Run::show_msg('', '1', APP_WEBSITE . '/' .$this->_req ['tpl']);
             exit ();
         } else {
             $this->_error = '获取用户资料错误';
