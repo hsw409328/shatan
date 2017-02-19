@@ -58,6 +58,7 @@ final class WechatCallback
 
     public function login()
     {
+        $this->userinfo();
         $this->_user = Run::set_login_user($this->_resouce ['openid']);
         $this->href();
     }

@@ -35,6 +35,7 @@ final class UsersController extends Base
         $_validate = Run::req('validate');
         $_utype = Run::req('utype');
         $_cnum = Run::req('cnum');
+        $_cnum = strtoupper($_cnum);
         if ($_utype == '9') {
             if (empty($_cnum)) {
                 $this->_jsonEn('0', '柜子编号不能为空');
