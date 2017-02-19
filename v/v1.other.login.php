@@ -8,7 +8,8 @@ if (!empty($user)) {
 <div class="use_login_top">
     <img src="/public/images/login_bg.jpg" class="use_login_bg"/>
     <div class="use_login_hp">
-        <img src="/public/images/1.jpg"/>
+        <img src="<?php $a = ParamsController::getSessionParams('open_wx_info');
+        echo $a['headimgurl']; ?>"/>
     </div>
 </div>
 <!--身体-->
