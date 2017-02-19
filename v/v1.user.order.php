@@ -61,7 +61,7 @@ $rs = $obj->getUserOrder();
                 <tr>
                     <td><?php echo $odRs['gnum_name']; ?></td>
                     <td class="color"><?php echo $odRs['pwd']; ?></td>
-                    <td><?php echo $odRs['price']; ?>元</td>
+                    <td><?php echo floatval($odRs['price']); ?>元</td>
                     <?php
                     if ($v['is_return'] == '0') {
                         echo '<td>需要归还</td>';
@@ -77,12 +77,12 @@ $rs = $obj->getUserOrder();
                 <tr>
                     <td>订单押金</td>
                     <td></td>
-                    <td><?php echo $v['deposit_money']; ?>元</td>
+                    <td><?php echo floatval($v['deposit_money']); ?>元</td>
                 </tr>
                 <tr>
                     <td>订单总额</td>
                     <td></td>
-                    <td><?php echo $v['total_money']; ?>元</td>
+                    <td><?php echo floatval($v['total_money']); ?>元</td>
                 </tr>
                 <?php
                 if ($v['is_return'] == '1' && $v['is_end'] == '1') {

@@ -122,7 +122,7 @@ final class BuyGoodsListController extends Base
         $data ['rent_date_end'] = $_end_d;
         $data ['city'] = '';
         $data ['city_name'] = $cRs['c_city'];
-        $data ['address'] = $cRs['c_hotel'] . $cRs['c_area'] . $cRs['c_address'];
+        $data ['address'] = $cRs['c_area'] . $cRs['c_hotel'] . $cRs['c_address'];
         $data ['total_money'] = floatval($gRs['g_deposit']) + floatval($gRs['g_rent']);
         $data ['rent_money'] = floatval($gRs['g_rent']);
         $data ['deposit_money'] = floatval($gRs['g_deposit']);
