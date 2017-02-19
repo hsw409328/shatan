@@ -40,7 +40,7 @@ final class UsersController extends Base
                 $this->_jsonEn('0', '柜子编号不能为空');
             } else {
                 $obj = new CabinetController();
-                $rs = $obj->getCabinetDetail($_cnum);
+                $rs = $obj->getCabinetDetail(strtoupper($_cnum));
                 if (empty($rs)) {
                     $this->_jsonEn('0', '柜子编号不存在');
                 }
