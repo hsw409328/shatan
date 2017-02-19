@@ -1,11 +1,7 @@
 <?php
 $user = ParamsController::getSessionParams('userDetail');
 if (!empty($user)) {
-    if ($user['user_type'] == '10') {
-        Run::show_msg(null, 1, '/fj/index');
-    } else {
-        Run::show_msg(null, 1, '/ps/index');
-    }
+    Run::checkUserType($user['user_type']);
 }
 ?>
 <!--头部-->

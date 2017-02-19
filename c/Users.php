@@ -95,7 +95,7 @@ final class UsersController extends Base
         if ($_validate_num == $_num) {
             return true;
         } else {
-            //$this->_jsonEn('0', '验证码错误');
+            $this->_jsonEn('0', '验证码错误');
         }
     }
 
@@ -117,10 +117,29 @@ final class UsersController extends Base
         return $res;
     }
 
+    //用户ID
+    public function getUserByUid($_uid)
+    {
+        $obj = new UsersModel();
+        $w = 'id="' . $_uid . '"';
+        $res = $obj->getUsers($w, '', '1', '1');
+        return $res;
+    }
+
     //发送短信
     public function sendMobileNum()
     {
         $mobile = Run::req('mobile');
+        if (strlen($mobile) != 11) {
+            $this->_jsonEn('0', '请检查手机号');
+        }
+        $rs = WangYiCloudController::sendMobileValidate($mobile);
+        if ($rs) {
+            ParamsController::localSetParams($mobile . '_mobile', $rs);
+            $this->_jsonEn('1', '发送成功');
+        } else {
+            $this->_jsonEn('0', '发送失败，请检查手机号');
+        }
     }
 
     //保存意见反馈

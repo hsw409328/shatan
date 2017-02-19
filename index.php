@@ -1,8 +1,8 @@
 <?php
 include_once 'public/config.inc.php';
 include_once 'public/config.route.php';
-
-Run::set_login_user('userid1');
+//session_destroy();
+Run::set_login_user('test1');
 
 $_route = array(
     'other/login' => 'v1.other.login',
@@ -18,7 +18,10 @@ $_route = array(
     'js/index-d-op' => 'v1.js.index.d.op',
     'js/index-order-bad' => 'v1.js.index.d.bad',
     'js/bad' => 'v1.js.bad',
+    'js/bad-d' => 'v1.js.bad.d',
+    'js/bad-d-next' => 'v1.js.bad.d.next',
     'js/abnormal' => 'v1.js.abnormal',
+    'js/ab-d' => 'v1.js.abnormal.d',
 
     'user/login' => 'v1.login',
     'user/order' => 'v1.user.order',

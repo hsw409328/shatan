@@ -101,6 +101,9 @@ final class UserOrderController extends Base
         $w = 'gnum="' . $gnum . '" and pwd="' . $rs['pwd'] . '" ';
         $obj = new UserOrderDetailModel();
         $uodRs = $obj->getUserOrderDetail($w, '', '', '1');
+        if (empty($uodRs)) {
+            Run::show_msg('未找到订单');
+        }
         $oRs = $this->getUserOrderOne($uodRs['oid'], $uodRs['uid']);
         return ['rs' => $oRs, 'odRs' => $uodRs];
     }
@@ -160,8 +163,112 @@ final class UserOrderController extends Base
         if (empty($rs)) {
             $this->_jsonEn('0', '订单查询失败');
         }
+        if (floatval($rs['real_refund_money']) == 0) {
+            $obj = new UserOrderModel();
+            $obj->setUserOrder($rs['id'], ['is_end' => 1]);
+            $this->_jsonEn('1', '强制结算，无需要退款，退款金额为0');
+        }
+
+        //检验用户
+        $uObj = new UsersController();
+        $uRs = $uObj->getUserByUid($rs['uid']);
+        if (empty($uRs)) {
+            $this->_jsonEn('0', '用户未找到');
+        }
+
+        //退款操作
+        $obj = new UserOrderRefundModel();
+        $rRs = $obj->getUserOrderRefund('oid="' . $rs['oid'] . '"', '', '', '1');
+        if (empty($rRs)) {
+            $data ['oid'] = $rs['oid'];
+            $data ['uid'] = $rs['uid'];
+            $data ['refund_oid'] = $this->SysOrderId('TQ');
+            $data ['wx_code'] = $rs['wx_code'];
+            $data ['wx_refund_code'] = '';
+            $data ['total_money'] = $rs['total_money'];
+            $data ['refund_money'] = $rs['real_refund_money'];
+            $data ['real_refund_money'] = '';
+            $data ['sts'] = '0';
+            $data ['created_at'] = date('Y-m-d H:i:s');
+            $rRs = $obj->addUserOrderRefund($data);
+            if ($rRs) {
+                $wxObj = new WechatPayController();
+                $refund_rs = $wxObj->refundOperation($data ['oid'], $data ['refund_oid'], $data ['total_money'], $data ['refund_money'], $uRs['open_id']);
+            } else {
+                $this->_jsonEn('0', '添加退款订单失败');
+            }
+        } else {
+            if ($rRs['sts'] == '0') {
+                $wxObj = new WechatPayController();
+                $refund_rs = $wxObj->refundOperation($rRs ['oid'], $rRs ['refund_oid'], $rRs ['total_money'], $rRs ['refund_money'], $uRs['open_id']);
+            } else {
+                $this->_jsonEn('0', '该订单已经退款成功');
+            }
+        }
+        if ($refund_rs) {
+            $obj = new UserOrderModel();
+            $obj->setUserOrder($rs['id'], ['is_end' => 1]);
+            $this->_jsonEn('1', '微信申请退款成功');
+        } else {
+            $this->_jsonEn('0', '微信申请退款失败');
+        }
+    }
+
+    /**
+     * 强制结算
+     */
+    public function forceSetOrder()
+    {
+        $oid = Run::req('oid');
+        $uid = Run::req('uid');
+        $rs = $this->getUserOrderOne($oid, $uid);
+        if (empty($rs)) {
+            $this->_jsonEn('0', '订单查询失败');
+        }
         $obj = new UserOrderModel();
         $obj->setUserOrder($rs['id'], ['is_end' => 1]);
-        //退款操作
+        $this->_jsonEn('1', '强制结算成功');
+    }
+
+    /**
+     * 查询异常订单
+     */
+    public function getUserOrderByAbnormal()
+    {
+        $obj = new UserOrderModel();
+        $w = 'is_pay=1 and is_return=0 and is_abnormal=1 and is_pickup=1 and is_end=0';
+        $rs = $obj->getUserOrder($w);
+        if (empty($rs)) {
+            $rs = [];
+        }
+        return $rs;
+    }
+
+    /**
+     * 查询损坏订单
+     */
+    public function getUserOrderByDamage()
+    {
+        $obj = new UserOrderModel();
+        $w = 'is_pay=1 and is_damage=1 and is_end=1';
+        $rs = $obj->getUserOrder($w);
+        if (empty($rs)) {
+            $rs = [];
+        }
+        return $rs;
+
+    }
+
+    /**
+     * 根据订单号，查询坏的订单
+     */
+    public function getUserOrderDamageByOid($_oid)
+    {
+        $obj = new UserOrderDamageModel();
+        $rs = $obj->getUserOrderDamage('oid="' . $_oid . '"', '', '', '1');
+        if (empty($rs)) {
+            $rs = [];
+        }
+        return $rs;
     }
 }

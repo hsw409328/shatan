@@ -133,7 +133,7 @@ class Base
         }
         $str = Run::getFormatDate('', 'Y-m-d H:i:s') . ' ' . $str;
         $_r = file_get_contents($fileName);
-        file_put_contents($fileName, $str . "\n\r" . $_r);
+        file_put_contents($fileName, $str . "\r" . $_r);
     }
 
     public function SysId($_prev = 'ST')

@@ -42,9 +42,9 @@ $rs = $obj->getUserOrderDetailByGNum(RouteClass::getParams('3'));
             <td><?php echo floatval($rs['odRs']['price']); ?>元</td>
             <?php
             if ($rs['odRs']['is_damage'] == '1') {
-                echo '<td>损坏</td>';
+                echo '<td><a href="/js/bad-d-next/' . $rs['odRs']['oid'] . '" class="">损坏</a></td>';
             } else {
-                if ($rs['odRs']['is_end'] == '1') {
+                if ($rs['rs']['is_end'] == '1') {
                     echo '<td>完好</td>';
                 } else {
                     echo '<td><span class="set_details_xz">选择</span></td>';
@@ -82,9 +82,13 @@ $rs = $obj->getUserOrderDetailByGNum(RouteClass::getParams('3'));
         <?php echo $rs['rs']['order_bak']; ?>
     </div>
 </div>
-<div class="set_details_b">
-    <a href="javascript:void(0)" id="endid">结算</a>
-</div>
+<?php
+if ($rs['rs']['is_end'] == '0') {
+    echo '<div class="set_details_b">
+            <a href="javascript:void(0)" id="endid">结算</a>
+        </div>';
+}
+?>
 
 <div class="set_choose">
     <ul>
@@ -122,8 +126,30 @@ $rs = $obj->getUserOrderDetailByGNum(RouteClass::getParams('3'));
             }
             UtilCommon.href('/js/index-d-op/' + _d);
         });
+        var _submit_val = 0;
         $('#endid').click(function () {
-
+            if (_submit_val == 1) {
+                return false;
+            }
+            AjaxCommon.data = {
+                'action': 'UserOrder',
+                'run': 'endOrder',
+                'oid': '<?php echo $rs['rs']['oid']?>',
+                'uid': '<?php echo $rs['rs']['uid']?>',
+            };
+            AjaxCommon.callback_func = function (data, sts) {
+                var _d = eval('(' + data + ')');
+                if (_d.code == '1') {
+                    alert(_d.msg);
+                    UtilCommon.reload();
+                } else {
+                    alert(_d.msg);
+                    _submit_val = 0;
+                    return false;
+                }
+            };
+            _submit_val = 1;
+            AjaxCommon.post();
         });
     })
 </script>

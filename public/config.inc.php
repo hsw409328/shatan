@@ -1,8 +1,8 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
-define('APP_TITLE', '沙滩柜子');
-define('APPID', '123');
-define('APPSECRET', '123');
+define('APP_TITLE', '趣海边');
+define('APPID', 'wxe956f9f8294526d0');
+define('APPSECRET', 'fd8bf581dda44b7bc2b8bd2ad3d74fbe');
 define('APP_PAY_MCHID', '123');
 define('APP_PAY_STR', '123');
 define('TOKEN_URL', 'https://api.weixin.qq.com/sns/oauth2/access_token');
@@ -41,10 +41,9 @@ class Run
         require_once $file;
     }
 
-    public static function checkBrowser()
+    public static function checkBrowser($str = '请在微信客户端打开链接', $error = false)
     {
-        if (!strpos($_SERVER ['HTTP_USER_AGENT'], "MicroMessenger")) {
-            die ('<html>
+        $_html = '<html>
 				    <head>
 				    	<title>抱歉，出错了</title>
 				        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
@@ -56,11 +55,15 @@ class Run
 						</style>
 				    </head>
 					<body>
-						<img src="http://img.momopet.cn:4869/4a06f368048c265f1f1c18b99d59d237?f=png" />
-						<p>请在微信客户端打开链接</p>
-					</body>
-				</html>');
-            exit ();
+						<img src="http://img.momopet.cn:4869/4a06f368048c265f1f1c18b99d59d237?f=png" />';
+        $_html_body = '</body>
+				</html>';
+        if (!strpos($_SERVER ['HTTP_USER_AGENT'], "MicroMessenger")) {
+            die ($_html . '<p>' . $str . '</p>' . $_html_body);
+        } else {
+            if ($error) {
+                die ($_html . '<p>' . $str . '</p>' . $_html_body);
+            }
         }
     }
 
@@ -170,7 +173,8 @@ class Run
     {
         ParamsController::localSetParams('openid', $oid);
         $userObj = new UsersController ();
-        $userObj->login();
+        return $userObj->login();
+
     }
 
     public static function c($b = '')
@@ -180,6 +184,24 @@ class Run
             self::show_msg(null, 1, $b);
         }
         return $user;
+    }
+
+    public static function checkUserType($utype)
+    {
+        switch ($utype) {
+            case '9':
+                self::show_msg('', 1, '/');
+                break;
+            case '10':
+                self::show_msg('', 1, '/fj/index');
+                break;
+            case '11':
+                self::show_msg('', 1, '/ps/index');
+                break;
+            case '12':
+                self::show_msg('', 1, '/js/index');
+                break;
+        }
     }
 
     public static function getFormatDate($d = null, $f = 'Y-m-d')

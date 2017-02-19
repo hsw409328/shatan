@@ -141,18 +141,102 @@ final class WechatPayController extends Base
     /**
      * 微信退款操作
      */
-    public function refundOperation()
+    public function refundOperation($order_id, $refund_order_id, $total_money, $refund_money, $open_id)
     {
         $url = 'https://api.mch.weixin.qq.com/secapi/pay/refund';
 
-        $data['appid'] = '';
-        $data['mch_id'] = '';
-        $data['nonce_str'] = '';
-        $data['sign'] = '';
-        $data['out_trade_no'] = '';
-        $data['out_refund_no'] = '';
-        $data['total_fee'] = '';
-        $data['refund_fee'] = '';
-        $data['op_user_id'] = '';
+        $data['appid'] = APPID;
+        $data['mch_id'] = APP_PAY_MCHID;
+        $data['nonce_str'] = $this->getRandomString(32, '3');
+        $data['out_trade_no'] = $order_id;
+        $data['out_refund_no'] = $refund_order_id;
+        $data['total_fee'] = floatval($total_money) * 100;
+        $data['refund_fee'] = floatval($refund_money) * 100;
+        $data['op_user_id'] = $open_id;
+
+        ksort($data);
+        $strSignTmp = '';
+        foreach ($data as $kk => $vv) {
+            $strSignTmp .= $kk . '=' . $vv . '&';
+        }
+        $strSignTmp .= 'key=' . APP_PAY_STR;
+        $sign = strtoupper(md5($strSignTmp));
+
+        $sign = '';
+
+        $str = "<xml>
+                   <appid>{$data['appid']}</appid>
+                   <mch_id>{$data['mch_id']}</mch_id>
+                   <nonce_str>{$data['nonce_str']}</nonce_str>
+                   <op_user_id>{$data['op_user_id']}</op_user_id>
+                   <out_refund_no>{$data['out_refund_no']}</out_refund_no>
+                   <out_trade_no>{$data['out_trade_no']}</out_trade_no>
+                   <refund_fee>{$data['refund_fee']}</refund_fee>
+                   <total_fee>{$data['total_fee']}</total_fee>                   
+                   <sign>{$sign}</sign>
+                </xml>";
+
+        //$rs = $this->curlPostSSL($url, $str);
+        $rs = Run::getHttpPostRes($str, $url);
+        var_dump($rs);
+        if ($rs) {
+            $res = json_decode(json_encode(simplexml_load_string($rs, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+            if ($res ['return_code'] == 'SUCCESS') {
+                //退款单状态更新
+                $obj = new UserOrderRefundModel();
+                $rs = $obj->getUserOrderRefund('refund_oid="' . $res['out_refund_no'] . '"', '', '', '1');
+                $obj->setUserOrderRefund($rs['id'], [
+                    'wx_refund_code' => $res['refund_id'],
+                    'real_refund_money' => floatval($res['refund_fee']) / 100,
+                    'sts' => '1',
+                    'updated_at' => date('Y-m-d H:i:s'),
+                ]);
+                return true;
+            } else {
+                $this->wlog(APP_PATH . 'public/log/refund-order', $data['out_refund_no'] . '-退款失败-' . $res ['err_code']);
+                return false;
+            }
+        } else {
+            $this->wlog(APP_PATH . 'public/log/refund-order', $data['out_refund_no'] . '-退款失败');
+            return false;
+        }
     }
+
+    /**
+     * @name ssl Curl Post数据
+     * @param string $url 接收数据的api
+     * @param string $vars 提交的数据
+     * @param int $second 要求程序必须在$second秒内完成,负责到$second秒后放到后台执行
+     * @return string or boolean 成功且对方有返回值则返回
+     */
+    public function curlPostSSL($url, $vars, $second = 30, $aHeader = array())
+    {
+        $ch = curl_init();
+        //curl_setopt($ch,CURLOPT_VERBOSE,'1');
+        curl_setopt($ch, CURLOPT_TIMEOUT, $second);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
+        curl_setopt($ch, CURLOPT_SSLCERT, '/var/www/cert/php.pem');
+        curl_setopt($ch, CURLOPT_SSLCERTPASSWD, '1234');
+        curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
+        curl_setopt($ch, CURLOPT_SSLKEY, '/var/www/cert/php_private.pem');
+
+        if (count($aHeader) >= 1) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $aHeader);
+        }
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        if ($data)
+            return $data;
+        else
+            return false;
+    }
+
+
 }
