@@ -9,7 +9,8 @@ $rs = $obj->getUserOrder();
 <div class="use_pay_b">
     <div class="use_pay_x use_return_r">
         <h3><label>柜子编号</label><input type="text" placeholder="请输入柜子编号" id="cnum"/><span class="use_sk">查看示例</span></h3>
-        <p><strong id="oid_num" v="<?php echo strtolower($rs['rs']['cnum']); ?>">订单编号：<?php echo $rs['rs']['oid']; ?></strong></p>
+        <p><strong id="oid_num"
+                   v="<?php echo strtolower($rs['rs']['cnum']); ?>">订单编号：<?php echo $rs['rs']['oid']; ?></strong></p>
         <p>租赁有效期：<?php echo Run::getFormatDate($rs['rs']['rent_date_start'], 'm月d日 H:i'); ?>
             至 <?php echo Run::getFormatDate($rs['rs']['rent_date_end'], 'm月d日 H:i'); ?></p>
     </div>
@@ -21,20 +22,16 @@ $rs = $obj->getUserOrder();
         </tr>
         <tr>
             <td><?php echo $rs['odRs']['gnum_name']; ?></td>
-            <td><?php echo floatval($rs['odRs']['price']); ?></td>
+            <td><?php echo floatval($rs['odRs']['price']); ?>元</td>
             <td>需要归还</td>
         </tr>
         <tr>
             <td>押金</td>
-            <td><?php echo floatval($rs['odRs']['deposit']); ?>
-                元
-            </td>
+            <td><?php echo floatval($rs['odRs']['deposit']); ?>元</td>
         </tr>
         <tr>
             <td>总额</td>
-            <td><?php echo floatval($rs['rs']['total_money']); ?>
-                元
-            </td>
+            <td><?php echo floatval($rs['rs']['total_money']); ?>元</td>
         </tr>
     </table>
     <div class="background1"></div>
