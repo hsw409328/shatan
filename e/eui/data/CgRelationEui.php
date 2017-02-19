@@ -54,8 +54,8 @@ final class CgRelationEuiController extends Base
         $rs = explode(',', $rs['c_grid_area']);
         foreach ($rs as $k => $v) {
             if (!empty($v)) {
-                $_tmp[$k-1]['id'] = $v;
-                $_tmp[$k-1]['text'] = $v;
+                $_tmp[$k - 1]['id'] = $v;
+                $_tmp[$k - 1]['text'] = $v;
             }
         }
         echo json_encode($_tmp);
@@ -78,11 +78,11 @@ final class CgRelationEuiController extends Base
     public function getCgRelationConfigCabinetList()
     {
         $_kid = Run::req('_kid');
-        $rs = ConfigCabinet::getOneGrid($_kid);
+        $rs = ConfigCabinet::getAllGridByGroup($_kid);
         $_tmp = [];
         foreach ($rs as $k => $v) {
-            $_tmp[$k - 1]['id'] = $v;
-            $_tmp[$k - 1]['text'] = $v;
+            $_tmp[$k]['id'] = $v;
+            $_tmp[$k]['text'] = $v;
 
         }
         echo json_encode($_tmp);

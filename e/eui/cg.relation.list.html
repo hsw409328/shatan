@@ -2,7 +2,7 @@
 <script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
-<body  style="width:100%;height: 100%;">
+<body style="width:100%;height: 100%;">
 <table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
 url:'data/run.php?c=CgRelationEui&f=getCgRelationList',method:'get',toolbar:'#tb',footerbar:'#w',
 onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
@@ -52,13 +52,13 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
                     <tr>
                         <td>具体型号:</td>
                         <td><input class="easyui-combobox" id="cabinet_config_key" name="cabinet_config_key"
-                                   data-options="url:'data/run.php?c=CgRelationEui&f=getCgRelationConfigCabinet',method:'get',valueField:'id',textField:'text'">
+                                   data-options="url:'data/run.php?c=WebTypeEui&f=getWebTypeParentChil&_pid=1',method:'get',valueField:'text',textField:'text'">
                         </td>
                     </tr>
                     <tr>
                         <td>格子区域:</td>
                         <td><input class="easyui-combobox" id="c_grid_area1" name="c_grid_area1"
-                                   data-options="multiple:true,method:'get',valueField:'id',textField:'text'">
+                                   data-options="multiple:true,method:'get',valueField:'text',textField:'text'">
                         </td>
                     </tr>
                     <tr>
@@ -102,7 +102,7 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
 
     $('#cabinet_config_key').combobox({
         onSelect: function (param) {
-            $('#c_grid_area1').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationConfigCabinetList&_kid=' + param.id);
+            $('#c_grid_area1').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationConfigCabinetList&_kid=' + param.text);
             if (_selectMdataVal == param.text) {
                 $('#c_grid_area1').combobox('setValues', _selectMdata);
             } else {

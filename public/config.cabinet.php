@@ -78,6 +78,26 @@ class ConfigCabinet
     }
 
     /**
+     * 根据组获取格子
+     * @param $group
+     */
+    public static function getAllGridByGroup($group)
+    {
+        $len = strlen($group);
+        if ($len <= 0) {
+            return [];
+        }
+        $_tmp = [];
+        for ($i = 0; $i < $len; $i++) {
+            $rs = self::getOneGrid($group[$i]);
+            foreach ($rs as $k => $v) {
+                $_tmp[] = $v;
+            }
+        }
+        return $_tmp;
+    }
+
+    /**
      * 获取单个柜子的格局
      * @param $_key
      */
