@@ -1,0 +1,235 @@
+<script type="text/javascript" src="src.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<body style="width:100%;height: 100%;">
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=GoodsGridRelationEui&f=getGoodsGridRelationList',method:'get',toolbar:'#tb',footerbar:'#w',
+onRowContextMenu:onRowContextMenu"
+>
+    <thead>
+    <tr>
+        <th data-options="field:'st_num',width:100">栏目编号</th>
+        <th data-options="field:'c_num',width:120">柜子编号</th>
+        <th data-options="field:'g_num_name',width:100">商品名称</th>
+        <th data-options="field:'grid_num',width:200">格子</th>
+        <th data-options="field:'pwd',width:200">密码</th>
+        <th data-options="field:'sts',width:120" formatter="formatterS">状态</th>
+        <th data-options="field:'created_at',width:140">创建时间</th>
+        <th data-options="field:'updated_at',width:140">更新时间</th>
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    <!--<a href="#" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加格子关联</a>-->
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+    <div data-options="iconCls:'icon-tip'" onclick="updateStatus(0)">禁用</div>
+    <div data-options="iconCls:'icon-tip'" onclick="updateStatus(1)">启用</div>
+</div>
+<div id="w" class="easyui-window" title="编辑格子商品关系" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:600px">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="post" enctype="">
+                <input type="hidden" name="id" id="inputId" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>柜子编号:</td>
+                        <td><input class="easyui-combobox" id="c_num" name="c_num"
+                                   data-options="url:'data/run.php?c=CgRelationEui&f=getCgRelationCabinet',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>类目:</td>
+                        <td><input class="easyui-combobox" id="st_num" name="st_num"
+                                   data-options="method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>格子:</td>
+                        <td><input class="easyui-combobox" id="grid_num" name="grid_num"
+                                   data-options="method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>商品:</td>
+                        <td><input class="easyui-combobox" id="g_num" name="g_num"
+                                   data-options="method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>状态:</td>
+                        <td>
+                            <select class="easyui-combobox" name="sts" id="sts" style="width:150px;">
+                                <option value="1">初始化</option>
+                                <option value="2">分拣</option>
+                                <option value="3">补货</option>
+                                <option value="4">未租</option>
+                                <option value="5">已租</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid
+        $('#searchBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#idInp').val(),
+                _wtype: $('#wid_s').combobox('getValue'),
+            });
+        });
+        $('#addBtn').click(function () {
+            _selectMdata = '';
+            _selectMdataVal = '';
+            $('#w').window('open');
+            $('#ff').form('reset');
+            $('#ff').form('clear');
+        });
+    });
+
+    $('#c_num').combobox({
+        onSelect: function (param) {
+            $('#st_num').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationStNum&id=' + param.id);
+            $('#st_num').combobox('clear');
+        }
+    });
+
+    $('#st_num').combobox({
+        onSelect: function (param) {
+            $('#grid_num').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationGridArea&st_num=' + param.id + '&c_num=' + $('#c_num').combobox('getValue'));
+            $('#g_num').combobox('reload', 'data/run.php?c=GoodsEui&f=getGoodsStNumList&id=' + param.id);
+            $('#grid_num').combobox('clear');
+            $('#g_num').combobox('clear');
+        }
+    });
+
+    //1初始化 2分拣 3补货 4未租 5已租-未取货 6已租-已取货
+    function formatterS(val, row, index) {
+        var _tmp_v = '';
+        switch (val) {
+            case '1':
+                _tmp_v = '初始化';
+                break;
+            case '2':
+                _tmp_v = '分拣';
+                break;
+            case '3':
+                _tmp_v = '补货';
+                break;
+            case '4':
+                _tmp_v = '未租';
+                break;
+            case '5':
+                _tmp_v = '已租-未取货';
+                break;
+            case '6':
+                _tmp_v = '已租-已取货';
+                break;
+        }
+        return _tmp_v;
+    }
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+        $('#inputId').val(row.id);
+        $('#c_num').combobox('setValue', row.c_num);
+        $('#st_num').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationStNum&id=' + row.c_num);
+        $('#st_num').combobox('setValue', row.st_num);
+        $('#grid_num').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationGridArea&st_num=' + row.st_num + '&c_num=' + row.c_num);
+        $('#g_num').combobox('reload', 'data/run.php?c=GoodsEui&f=getGoodsStNumList&id=' + row.st_num);
+        $('#grid_num').combobox('setValue', row.grid_num);
+
+        $('#g_num').combobox('setValue', row.g_num);
+        $('#sts').combobox('setValue', row.sts);
+
+
+    }
+
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=GoodsGridRelationEui&f=saveGoodsGridRelation',
+            onSubmit: function (param) {
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'Info');
+                $('#subBtn').linkbutton('enable');
+                closeWin();
+                reloadData();
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+    var _data = '';
+    function onRowContextMenu(e, rowIndex, rowData) {
+        //三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+        _data = rowData;
+    }
+
+    function updateStatus(s) {
+        $.ajax({
+            url: 'data/run.php?c=GoodsGridRelationEui&f=updateStatus',
+            type: 'post',
+            async: true,
+            data: '_id=' + _data.id + '&_s=' + s,
+            success: function (data) {
+                $.messager.alert('提示', data);
+                reloadData();
+            }
+        });
+    }
+
+    function updateTop(s) {
+        $.ajax({
+            url: 'data/run.php?c=GoodsGridRelationEui&f=updateTop',
+            type: 'post',
+            async: true,
+            data: '_id=' + _data.id + '&_top=' + s,
+            success: function (data) {
+                $.messager.alert('提示', data);
+                reloadData();
+            }
+        });
+    }
+
+    function loadEv() {
+        $('#w1').window('open');
+        $('#titleDiv').html(_data.title);
+        $('#dg').datagrid().datagrid('getPager');
+        $('#dg').datagrid('load', {
+            _bid: _data.id
+        })
+    }
+</script>
+</body>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>沙滩旅游柜子 - 后台管理</title>
+        <script type="text/javascript" src="src.js"></script>
+		<script>
+			$.ajax({
+				url:"data/run.php?c=AdminEui&f=checkIsLogin",
+				type:'post',
+				async:true,
+				data:'',
+				success:function(data){
+					if(data=='1'){
+
+					}else{
+						window.location.href="login.html";
+					}
+				}
+			});
+		</script>
+    </head>
+    <body class="easyui-layout">
+        <div data-options="region:'north',title:'',split:true" style="height:65px;background-color:#2d3e50">
+
+        </div>
+        <div data-options="region:'south',title:'',split:true"  style="height:25px;background-color:#2d3e50">
+			<center style="color:#fff">Copyright © 2014 - 2016 沙滩旅游柜子  All Rights Reserved.</center>
+        </div>
+        <div data-options="region:'east',title:'杂项',split:true" style="width:100px;">
+			<!--欢迎标签 START-->
+	            <a href="data/run.php?c=AdminEui&f=logoutAdmin" class="easyui-linkbutton" data-options="iconCls:'icon-undo'" style="width:100%">退出</a>
+	        <!--欢迎标签 END-->
+        </div>
+        <div data-options="region:'west',title:'左侧导航',split:true,href:'_left_nav.html'" style="width:200px;">
+        </div>
+        <div data-options="region:'center'" style="padding:5px;background:#fff;">
+			<div id="tabs" class="easyui-tabs" fit="true" border="false">
+		        <!--欢迎标签 START-->
+				 <div title="欢迎使用">
+		            <iframe style="width:100%;height:100%;" scrolling="auto" frameborder="0" src="http://www.51hsw.com"></iframe>
+		        </div>
+		        <!--欢迎标签 END-->
+		    </div>
+			<script>
+				function bottomRight(){
+				$.messager.show({
+					title:'今日提醒',
+					msg:'<a href="#">暂无</a>',
+					showType:'show'
+				});
+			}
+			bottomRight();
+			</script>
+        </div>
+    </body>
+</html>

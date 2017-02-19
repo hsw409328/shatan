@@ -1,0 +1,146 @@
+<script type="text/javascript" src="src.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<body  style="width:100%;height: 100%;">
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=CityWeatherEui&f=getCityWeatherList',method:'get',toolbar:'#tb',footerbar:'#w',
+onDblClickRow:onDblClickRow"
+>
+    <thead>
+    <tr>
+        <th data-options="field:'city_name',width:100">城市</th>
+        <th data-options="field:'zhangchao',width:120">涨潮</th>
+        <th data-options="field:'tuichao',width:120">退潮</th>
+        <th data-options="field:'richu',width:120">日出</th>
+        <th data-options="field:'riluo',width:120">日落</th>
+        <th data-options="field:'wendu',width:120">温度</th>
+        <th data-options="field:'tianqi',width:120">天气</th>
+        <th data-options="field:'created_at',width:140">创建时间</th>
+        <th data-options="field:'updated_at',width:140">更新时间</th>
+
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加首页天气</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+</div>
+<div id="w" class="easyui-window" title="编辑天气" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:600px">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="post" enctype="">
+                <input type="hidden" name="id" id="inputId" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>城市:</td>
+                        <td><input class="easyui-combobox" id="city" name="city"
+                                   data-options="url:'data/run.php?c=WebTypeEui&f=getWebTypeParentChil&_pid=6',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>涨潮:</td>
+                        <td>
+                            <input class="easyui-textbox" id="zhangchao" name="zhangchao">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>退潮:</td>
+                        <td>
+                            <input class="easyui-textbox" id="tuichao" name="tuichao">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>日出:</td>
+                        <td>
+                            <input class="easyui-textbox" id="richu" name="richu">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>日落:</td>
+                        <td>
+                            <input class="easyui-textbox" id="riluo" name="riluo">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>温度:</td>
+                        <td>
+                            <input class="easyui-textbox" id="wendu" name="wendu">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>天气:</td>
+                        <td>
+                            <input class="easyui-textbox" id="tianqi" name="tianqi">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid       
+        $('#searchBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#idInp').val()
+            });
+        });
+        $('#addBtn').click(function () {
+            $('#w').window('open');
+            $('#ff').form('reset');
+            $('#ff').form('clear');
+        });
+    });
+
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+        $('#inputId').val(row.id);
+        $('#city').combobox('setValue', row.city);
+        $('#zhangchao').textbox('setValue', row.zhangchao);
+        $('#tuichao').textbox('setValue', row.tuichao);
+        $('#richu').textbox('setValue', row.richu);
+        $('#riluo').textbox('setValue', row.riluo);
+        $('#wendu').textbox('setValue', row.wendu);
+        $('#tianqi').textbox('setValue', row.tianqi);
+
+    }
+
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=CityWeatherEui&f=saveCityWeather',
+            onSubmit: function (param) {
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'Info');
+                $('#subBtn').linkbutton('enable');
+                closeWin();
+                reloadData();
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+</script>
+</body>

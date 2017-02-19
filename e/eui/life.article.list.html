@@ -1,0 +1,274 @@
+<script type="text/javascript" src="src.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=LifeEui&f=getLifeList',method:'get',toolbar:'#tb',footerbar:'#w',
+onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
+>
+    <thead>
+        <tr>
+            <th data-options="field:'id',width:100">编号 </th>
+            <th data-options="field:'title',width:200">标题</th>            
+            <th data-options="field:'listImgPath',width:60" formatter="picF">列表图片</th>
+            <th data-options="field:'wTypeName',width:60">分类</th>
+			<th data-options="field:'uName',width:120">作者</th>
+			<th data-options="field:'keyword',width:120">关键字</th>
+			<th data-options="field:'createTime',width:120">时间</th>
+			<th data-options="field:'isTop',width:120">置顶</th>
+			<th data-options="field:'isUp',width:120">浏览量</th>
+			<th data-options="field:'bSort',width:120">排序</th>
+			<th data-options="field:'eNum',width:120">评论量</th>
+			<th data-options="field:'bStatus',width:120" formatter="formatterS">状态</th>
+        </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+		编号：<input id="idInp" class="easyui-textbox"  style="width:110px">
+		关健字：<input id="keywordInp" class="easyui-textbox"  style="width:110px">
+		<span id="wTypeSpan"></span>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">搜索</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加文章</a>
+		<a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+    <div data-options="iconCls:'icon-tip'" onclick="updateStatus(0)">禁用</div>
+	<div data-options="iconCls:'icon-tip'" onclick="updateStatus(1)">启用</div>
+	<div data-options="iconCls:'icon-tip'" onclick="updateTop(1)">置顶</div>
+	<div data-options="iconCls:'icon-tip'" onclick="updateTop(0)">取消置顶</div>
+	<div data-options="iconCls:'icon-tip'" onclick="loadEv()">查看评论</div>
+</div>
+<div id="w" class="easyui-window" title="编辑文章" data-options="modal:true,closed:true,iconCls:'icon-save'" style="padding:10px;">
+		<div class="easyui-panel" title="" style="width:600px">
+			<div style="padding:10px 60px 20px 60px">
+			    <form id="ff" method="post" enctype="multipart/form-data">
+			    	<input type="hidden" name="id" id="inputId" value="">
+					<input type="hidden" name="listImgPath" id="inputImgPath" value="">
+			    	<table cellpadding="2">
+			    		<tr>
+			    			<td>编号:</td>
+			    			<td id="idTd"></td>
+							<td>分类:</td>
+			    			<td id="wTypeTd"></td>
+			    		</tr>
+			    		<tr>
+			    			<td>标题:</td>
+			    			<td><input class="easyui-textbox" name="title" id="title"></input></td>
+							<td>图片:</td>
+			    			<td><input class="easyui-filebox" name="upload" id="upload"></input></td>
+			    		</tr>
+			    		<tr>
+			    			<td>作者:</td>
+			    			<td><input class="easyui-textbox" name="uName" id="uName"></input></td>
+							<td>关键字:</td>
+			    			<td><input class="easyui-textbox" name="keyword" id="keyword"></input></td>
+			    		</tr>						
+						<tr>
+			    			<td>置顶:</td>
+			    			<td><input class="easyui-textbox" name="isTop" id="isTop"></input></td>
+							<td>浏览量:</td>
+			    			<td><input class="easyui-textbox" name="isUp" id="isUp"></input></td>
+			    		</tr>
+						<tr>
+			    			<td>排序:</td>
+			    			<td><input class="easyui-textbox" name="bSort" id="bSort"></input></td>
+							<td>评论量:</td>
+			    			<td><input class="easyui-textbox" name="eNum" id="eNum"></input></td>
+			    		</tr>
+						<tr>
+			    			<td>状态:</td>
+			    			<td>
+			    				<select class="easyui-combobox" name="bStatus" id="bStatus" style="width:150px;">
+			    					<option value="1">启用</option>
+									<option value="0">禁用</option>
+			    				</select>
+							</td>
+							<td></td>
+			    			<td></td>
+			    		</tr>
+						<tr>
+			    			<td colspan="4"><textarea name="content" id="content" style="width:500px;height:330px;"></textarea></td>
+			    		</tr>
+			    	</table>
+			    </form>
+				<div style="text-align:center;padding:5px">
+			    	<a href="javascript:void(0)" class="easyui-linkbutton"  id="subBtn" onclick="submitWin()">提交</a>
+			    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+			    </div>
+		    </div>
+		</div>
+	</div>
+	
+<div id="w1" class="easyui-window" title="评论列表" data-options="modal:true,closed:true,iconCls:'icon-save'" style="padding:10px;">
+		<div class="easyui-panel" title="" style="">
+			<div style="padding:10px 60px 20px 60px">
+			   <div id="titleDiv"></div>
+			   <table id="dg" data-options="rownumbers:true,singleSelect:true,pagination:true,url:'data/run.php?c=LifeEvEui&f=getLifeEvList',method:'get'">
+				    <thead>
+				        <tr>
+				            <th data-options="field:'id',width:100">编号 </th>
+				            <th data-options="field:'eIp',width:200">IP</th>            
+				            <th data-options="field:'eNickName',width:60" formatter="picF">昵称</th>
+				            <th data-options="field:'eMail',width:60">邮箱</th>
+							<th data-options="field:'eUrl',width:120">网址</th>
+							<th data-options="field:'eRepNickName',width:120">被回复的人</th>
+							<th data-options="field:'eTime',width:120">时间</th>
+							<th data-options="field:'eContent',width:120">内容</th>
+							<th data-options="field:'eStatus',width:120" formatter="formatterS">状态</th>
+				        </tr>
+				    </thead>
+				</table>
+		    </div>
+		</div>
+</div>
+	
+<script type="text/javascript">
+	//实例化编辑器
+    var ue = UE.getEditor('content');
+	
+    $(function(){
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid       
+        $('#searchBtn').click(function(){
+			$('#tg').datagrid('load', {
+			    _id: $('#idInp').val(),
+				_wtype:$('#serachWtype').val(),
+				_keyword:$('#keywordInp').val()
+			});
+		});
+        $('#addBtn').click(function(){
+			$('#w').window('open');
+			$('#idTd').html('');
+			$('#ff').form('reset');
+			$('#ff').form('clear');
+			$('select').find('option:eq(0)').attr('selected',true);
+		});
+    });
+	function formatterS (val,row,index){
+		if(val=='1'){
+			return '<strong style="color:green">正常</strong>';
+		}else{
+			return '禁用';
+		}
+	}
+	function defaultForm(){
+		$.ajax({
+				url:'data/run.php?c=WebTypeEui&f=getCateSelectHtml',
+				type:'post',
+				data:'_s=2&_pid=0&_name=wType',
+				success:function(data){
+					$('#wTypeTd').html(data);
+					$('#wTypeSpan').html('分类：'+data);
+					$('#wTypeSpan').find('select').attr('name','serachWtype');
+					$('#wTypeSpan').find('select').attr('id','serachWtype');
+				}
+			});
+	}
+	defaultForm();
+	function onDblClickRow(field,row){
+		$('#w').window('open');
+		$('#ff').form('reset');
+		$('#ff').form('clear');
+		
+		$('#idTd').html(row.id);
+		$('#inputId').val(row.id);
+		$('#inputImgPath').val(row.listImgPath);
+		
+		$('#title').textbox({value:row.title});
+		$('#uName').textbox({value:row.uName});
+		$('#keyword').textbox({value:row.keyword});
+		$('#bStatus').combobox('select',row.bStatus);
+		$('#isTop').textbox({value:row.isTop});
+		$('#isUp').textbox({value:row.isUp});
+		$('#bSort').textbox({value:row.bSort});
+		$('#eNum').textbox({value:row.eNum});
+		$('#upload').filebox({value:''});
+		
+		ue.setContent(row.content.replace(/\\\'/g,'').replace(/\\\"/g,''));
+		
+		var _wtype = row.wType;
+		$('select[name="wType"]').find('option').each(function(){
+			if($(this).val()==_wtype){
+				$(this).attr('selected',true);
+				return false;
+			}
+		});
+	}
+	
+	function closeWin(){
+		$('#w').window('close');
+	}
+	
+	function submitWin(){
+		$('#ff').form('submit',{
+			url:'data/run.php?c=LifeEui&f=saveLife',
+		    onSubmit: function(){
+				$('#subBtn').linkbutton('disable');
+		    },
+		    success:function(data){
+				$.messager.alert('提示',data,'Info');
+				$('#subBtn').linkbutton('enable');
+				closeWin();
+				reloadData();
+		    }
+		});
+	}
+	
+	function reloadData(){
+		$('#tg').datagrid('reload');
+	}
+	
+	function picF(val){
+		return '<a target="_blank" href="'+val+'">点击查看</a>';
+	}
+	
+	var _data = '';
+	function onRowContextMenu(e, rowIndex, rowData){
+		//三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {			
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+		_data = rowData; 
+	}
+	
+	function updateStatus(s){
+		$.ajax({
+			url:'data/run.php?c=LifeEui&f=updateStatus',
+			type:'post',
+			async:true,
+			data:'_id='+_data.id+'&_s='+s,
+			success:function(data){
+				$.messager.alert('提示',data);
+				reloadData();
+			}
+		});
+	}
+	
+	function updateTop(s){
+		$.ajax({
+			url:'data/run.php?c=LifeEui&f=updateTop',
+			type:'post',
+			async:true,
+			data:'_id='+_data.id+'&_top='+s,
+			success:function(data){
+				$.messager.alert('提示',data);
+				reloadData();
+			}
+		});
+	}
+	
+	function loadEv(){
+		$('#w1').window('open');
+		$('#titleDiv').html(_data.title);
+		$('#dg').datagrid().datagrid('getPager');
+		$('#dg').datagrid('load',{
+			_bid:_data.id
+		})
+	}
+</script>

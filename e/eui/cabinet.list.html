@@ -1,0 +1,227 @@
+<script type="text/javascript" src="src.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<body style="width:100%;height: 100%;">
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=CabinetEui&f=getCabinetList',method:'get',toolbar:'#tb',footerbar:'#w',
+onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
+>
+    <thead>
+    <tr>
+        <th data-options="field:'c_num',width:100">编号</th>
+        <th data-options="field:'c_pwd',width:100">密码</th>
+        <th data-options="field:'c_type_name',width:200">类型</th>
+        <th data-options="field:'c_lng',width:200" formatter="formateLatLng">坐标</th>
+        <th data-options="field:'c_province',width:60">省</th>
+        <th data-options="field:'c_city',width:120">市</th>
+        <th data-options="field:'c_area',width:120">区域</th>
+        <th data-options="field:'c_hotel',width:120">酒店</th>
+        <th data-options="field:'c_address',width:120">摆放位置</th>
+        <th data-options="field:'c_status',width:120" formatter="formatterS">状态</th>
+        <th data-options="field:'created_at',width:140">创建时间</th>
+        <th data-options="field:'updated_at',width:140">更新时间</th>
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    编号：<input id="idInp" class="easyui-textbox" style="width:110px">
+    分类：<input class="easyui-combobox" id="wid_s" name="wid_s"
+              data-options="url:'data/run.php?c=WebTypeEui&f=getWebTypeParentChil&_pid=1',method:'get',valueField:'id',textField:'text'">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">搜索</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加柜子</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+    <div data-options="iconCls:'icon-tip'" onclick="updateStatus(0)">禁用</div>
+    <div data-options="iconCls:'icon-tip'" onclick="updateStatus(1)">启用</div>
+</div>
+<div id="w" class="easyui-window" title="编辑柜子" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:600px">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="inputId" value="">
+                <input type="hidden" name="listImgPath" id="inputImgPath" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>编号:</td>
+                        <td><input class="easyui-textbox" name="c_num" id="c_num"></input></td>
+                        <td>分类:</td>
+                        <td><input class="easyui-combobox" id="c_type" name="c_type"
+                                   data-options="url:'data/run.php?c=WebTypeEui&f=getWebTypeParentChil&_pid=1',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>密码:</td>
+                        <td><input class="easyui-textbox" name="c_pwd" id="c_pwd"
+                                   data-options="prompt:'回收箱的密码'"></input></td>
+                        <td colspan="2">该密码为回收使用</td>
+                    </tr>
+                    <tr>
+                        <td>经度:</td>
+                        <td><input class="easyui-textbox" name="c_lng" id="c_lng"></input></td>
+                        <td>纬度:</td>
+                        <td><input class="easyui-textbox" name="c_lat" id="c_lat"></input></td>
+                    </tr>
+                    <tr>
+                        <td>省:</td>
+                        <td><input class="easyui-textbox" name="c_province" id="c_province"></input></td>
+                        <td>市:</td>
+                        <td><input class="easyui-textbox" name="c_city" id="c_city"></input></td>
+                    </tr>
+                    <tr>
+                        <td>区域:</td>
+                        <td><input class="easyui-textbox" name="c_area" id="c_area"></input></td>
+                        <td>酒店:</td>
+                        <td><input class="easyui-textbox" name="c_hotel" id="c_hotel"></input></td>
+                    </tr>
+                    <tr>
+                        <td>摆放:</td>
+                        <td><input class="easyui-textbox" name="c_address" id="c_address"></input></td>
+                        <td>状态:</td>
+                        <td>
+                            <select class="easyui-combobox" name="c_status" id="c_status" style="width:150px;">
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">坐标拾取地址</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var formateLatLng = function (val, row) {
+        return row.c_lng + "," + row.c_lat;
+    }
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid       
+        $('#searchBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#idInp').val(),
+                _wtype: $('#wid_s').combobox('getValue'),
+            });
+        });
+        $('#addBtn').click(function () {
+            $('#w').window('open');
+            $('#ff').form('reset');
+            $('#ff').form('clear');
+            $('select').find('option:eq(0)').attr('selected', true);
+        });
+    });
+    function formatterS(val, row, index) {
+        if (val == '1') {
+            return '<strong style="color:green">正常</strong>';
+        } else {
+            return '禁用';
+        }
+    }
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+        $('#inputId').val(row.id);
+
+        $('#c_num').textbox({value: row.c_num});
+        $('#c_type').combobox('setValue', row.c_type);
+        $('#c_lat').textbox({value: row.c_lat});
+        $('#c_lng').textbox({value: row.c_lng});
+        $('#c_province').textbox({value: row.c_province});
+        $('#c_city').textbox({value: row.c_city});
+        $('#c_area').textbox({value: row.c_area});
+        $('#c_hotel').textbox({value: row.c_hotel});
+        $('#c_address').textbox({value: row.c_address});
+        $('#c_status').combobox('setValue', row.c_status);
+        $('#c_pwd').textbox({value: row.c_pwd});
+    }
+
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=CabinetEui&f=saveCabinet',
+            onSubmit: function () {
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'Info');
+                $('#subBtn').linkbutton('enable');
+                closeWin();
+                reloadData();
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+    function picF(val) {
+        return '<a target="_blank" href="' + val + '">点击查看</a>';
+    }
+
+    var _data = '';
+    function onRowContextMenu(e, rowIndex, rowData) {
+        //三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+        _data = rowData;
+    }
+
+    function updateStatus(s) {
+        $.ajax({
+            url: 'data/run.php?c=CabinetEui&f=updateStatus',
+            type: 'post',
+            async: true,
+            data: '_id=' + _data.id + '&_s=' + s,
+            success: function (data) {
+                $.messager.alert('提示', data);
+                reloadData();
+            }
+        });
+    }
+
+    function updateTop(s) {
+        $.ajax({
+            url: 'data/run.php?c=CabinetEui&f=updateTop',
+            type: 'post',
+            async: true,
+            data: '_id=' + _data.id + '&_top=' + s,
+            success: function (data) {
+                $.messager.alert('提示', data);
+                reloadData();
+            }
+        });
+    }
+
+    function loadEv() {
+        $('#w1').window('open');
+        $('#titleDiv').html(_data.title);
+        $('#dg').datagrid().datagrid('getPager');
+        $('#dg').datagrid('load', {
+            _bid: _data.id
+        })
+    }
+</script>
+</body>

@@ -1,0 +1,200 @@
+<script type="text/javascript" src="src.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<body style="width:100%;height: 100%;">
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=ShopTypeEui&f=getShopTypeList',method:'get',toolbar:'#tb',footerbar:'#w',
+onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
+>
+    <thead>
+    <tr>
+        <th data-options="field:'st_num',width:100">编号</th>
+        <th data-options="field:'st_name',width:200">名称</th>
+        <th data-options="field:'st_img',width:200" formatter="picF">图片</th>
+        <th data-options="field:'st_span',width:200">标签</th>
+        <th data-options="field:'st_money',width:200">价格</th>
+        <th data-options="field:'st_day',width:200">天数</th>
+        <th data-options="field:'created_at',width:140">创建时间</th>
+        <th data-options="field:'updated_at',width:140">更新时间</th>
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    编号：<input id="idInp" class="easyui-textbox" style="width:110px">
+    名称：<input id="stnameInp" class="easyui-textbox" style="width:110px">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">搜索</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加商品类目</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+
+</div>
+<div id="w" class="easyui-window" title="编辑类目" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:600px">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="inputId" value="">
+                <input type="hidden" name="st_img" id="st_img" value="">
+                <input type="hidden" name="st_img1" id="st_img1" value="">
+                <input type="hidden" name="st_img2" id="st_img2" value="">
+                <input type="hidden" name="st_img3" id="st_img3" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>编号:</td>
+                        <td><input class="easyui-textbox" name="st_num" id="st_num"></input></td>
+                    </tr>
+                    <tr>
+                        <td>类目名称:</td>
+                        <td><input class="easyui-textbox" name="st_name" id="st_name"></input></td>
+                    </tr>
+                    <tr>
+                        <td>图片:</td>
+                        <td><input class="easyui-filebox" name="st_img_path" id="st_img_path"></input></td>
+                    </tr>
+                    <tr>
+                        <td>轮播1:</td>
+                        <td><input class="easyui-filebox" name="st_img_path1" id="st_img_path1"></input></td>
+                    </tr>
+                    <tr>
+                        <td>轮播2:</td>
+                        <td><input class="easyui-filebox" name="st_img_path2" id="st_img_path2"></input></td>
+                    </tr>
+                    <tr>
+                        <td>轮播3:</td>
+                        <td><input class="easyui-filebox" name="st_img_path3" id="st_img_path3"></input></td>
+                    </tr>
+                    <tr>
+                        <td>星级:</td>
+                        <td><input class="easyui-textbox" name="st_leveal" id="st_leveal"
+                                   data-options="prompt:'请输入4或者5'"></input></td>
+                    </tr>
+                    <tr>
+                        <td>标签:</td>
+                        <td><input class="easyui-textbox" name="st_span" id="st_span"></input></td>
+                    </tr>
+                    <tr>
+                        <td>简介:</td>
+                        <td><input class="easyui-textbox" data-options="multiline:true" name="st_info"
+                                   id="st_info" style="height:100px"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>损坏说明:</td>
+                        <td>
+                            <input class="easyui-textbox" data-options="multiline:true" name="st_bad_info"
+                                   id="st_bad_info" style="height:100px"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>价格:</td>
+                        <td><input class="easyui-textbox" name="st_money" id="st_money"></input></td>
+                    </tr>
+                    <tr>
+                        <td>天数:</td>
+                        <td><input class="easyui-numberbox" name="st_day" id="st_day"></input></td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var formateLatLng = function (val, row) {
+        return row.c_lng + "," + row.c_lat;
+    }
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid       
+        $('#searchBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#idInp').val(),
+                _keyword: $('#stnameInp').val(),
+            });
+        });
+        $('#addBtn').click(function () {
+            $('#w').window('open');
+            $('#ff').form('reset');
+            $('#ff').form('clear');
+        });
+    });
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+
+        $('#inputId').val(row.id);
+        $('#st_img').val(row.st_img);
+        $('#st_img1').val(row.st_img1);
+        $('#st_img2').val(row.st_img2);
+        $('#st_img3').val(row.st_img3);
+
+        $('#st_leveal').textbox({value: row.st_leveal});
+        $('#st_num').textbox({value: row.st_num});
+        $('#st_name').textbox({value: row.st_name});
+        $('#st_span').textbox({value: row.st_span});
+        $('#st_info').textbox({value: row.st_info});
+        $('#st_bad_info').textbox({value: row.st_bad_info});
+        $('#st_money').textbox({value: row.st_money});
+        $('#st_day').textbox({value: row.st_day});
+
+    }
+
+    function picF(val) {
+        return '<a target="_blank" href="' + val + '"><img width="80" height="80" src="' + val + '"></a>';
+    }
+
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=ShopTypeEui&f=saveShopType',
+            onSubmit: function () {
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'Info');
+                $('#subBtn').linkbutton('enable');
+                closeWin();
+                reloadData();
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+    var _data = '';
+    function onRowContextMenu(e, rowIndex, rowData) {
+        //三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+        _data = rowData;
+    }
+
+    function loadEv() {
+        $('#w1').window('open');
+        $('#titleDiv').html(_data.title);
+        $('#dg').datagrid().datagrid('getPager');
+        $('#dg').datagrid('load', {
+            _bid: _data.id
+        })
+    }
+</script>
+</body>

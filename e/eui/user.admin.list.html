@@ -1,0 +1,177 @@
+<script type="text/javascript" src="src.js"></script>
+<body  style="width:100%;height: 100%;">
+<table id="dg" class="easyui-datagrid" title="" style="height:auto"
+			data-options="
+				iconCls: 'icon-edit',
+				singleSelect: true,
+				toolbar: '#tb',
+				url: 'data/run.php?c=AdminEui&f=getAdminList',
+				method: 'get',
+				onClickCell: onClickCell,
+				singleSelect:true,
+				pagination:true,
+			">
+		<thead>
+			<tr>
+				<th data-options="field:'id',width:80">编号</th>
+				<th data-options="field:'uName',width:100,editor:{type:'text'}">账号</th>
+				<th data-options="field:'uPwd',width:80,editor:{type:'text'}">密码</th>
+				<th data-options="field:'uType',width:150,editor:{
+							type:'combobox',
+							options:{
+								valueField:'uType',
+								textField:'uTypeName',
+								url:'data/run.php?c=AdminEui&f=getAdminComBox&t=1',
+								method:'get',
+								required:true
+							}
+						}" formatter="formatLY">类型</th>
+				<th data-options="field:'uStatus',width:50,editor:{
+							type:'combobox',
+							options:{
+								valueField:'uStatus',
+								textField:'uStatusName',
+								url:'data/run.php?c=AdminEui&f=getAdminComBox&t=2',
+								method:'get',
+								required:true
+							}
+						}" formatter="formatS">状态</th>
+				<th data-options="field:'rbac',width:500,editor:{
+							type:'combobox',
+							options:{
+								valueField:'rbac',
+								textField:'rbac',
+								multiple:true,
+								url:'data/run.php?c=AdminEui&f=getLeftCombox',
+								method:'get',
+								required:true
+							}
+						}">权限</th>
+			</tr>
+		</thead>
+	</table>
+	<div id="tb" style="height:auto">
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">添加管理员</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">移除</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">保存</a>
+	</div>
+<script type="text/javascript">
+    $(function(){
+        var pager = $('#dg').datagrid().datagrid('getPager'); // get the pager of datagrid
+        pager.pagination({
+        });
+    });	
+	function formatLY(val,row,index){
+		var _str = '';
+		switch (val){
+			case '1':
+			_str = '系统管理员';
+			break;
+			case '2':
+			_str = '保险部';
+			break;
+			case '3':
+			_str = '客服部';
+			break;
+			case '4':
+			_str = '采购部';
+			break;
+			case '5':
+			_str = '活动部';
+			break;
+			case '6':
+			_str = '运营部';
+			break;
+			case '7':
+			_str = '技术部';
+			break;
+			case '8':
+			_str = '财务部';
+			break;
+			case '9':
+			_str = '人事部';
+			break;
+		}
+		return _str;
+	}
+	function formatS(val,row,index){
+		if(val=='1'){
+			return '正常';
+		}else{
+			return '异常';
+		}
+	}
+	var editIndex = undefined;
+		function endEditing(){
+			if (editIndex == undefined){return true}
+			if ($('#dg').datagrid('validateRow', editIndex)){
+				var ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'id'});				
+				$('#dg').datagrid('endEdit', editIndex);
+				editIndex = undefined;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		function onClickCell(index, field){
+			if (editIndex != index){
+				if (endEditing()){
+					$('#dg').datagrid('selectRow', index)
+							.datagrid('beginEdit', index);
+					var ed = $('#dg').datagrid('getEditor', {index:index,field:field});
+					if (ed){
+						($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+					}
+					editIndex = index;
+				} else {
+					$('#dg').datagrid('selectRow', editIndex);
+				}
+			}
+		}
+		function append(){
+			if (endEditing()){
+				$('#dg').datagrid('appendRow',{status:'P'});
+				editIndex = $('#dg').datagrid('getRows').length-1;
+				$('#dg').datagrid('selectRow', editIndex)
+						.datagrid('beginEdit', editIndex);
+			}
+		}
+		function removeit(){
+			if (editIndex == undefined){return}
+			$('#dg').datagrid('cancelEdit', editIndex)
+					.datagrid('deleteRow', editIndex);
+			editIndex = undefined;
+		}
+		function accept(){
+			if (endEditing()){
+				var _tmpData = getChanges();
+				if(_tmpData.length){
+
+				}else{
+					return false;
+				}
+				$('#dg').datagrid('acceptChanges');
+				$.ajax({
+					url:'data/run.php?c=AdminEui&f=saveAdminUsers',
+					method:'post',
+					data:_tmpData[0],
+					success:function(data){
+						if(data=='0'){
+							$.messager.alert('Info', '保存失败，用户名可能重复', 'info');
+						}else{
+							$('#dg').datagrid('reload');
+						}
+					}				
+				});
+			}
+		}
+		function reject(){
+			$('#dg').datagrid('rejectChanges');
+			editIndex = undefined;
+		}
+		function getChanges(){
+			var rows = $('#dg').datagrid('getChanges');
+			//alert(rows.length+' rows are changed!');
+			return rows;
+		}
+</script></body>

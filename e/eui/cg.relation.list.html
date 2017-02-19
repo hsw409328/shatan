@@ -1,0 +1,216 @@
+<script type="text/javascript" src="src.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<body  style="width:100%;height: 100%;">
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=CgRelationEui&f=getCgRelationList',method:'get',toolbar:'#tb',footerbar:'#w',
+onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
+>
+    <thead>
+    <tr>
+        <th data-options="field:'st_num',width:100">商品栏目编号</th>
+        <th data-options="field:'c_num',width:120">柜子编号</th>
+        <th data-options="field:'cabinet_config_key',width:100">柜子具体类型</th>
+        <th data-options="field:'c_grid_area',width:200">格子区域</th>
+        <th data-options="field:'cgr_status',width:120" formatter="formatterS">状态</th>
+        <th data-options="field:'created_at',width:140">创建时间</th>
+        <th data-options="field:'updated_at',width:140">更新时间</th>
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    编号：<input id="idInp" class="easyui-textbox" style="width:110px">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">搜索</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加格子关联</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+    <div data-options="iconCls:'icon-tip'" onclick="updateStatus(0)">禁用</div>
+    <div data-options="iconCls:'icon-tip'" onclick="updateStatus(1)">启用</div>
+</div>
+<div id="w" class="easyui-window" title="编辑关联关系" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:600px">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="post" enctype="">
+                <input type="hidden" name="id" id="inputId" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>商品类目:</td>
+                        <td><input class="easyui-combobox" id="st_num" name="st_num"
+                                   data-options="url:'data/run.php?c=ShopTypeEui&f=getShopTypeCombobox',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>柜子编号:</td>
+                        <td><input class="easyui-combobox" id="c_num" name="c_num"
+                                   data-options="url:'data/run.php?c=CgRelationEui&f=getCgRelationCabinet',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>具体型号:</td>
+                        <td><input class="easyui-combobox" id="cabinet_config_key" name="cabinet_config_key"
+                                   data-options="url:'data/run.php?c=CgRelationEui&f=getCgRelationConfigCabinet',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>格子区域:</td>
+                        <td><input class="easyui-combobox" id="c_grid_area1" name="c_grid_area1"
+                                   data-options="multiple:true,method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>状态:</td>
+                        <td>
+                            <select class="easyui-combobox" name="cgr_status" id="cgr_status" style="width:150px;">
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var _selectMdata = '';
+    var _selectMdataVal = '';
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid       
+        $('#searchBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#idInp').val(),
+                _wtype: $('#wid_s').combobox('getValue'),
+            });
+        });
+        $('#addBtn').click(function () {
+            _selectMdata = '';
+            _selectMdataVal = '';
+            $('#w').window('open');
+            $('#ff').form('reset');
+            $('#ff').form('clear');
+        });
+    });
+
+    $('#cabinet_config_key').combobox({
+        onSelect: function (param) {
+            $('#c_grid_area1').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationConfigCabinetList&_kid=' + param.id);
+            if (_selectMdataVal == param.text) {
+                $('#c_grid_area1').combobox('setValues', _selectMdata);
+            } else {
+                $('#c_grid_area1').combobox('setValues', '');
+            }
+        }
+    });
+
+    function formatterS(val, row, index) {
+        if (val == '1') {
+            return '<strong style="color:green">正常</strong>';
+        } else {
+            return '禁用';
+        }
+    }
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+        $('#inputId').val(row.id);
+        $('#c_grid_area1').combobox('reload', 'data/run.php?c=CgRelationEui&f=getCgRelationConfigCabinetList&_kid=' + row.cabinet_config_key);
+        _selectMdataVal = row.cabinet_config_key;
+        $('#cabinet_config_key').combobox('setValue', row.cabinet_config_key);
+        $('#c_num').combobox('setValue', row.c_num);
+        _selectMdata = row.c_grid_area.split(',');
+        $('#c_grid_area1').combobox('setValues', row.c_grid_area.split(','));
+        $('#st_num').combobox('setValue', row.st_num);
+        $('#cgr_status').combobox('setValue', row.cgr_status);
+
+
+    }
+
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=CgRelationEui&f=saveCgRelation',
+            onSubmit: function (param) {
+                param.c_grid_area = $('#c_grid_area1').combobox('getValues');
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'Info');
+                $('#subBtn').linkbutton('enable');
+                closeWin();
+                reloadData();
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+    function picF(val) {
+        return '<a target="_blank" href="' + val + '">点击查看</a>';
+    }
+
+    var _data = '';
+    function onRowContextMenu(e, rowIndex, rowData) {
+        //三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+        _data = rowData;
+    }
+
+    function updateStatus(s) {
+        $.ajax({
+            url: 'data/run.php?c=CgRelationEui&f=updateStatus',
+            type: 'post',
+            async: true,
+            data: '_id=' + _data.id + '&_s=' + s,
+            success: function (data) {
+                $.messager.alert('提示', data);
+                reloadData();
+            }
+        });
+    }
+
+    function updateTop(s) {
+        $.ajax({
+            url: 'data/run.php?c=CgRelationEui&f=updateTop',
+            type: 'post',
+            async: true,
+            data: '_id=' + _data.id + '&_top=' + s,
+            success: function (data) {
+                $.messager.alert('提示', data);
+                reloadData();
+            }
+        });
+    }
+
+    function loadEv() {
+        $('#w1').window('open');
+        $('#titleDiv').html(_data.title);
+        $('#dg').datagrid().datagrid('getPager');
+        $('#dg').datagrid('load', {
+            _bid: _data.id
+        })
+    }
+</script>
+</body>

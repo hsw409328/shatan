@@ -1,0 +1,130 @@
+<script type="text/javascript" src="src.js"></script>
+<body style="width:100%;height: 100%;">
+<table id="tg"
+       data-options="rownumbers:true,singleSelect:true,pagination:true,url:'data/run.php?c=UsersInfoSysEui&f=getUsersInfoSysList',
+       method:'get',toolbar:'#tb',onDblClickRow:onDblClickRow">
+    <thead>
+    <tr>
+        <th data-options="field:'uid',width:120">
+            用户ID
+        </th>
+        <th data-options="field:'u_name',width:100">
+            姓名
+        </th>
+        <th data-options="field:'u_city_name',width:100">
+            城市
+        </th>
+        <th data-options="field:'u_area',width:100">
+            区域
+        </th>
+        <th data-options="field:'u_cabinet',width:300">
+            柜子
+        </th>
+        <th data-options="field:'created_at',width:140">
+            创建时间
+        </th>
+        <th data-options="field:'updated_at',width:140">
+            更新时间
+        </th>
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    用户ID: <input class="easyui-textbox" id="inputUId" style="width:110px">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="sBtn">Search</a>
+
+</div>
+<div id="w" class="easyui-window" title="查看用户详细" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:600px">
+        <div style="padding:10px 60px 20px 60px" id="">
+            <form id="ff" method="post" enctype="">
+                <input type="hidden" name="id" id="inputId" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>用户ID:</td>
+                        <td><input class="easyui-textbox" id="uid" name="uid" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>姓名:</td>
+                        <td><input class="easyui-textbox" id="u_name" name="u_name">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>城市:</td>
+                        <td><input class="easyui-combobox" id="u_city" name="u_city"
+                                   data-options="url:'data/run.php?c=WebTypeEui&f=getWebTypeParentChil&_pid=6',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>区域:</td>
+                        <td><input class="easyui-textbox" id="u_area" name="u_area">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>柜子编号:</td>
+                        <td><input class="easyui-combobox" id="u_cabinet1" name="u_cabinet1"
+                                   data-options="url:'data/run.php?c=CgRelationEui&f=getCgRelationCabinet',multiple:true,method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager');
+        $('#sBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#inputUId').val()
+            });
+        });
+    });
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+        $('#inputId').val(row.id);
+
+        $('#uid').textbox('setValue', row.uid);
+        $('#u_name').textbox('setValue', row.u_name);
+        $('#u_cabinet1').combobox('setValues', row.u_cabinet.split(','));
+        $('#u_area').textbox('setValue', row.u_area);
+        $('#u_city').combobox('setValue', row.u_city);
+    }
+    function picFormat(val) {
+        return '<img src="' + val + '" height=70 width=70></img>'
+    }
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=UsersInfoSysEui&f=saveUsersInfoSys',
+            onSubmit: function (param) {
+                param.u_cabinet = $('#u_cabinet1').combobox('getValues');
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'Info');
+                $('#subBtn').linkbutton('enable');
+                closeWin();
+                reloadData();
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+</script>
+</body>

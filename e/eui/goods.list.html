@@ -1,0 +1,255 @@
+<script type="text/javascript" src="src.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../public/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<body style="width:100%;height: 100%;">
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=GoodsEui&f=getGoodsList',method:'get',toolbar:'#tb',footerbar:'#w',
+onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
+>
+    <thead>
+    <tr>
+        <th data-options="field:'g_num',width:100">编号</th>
+        <th data-options="field:'g_st_name',width:200">商品类目</th>
+        <th data-options="field:'g_name',width:60">商品名称</th>
+        <th data-options="field:'g_list_img_path',width:120" formatter="picF">列表图片</th>
+        <th data-options="field:'g_deposit',width:120">押金</th>
+        <th data-options="field:'g_rent',width:120">租金</th>
+        <th data-options="field:'g_buy_num',width:120">允许购买数量</th>
+        <th data-options="field:'created_at',width:140">创建时间</th>
+        <th data-options="field:'updated_at',width:140">更新时间</th>
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    编号：<input id="idInp" class="easyui-textbox" style="width:110px">
+    商品名称：<input id="keywordInp" class="easyui-textbox" style="width:110px">
+    分类：<input class="easyui-combobox" id="shoptypeInp" name="shoptypeInp"
+              data-options="url:'data/run.php?c=ShopTypeEui&f=getShopTypeCombobox',method:'get',valueField:'id',textField:'text'">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">搜索</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" id="addBtn">添加商品</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+    <div data-options="iconCls:'icon-tip'" onclick="">查看内容图片</div>
+    <div data-options="iconCls:'icon-tip'" onclick="">查看自检图片</div>
+</div>
+<div id="w" class="easyui-window" title="编辑文章" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:800px">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" id="inputId" value="">
+                <input type="hidden" name="g_list_img_path" id="g_list_img_path" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>分类:</td>
+                        <td>
+                            <input class="easyui-combobox" id="g_st_num" name="g_st_num"
+                                   data-options="url:'data/run.php?c=ShopTypeEui&f=getShopTypeCombobox',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px;">编号:</td>
+                        <td>
+                            <input class="easyui-textbox" name="g_num" id="g_num"></input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>商品名称:</td>
+                        <td><input class="easyui-textbox" name="g_name" id="g_name"></input></td>
+                    </tr>
+                    <tr>
+                        <td>介绍:</td>
+                        <td><input class="easyui-textbox" name="g_introduce" id="g_introduce"></input></td>
+                    </tr>
+                    <tr>
+                        <td>内容:</td>
+                        <td>
+                            <textarea name="g_content" id="g_content"
+                                      style="width:500px;"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>图片:</td>
+                        <td><input class="easyui-filebox" name="upload" id="upload"></input></td>
+                    </tr>
+                    <tr>
+                        <td>押金:</td>
+                        <td><input class="easyui-textbox" name="g_deposit" id="g_deposit"></input></td>
+                    </tr>
+                    <tr>
+                        <td>租金:</td>
+                        <td><input class="easyui-textbox" name="g_rent" id="g_rent"></input></td>
+                    </tr>
+                    <tr>
+                        <td>数量:</td>
+                        <td><input class="easyui-numberbox" name="g_buy_num" id="g_buy_num"></input></td>
+                    </tr>
+                    <tr>
+                        <td>自检信息:</td>
+                        <td><input class="easyui-textbox" name="g_check_info" id="g_check_info"></input></td>
+                    </tr>
+                    <tr>
+                        <td>自检图片</td>
+                        <td>
+                            <textarea name="g_check_img" id="g_check_img"
+                                      style="width:500px;"></textarea>
+                        </td>
+                    </tr>
+
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //实例化编辑器
+    var toolbars = ['fullscreen', 'source', 'undo', 'redo', 'bold', 'simpleupload',
+        'insertimage', //多图上传
+        'justifyleft', //居左对齐
+        'justifyright', //居右对齐
+        'justifycenter', //居中对齐
+        'inserttable', //插入表格
+        'edittable', //表格属性
+        'edittd', //单元格属性
+    ];
+    var ue = UE.getEditor('g_content', {
+        toolbars: [
+            toolbars
+        ],
+        autoHeightEnabled: true,
+        autoFloatEnabled: true
+    });
+    var ue1 = UE.getEditor('g_check_img', {
+        toolbars: [
+            toolbars
+        ],
+        autoHeightEnabled: true,
+        autoFloatEnabled: true
+    });
+
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid       
+        $('#searchBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#idInp').val(),
+                _wtype: $('#shoptypeInp').combobox('getValue'),
+                _keyword: $('#keywordInp').val()
+            });
+        });
+        $('#addBtn').click(function () {
+            $('#w').window('open');
+            $('#idTd').html('');
+            $('#ff').form('reset');
+            $('#ff').form('clear');
+            $('#g_num').textbox('textbox').removeAttr("readonly");
+        });
+    });
+    function formatterS(val, row, index) {
+        if (val == '1') {
+            return '<strong style="color:green">正常</strong>';
+        } else {
+            return '禁用';
+        }
+    }
+
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+        $('#inputId').val(row.id);
+        $('#g_list_img_path').val(row.g_list_img_path);
+
+        $('#g_num').textbox({value: row.g_num});
+        $("#g_num").textbox('textbox').attr("readonly", "readonly");
+        $('#g_st_num').combobox('setValue', row.g_st_num);
+        $('#g_name').textbox({value: row.g_name});
+        $('#g_introduce').textbox({value: row.g_introduce});
+        $('#g_deposit').textbox({value: row.g_deposit});
+        $('#g_rent').textbox({value: row.g_rent});
+        $('#g_buy_num').numberbox({value: row.g_buy_num});
+        $('#g_check_info').textbox({value: row.g_check_info});
+
+        ue.setContent(row.g_content.replace(/\\\'/g, '').replace(/\\\"/g, ''));
+        ue1.setContent(row.g_check_img.replace(/\\\'/g, '').replace(/\\\"/g, ''));
+
+    }
+
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=GoodsEui&f=saveGoods',
+            onSubmit: function () {
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                var _tmp = data.split('-');
+                if (_tmp[0] == '1') {
+                    $.messager.alert('提示', _tmp[1], 'Info');
+                    $('#subBtn').linkbutton('enable');
+                } else {
+                    $.messager.alert('提示', data, 'Info');
+                    $('#subBtn').linkbutton('enable');
+                    closeWin();
+                    reloadData();
+                }
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+    function picF(val) {
+        return '<a target="_blank" href="' + val + '"><img width="80" height="80" src="' + val + '"></a>';
+    }
+
+    var _data = '';
+    function onRowContextMenu(e, rowIndex, rowData) {
+        //三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+        _data = rowData;
+    }
+
+    function updateStatus(s) {
+        $.ajax({
+            url: 'data/run.php?c=GoodsEui&f=updateStatus',
+            type: 'post',
+            async: true,
+            data: '_id=' + _data.id + '&_s=' + s,
+            success: function (data) {
+                $.messager.alert('提示', data);
+                reloadData();
+            }
+        });
+    }
+
+    function loadEv() {
+        $('#w1').window('open');
+        $('#titleDiv').html(_data.title);
+        $('#dg').datagrid().datagrid('getPager');
+        $('#dg').datagrid('load', {
+            _bid: _data.id
+        })
+    }
+</script>
+</body>
