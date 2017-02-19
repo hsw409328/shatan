@@ -32,7 +32,9 @@ $rs = $obj->getUserOrder();
                     至 <?php echo Run::getFormatDate($v['rent_date_end'], 'm/d H:i'); ?></p>
                 <?php
                 if ($v['is_return'] == '0') {
-                    echo '<a href="/user/order-return/' . $v['oid'] . '" class="use_ljgh">立即归还</a>';
+                    if ($v['is_pickup'] == '1') {
+                        echo '<a href="/user/order-return/' . $v['oid'] . '" class="use_ljgh">立即归还</a>';
+                    }
                 } else {
                     echo '<p>归还时间:' . Run::getFormatDate($v['return_date'], 'm月d日 H:i');
                     if (!empty($v['overtime_desc'])) {
