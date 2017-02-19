@@ -95,6 +95,7 @@ if (!empty($user)) {
         if (lr == 0) {
             clearInterval(iid);
             $('#send_mobile_validate').html("发送验证码");
+            me.attr('v', '0');
             iid = 0;
             i = 0;
         }

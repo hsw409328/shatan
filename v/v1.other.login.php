@@ -87,4 +87,52 @@ if (!empty($user)) {
         AjaxCommon.post();
     });
 
+    var wait = 60; //设置秒数(单位秒)
+    var i = 0;
+    var iid = 0;
+    var sTimer = function () {
+        var lr = wait - i;
+        if (lr == 0) {
+            clearInterval(iid);
+            $('#send_mobile_validate').html("发送验证码");
+            me.attr('v', '0');
+            iid = 0;
+            i = 0;
+        }
+        else {
+            $('#send_mobile_validate').html(lr + "秒后再发");
+            i++;
+        }
+    }
+
+    $('#send_mobile_validate').click(function () {
+        var me = $(this);
+        var v = $(this).attr('v');
+        if (v != '0') {
+            return false;
+        }
+        var _mobile = $('#mobile').val();
+        if ($.trim(_mobile) == '') {
+            alert($('#mobile').attr('placeholder'));
+            return false;
+        }
+        AjaxCommon.data = {
+            "action": "Users",
+            "run": "sendMobileNum",
+            "mobile": _mobile,
+        };
+        AjaxCommon.callback_func = function (data, sts) {
+            var _d = UtilCommon.parseJson(data);
+            if (_d.code == '1') {
+                iid = setInterval("sTimer()", 1000);
+                me.attr('v', 'abc');
+            } else {
+                alert(_d.msg);
+                me.attr('v', '0');
+                return false;
+            }
+        };
+        AjaxCommon.post();
+    });
+
 </script>
