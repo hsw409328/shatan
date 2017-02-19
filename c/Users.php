@@ -18,6 +18,7 @@ final class UsersController extends Base
             ParamsController::localSetParams('userDetail', $res);
             return $res;
         } else {
+            ParamsController::unsetSession('userDetail');
             return [];
         }
     }
