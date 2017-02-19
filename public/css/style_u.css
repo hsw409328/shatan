@@ -223,10 +223,11 @@ position: fixed;height:90px;left:50%;top:50%;margin-left:-37%;margin-top:-75px;-
 
 .use_index_wz{background:#a1b7c4;width: 66px;color:#fff;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;height:24px;line-height:24px; float: left;}
 .use_index_wz img{ float: left; width: 20px;margin:2px 2px 0 5px}
-.use_index_zc{ float: right; width: 133px;}
-.use_index_zc li{ float: left; width: 66px; text-align: left;color:#f1f1f1;padding-bottom:7px; vertical-align: top;line-height:12px;}
-.use_index_zc li:nth-of-type(even){ border-left:#ccc solid 1px; text-align: right;}
-.use_index_zc li:nth-child(n+3){ border-top:#ccc solid 1px;padding-top:7px; vertical-align: bottom;line-height:12px;padding-bottom:0;}
+.use_index_zc{ float: right; width: 149px;}
+.use_index_zc li{ float: left;text-align: center;color:#fff; /*padding-right:5px; color:#f1f1f1;padding-bottom:7px; vertical-align: top;line-height:12px;*/ width: 74px;line-height:23px}
+.use_index_zc li:nth-of-type(even){ border-left:#ccc solid 1px; }
+/*.use_index_zc li:nth-child(2n+2){padding-left:5px; display: inline-block;}*/
+.use_index_zc li:nth-child(n+3){ border-top:#ccc solid 1px;/*padding-top:7px; vertical-align: bottom;line-height:12px;padding-bottom:0;*/}
 
 
 .use_index_b{ position: fixed;bottom:0;left:0; z-index: 5; width: 94%;padding:0 0 25px 6%}
