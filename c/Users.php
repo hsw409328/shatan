@@ -6,8 +6,6 @@ final class UsersController extends Base
     //登录
     public function login()
     {
-        //$this->checkValiNum();
-
         $_oid = ParamsController::getSessionParams('openid');
 
         $obj = new UsersModel ();
@@ -32,8 +30,7 @@ final class UsersController extends Base
     //注册
     public function reg()
     {
-        //$this->checkValiNum ();
-
+        $wx_info = ParamsController::getSessionParams('open_wx_info');
         $_mobile = Run::req('mobile');
         $_validate = Run::req('validate');
         $_utype = Run::req('utype');
@@ -66,8 +63,8 @@ final class UsersController extends Base
         $dataArray ['open_id'] = ParamsController::getSessionParams('openid');
         $dataArray ['mobile_num'] = $_mobile;
         $dataArray ['user_type'] = $_utype;
-        $dataArray ['u_nickname'] = '';
-        $dataArray ['u_head_photo'] = '';
+        $dataArray ['u_nickname'] = $wx_info['nickname'];
+        $dataArray ['u_head_photo'] = $wx_info['headimgurl'];
         $dataArray ['created_at'] = date('Y-m-d H:i:s');
         $dataArray ['u_lately_cabinet'] = $_cnum;
 

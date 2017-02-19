@@ -1,6 +1,7 @@
 <?php
 include_once '../../public/config.inc.php';
 include_once '../../public/config.route.php';
+include_once '../../public/config.token.php';
 
 final class WechatCallback
 {
@@ -40,6 +41,19 @@ final class WechatCallback
             }
         }
         $this->login();
+    }
+
+    public function userinfo()
+    {
+        $token = WechatToken::readTokenFile();
+        $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=' . $this->_resouce ['openid'] . '&lang=zh_CN ';
+        $wx_info = Run::getHttpRes($url);
+        $wx_info = json_decode($wx_info, true);
+        if (empty($wx_info)) {
+            $wx_info['nickname'] = '';
+            $wx_info['headimgurl'] = '';
+        }
+        ParamsController::localSetParams('open_wx_info', $wx_info);
     }
 
     public function login()
