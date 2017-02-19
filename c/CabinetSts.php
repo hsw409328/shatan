@@ -261,4 +261,25 @@ final class CabinetStsController extends Base
         }
     }
 
+    /**
+     * 获取已经分拣的商品编号
+     */
+    public function getGoodsGridRelationByCnumAndStnum()
+    {
+        $cnum = Run::req('cnum');
+        $stnum = Run::req('stnum');
+        $obj = new GoodsGridRelationModel();
+        $obj->setField('g_num');
+        $rs = $obj->getGoodsGridRelation('c_num="' . $cnum . '" and st_num="' . $stnum . '" and sts<>6');
+        if (empty($rs)) {
+            $this->_jsonEn('1', '');
+        } else {
+            $str = '';
+            foreach ($rs as $k => $v) {
+                $str .= $v['g_num'] . ',';
+            }
+            $this->_jsonEn('1', $str);
+        }
+    }
+
 }

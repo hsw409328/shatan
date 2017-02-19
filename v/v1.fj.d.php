@@ -75,9 +75,7 @@ $_tmpDetail = $cObj->getCabinetDetail($rs['c_num'], 'c_hotel,c_address,c_area,(s
     <img src="images/1.jpg"/>
     <div class="sorting_det_adb">
         <strong>已分拣的商品编号:</strong>
-        <span>608038、608038、608038</span>
-        <span>608038、608038、608038</span>
-        <span>608038、608038、608038</span>
+        <span id="fj_gnum_list_id"></span>
     </div>
 </div>
 
@@ -86,6 +84,17 @@ $_tmpDetail = $cObj->getCabinetDetail($rs['c_num'], 'c_hotel,c_address,c_area,(s
         $(".sorting_detalis_b ul li dl dd ").click(function () {
             $(".box").show();
             $(".sorting_det_add").show();
+            AjaxCommon.data = {
+                'action': 'CabinetSts',
+                'run': 'getGoodsGridRelationByCnumAndStnum',
+                'stnum': $(this).parent().attr('stnum'),
+                'cnum': $(this).parent().attr('cnum'),
+            };
+            AjaxCommon.callback_func = function (data, sts) {
+                var _d = UtilCommon.parseJson(data);
+                $('#fj_gnum_list_id').html(_d.msg);
+            };
+            AjaxCommon.post();
         })
         $(".box").click(function () {
             $(".box").hide();
