@@ -26,7 +26,7 @@ var AjaxCommon = {
  */
 
 var UtilCommon = {
-    website: 'http://lvyou.com',
+    website: 'http://wx.quhaibian.cn',
     href: function (url) {
         window.location.href = UtilCommon.website + url;
     },
