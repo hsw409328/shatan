@@ -30,7 +30,7 @@ class WechatToken
     {
         $a = file_get_contents(APP_PATH . 'public/token/token.inc');
         $a = explode(' ', $a);
-        if (empty($a)) {
+        if (isset($a['1'])) {
             return self::setToken();
         } else {
             $t = time();
@@ -72,7 +72,7 @@ class WechatToken
         $a = file_get_contents(APP_PATH . 'public/token/token.js.inc');
         $a = explode(' ', $a);
         $t = time();
-        if (empty($a)) {
+        if (isset($a['1'])) {
             $token = self::readTokenFile();
             return self::setJsToken($token);
         } else {
