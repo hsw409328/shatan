@@ -38,7 +38,7 @@ if (!empty($user)) {
             <input placeholder="请输入短信验证码" id="validate_num" type="text" class="icon_3"/>
         </div>
         <!--点击之后添加use_login_dis-->
-        <button class="use_login_dis" id="send_mobile_validate">发送验证码</button>
+        <button class="use_login_dis" id="send_mobile_validate" v="0">发送验证码</button>
     </div>
 </div>
 <!--提交-->
