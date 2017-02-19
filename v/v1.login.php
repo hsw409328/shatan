@@ -22,11 +22,11 @@ if (!empty($user)) {
     </div>
     <div class="use_login_g">
         <img src="/public/images/icon_1.png"/>
-        <input type="text" placeholder="请输入手机号码" id="mobile"/>
+        <input type="number" placeholder="请输入手机号码" id="mobile"/>
     </div>
     <div class="use_login_border">
         <div class="use_login_l u_wdx">
-            <input placeholder="请输入短信验证码" id="validate_num" type="text" class="icon_3"/>
+            <input placeholder="请输入短信验证码" id="validate_num" type="number" class="icon_3"/>
         </div>
         <!--点击之后添加use_login_dis-->
         <button class="use_login_dis" id="send_mobile_validate" v="0">发送验证码</button>
