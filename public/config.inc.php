@@ -1,10 +1,10 @@
 <?php
 header("Content-type:text/html;charset=utf-8");
 define('APP_TITLE', '趣海边');
-define('APPID', 'wxe956f9f8294526d0');
-define('APPSECRET', 'fd8bf581dda44b7bc2b8bd2ad3d74fbe');
-define('APP_PAY_MCHID', '123');
-define('APP_PAY_STR', '123');
+define('APPID', '');
+define('APPSECRET', '');
+define('APP_PAY_MCHID', '');
+define('APP_PAY_STR', '');
 define('TOKEN_URL', 'https://api.weixin.qq.com/sns/oauth2/access_token');
 define('AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize');
 define('REFRESH_TOKEN', 'https://api.weixin.qq.com/sns/oauth2/refresh_token');
@@ -12,7 +12,7 @@ define('WECHAT_REDIRECT', 'https://mp.weixin.qq.com/mp/redirect?url=');
 define('BASE_ACCESS_TOKEN_URL', 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . APPID . '&secret=' . APPSECRET . '');
 define('SERVICE_MSG_URL', 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=');
 define('APP_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
-define('IMG_WEBSITE', 'http://112.74.42.200:4869/');
+define('IMG_WEBSITE', '');
 define('APP_WEBSITE', 'http://' . $_SERVER ['HTTP_HOST']);
 define('APP_NAME', 'lvyouapp');
 ini_set('date.timezone', 'Asia/Shanghai');
