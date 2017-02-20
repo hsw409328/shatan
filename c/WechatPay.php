@@ -152,7 +152,7 @@ final class WechatPayController extends Base
         $data['out_refund_no'] = $refund_order_id;
         $data['total_fee'] = floatval($total_money) * 100;
         $data['refund_fee'] = floatval($refund_money) * 100;
-        $data['op_user_id'] = $open_id;
+        $data['op_user_id'] = APP_PAY_MCHID;
 
         ksort($data);
         $strSignTmp = '';
@@ -161,8 +161,6 @@ final class WechatPayController extends Base
         }
         $strSignTmp .= 'key=' . APP_PAY_STR;
         $sign = strtoupper(md5($strSignTmp));
-
-        $sign = '';
 
         $str = "<xml>
                    <appid>{$data['appid']}</appid>
@@ -176,24 +174,31 @@ final class WechatPayController extends Base
                    <sign>{$sign}</sign>
                 </xml>";
 
-        //$rs = $this->curlPostSSL($url, $str);
-        $rs = Run::getHttpPostRes($str, $url);
-        var_dump($rs);
+        //var_dump($str);
+
+        $rs = $this->curlPostSSL($url, $str);
+        //$rs = Run::getHttpPostRes($str, $url);
+        //var_dump($rs);
         if ($rs) {
             $res = json_decode(json_encode(simplexml_load_string($rs, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
             if ($res ['return_code'] == 'SUCCESS') {
-                //退款单状态更新
-                $obj = new UserOrderRefundModel();
-                $rs = $obj->getUserOrderRefund('refund_oid="' . $res['out_refund_no'] . '"', '', '', '1');
-                $obj->setUserOrderRefund($rs['id'], [
-                    'wx_refund_code' => $res['refund_id'],
-                    'real_refund_money' => floatval($res['refund_fee']) / 100,
-                    'sts' => '1',
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ]);
-                return true;
+                if ($res['result_code'] == 'SUCCESS') {
+                    //退款单状态更新
+                    $obj = new UserOrderRefundModel();
+                    $rs = $obj->getUserOrderRefund('refund_oid="' . $res['out_refund_no'] . '"', '', '', '1');
+                    $obj->setUserOrderRefund($rs['id'], [
+                        'wx_refund_code' => $res['refund_id'],
+                        'real_refund_money' => floatval($res['refund_fee']) / 100,
+                        'sts' => '1',
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                    return true;
+                } else {
+                    $this->wlog(APP_PATH . 'public/log/refund-order', $data['out_refund_no'] . '-退款失败-' . $res['err_code']);
+                    return false;
+                }
             } else {
-                $this->wlog(APP_PATH . 'public/log/refund-order', $data['out_refund_no'] . '-退款失败-' . $res ['err_code']);
+                $this->wlog(APP_PATH . 'public/log/refund-order', $data['out_refund_no'] . '-退款失败-return-error');
                 return false;
             }
         } else {
@@ -212,17 +217,29 @@ final class WechatPayController extends Base
     public function curlPostSSL($url, $vars, $second = 30, $aHeader = array())
     {
         $ch = curl_init();
-        //curl_setopt($ch,CURLOPT_VERBOSE,'1');
+        //超时时间
         curl_setopt($ch, CURLOPT_TIMEOUT, $second);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //这里设置代理，如果有的话
+        //curl_setopt($ch,CURLOPT_PROXY, '10.206.30.98');
+        //curl_setopt($ch,CURLOPT_PROXYPORT, 8080);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSLCERTTYPE, 'PEM');
-        curl_setopt($ch, CURLOPT_SSLCERT, '/var/www/cert/php.pem');
-        curl_setopt($ch, CURLOPT_SSLCERTPASSWD, '1234');
-        curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
-        curl_setopt($ch, CURLOPT_SSLKEY, '/var/www/cert/php_private.pem');
+
+        //以下两种方式需选择一种
+
+        //第一种方法，cert 与 key 分别属于两个.pem文件
+        //默认格式为PEM，可以注释
+        //curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+        //curl_setopt($ch,CURLOPT_SSLCERT,getcwd().'/cert.pem');
+        //默认格式为PEM，可以注释
+        //curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
+        //curl_setopt($ch,CURLOPT_SSLKEY,getcwd().'/private.pem');
+
+        //第二种方式，两个文件合成一个.pem文件
+        //curl_setopt($ch, CURLOPT_SSLCERT, APP_PATH . 'public/cert/all.pem');
+        curl_setopt($ch, CURLOPT_SSLCERT, '/var/www/cert/all.pem');
 
         if (count($aHeader) >= 1) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $aHeader);
@@ -231,11 +248,15 @@ final class WechatPayController extends Base
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $vars);
         $data = curl_exec($ch);
-        curl_close($ch);
-        if ($data)
+        if ($data) {
+            curl_close($ch);
             return $data;
-        else
+        } else {
+            $error = curl_errno($ch);
+            $this->wlog(APP_PATH . 'public/log/refund-order', "call faild, errorCode:$error");
+            curl_close($ch);
             return false;
+        }
     }
 
 

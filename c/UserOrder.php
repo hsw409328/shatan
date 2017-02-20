@@ -98,7 +98,7 @@ final class UserOrderController extends Base
         if (empty($rs)) {
             Run::show_msg('未找到商品');
         }
-        $w = 'gnum="' . $gnum . '" and pwd="' . $rs['pwd'] . '" ';
+        $w = 'gnum="' . $gnum . '" and pwd<>"" ';
         $obj = new UserOrderDetailModel();
         $uodRs = $obj->getUserOrderDetail($w, '', '', '1');
         if (empty($uodRs)) {
