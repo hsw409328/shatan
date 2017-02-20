@@ -1,24 +1,26 @@
 <?php
 Run::c('/user/login');
-ParamsController::localSetParams('uor2','uor2');
+ParamsController::localSetParams('uor2', 'uor2');
+$obj = new UserOrderController();
+$user = $obj->getUserDetail();
+$rs = $obj->getUserOrderDetail(RouteClass::getParams('3'), $user['id']);
+$obj = new GoodsController();
+$rs = $obj->getGoodsDetail($rs['gnum']);
 ?>
 <div class="use_pay_t center">
     第一步：商品自检，请认真核对
 </div>
 <div class="use_return_next">
     <dl class="use_return_cp">
-        <dt><img src="/public/images/1.jpg"/></dt>
-        <dd class="use_return_cpt">大疆无人机</dd>
-        <dd>* 如果自检过程中发现有配件遗漏漏在客房，可以先取消归还，取回后再次归还。</dd>
+        <dt><img src="<?php echo $rs['g_list_img_path']; ?>"/></dt>
+        <dd class="use_return_cpt"><?php echo $rs['g_name']; ?></dd>
+        <dd>* <?php echo $rs['g_check_info']; ?></dd>
     </dl>
     <div class="use_return_note">
         <h2>务必要看</h2>
-        <p>无人机配件较多，请认真检查喔！<br/>请按照背包内布局装入。</p>
-        <ul class="use_return_i">
-            <li><img src="/public/images/1.jpg"/></li>
-            <li><img src="/public/images/1.jpg"/></li>
-            <li><img src="/public/images/1.jpg"/></li>
-        </ul>
+        <p>
+            <?php echo $rs['g_check_img']; ?>
+        </p>
         <div class="border_1">
             <form method="post" action="/user/order-return-2/">
                 <input type="hidden" value="<?php echo RouteClass::getParams(3); ?>" name="oid">

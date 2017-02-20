@@ -177,6 +177,16 @@ final class BuyGoodsListController extends Base
     public function pay()
     {
         $oid = Run::req('oid');
+        $obj = new UserOrderDetailModel();
+        $obj->setField('oid,uid,gnum,gridnum,cnum,stnum');
+        $rs = $obj->getUserOrderDetail('oid="' . $oid . '"', '', '', '1');
+        $obj = new GoodsGridRelationModel();
+        $w = 'c_num="' . $rs['cnum'] . '" and st_num="' . $rs['stnum'] . '" and g_num="' . $rs['gnum'] . '" and grid_num="' . $rs['gridnum'] . '"';
+        $obj->setField('sts');
+        $rs = $obj->getGoodsGridRelation($w, '', '', '1');
+        if ($rs['sts'] == '5') {
+            $this->_jsonEn('0', '该商品已经被人购买');
+        }
         $obj = new UserOrderModel();
         $rs = $obj->getUserOrder('oid="' . $oid . '"', '', '', '1');
         $payObj = new WechatPayController();

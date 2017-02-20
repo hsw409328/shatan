@@ -2,7 +2,7 @@
 Run::c('/user/login');
 $bg1 = ParamsController::getSessionParams('bg1');
 if ($bg1 != 'bg1') {
-    Run::show_msg('','1','/buy/goods');
+    Run::show_msg('', '1', '/buy/goods');
 }
 ParamsController::unsetSession('bg1');
 $obj = new BuyGoodsListController();
@@ -63,8 +63,8 @@ $user = $obj->getUserDetail();
     var _e = '';
     $('.paycls').click(function () {
         //测试
-        window.location.href = "/buy/success/<?php echo $rs['oRs']['oid']; ?>";
-        return false;
+        //window.location.href = "/buy/success/<?php echo $rs['oRs']['oid']; ?>";
+        //return false;
         if (_sub == 1) {
             return false;
         }
@@ -81,6 +81,7 @@ $user = $obj->getUserDetail();
                 pay();
             } else {
                 alert(_d.msg);
+                UtilCommon.back();
                 _sub = 0;
                 return false;
             }
