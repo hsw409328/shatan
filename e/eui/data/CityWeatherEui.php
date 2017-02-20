@@ -41,6 +41,12 @@ final class CityWeatherEuiController extends Base
         $_id = Run::req('id');
 
         $dataArray ['city'] = Run::req('city');
+        $listImg = $this->uploadImg($_FILES ['upload']);
+        if ($listImg) {
+            $dataArray ['img_path'] = $listImg;
+        } else {
+            $dataArray ['img_path'] = Run::req('img_path');
+        }
         $dataArray ['zhangchao'] = Run::req('zhangchao');
         $dataArray ['tuichao'] = Run::req('tuichao');
         $dataArray ['richu'] = Run::req('richu');
