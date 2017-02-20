@@ -163,7 +163,7 @@ $cnum = $obj->getUserDefaultCabinet();
             var _stnum = $(this).attr('stnum');
             var _m = $(this).attr('m');
             var _day = $(this).attr('day');
-            $('#next_id').attr('href', '/buy/goods-next/' + _cnum + '/' + _stnum + '/' + _m + '/' + _day);
+            $('#next_id').attr('href', '/buy/goods-next/' + _cnum + '-' + _stnum + '-' + _m + '-' + _day);
             $('#m_id').html(_m);
         });
     })

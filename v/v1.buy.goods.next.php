@@ -5,6 +5,14 @@ if ($bg1 != 'bg1') {
     Run::show_msg('', '1', '/buy/goods');
 }
 ParamsController::unsetSession('bg1');
+
+$_params = explode('-', RouteClass::getParams('3'));
+$i = 3;
+foreach ($_params as $k => $v) {
+    RouteClass::setParams($i, $v);
+    $i++;
+}
+
 $obj = new BuyGoodsListController();
 //提前创建订单
 $rs = $obj->createOrder();
