@@ -8,6 +8,40 @@ class Base
         $this->_jsonEn('999', '方法不存在');
     }
 
+    /**
+     * 根据格子获取对应的密码
+     * @param $grid
+     * @return string
+     */
+    public function _getPwd($grid)
+    {
+        $one = $grid[0];
+        if (isset(ConfigCabinet::$_configABCD[$one])) {
+            $pwd[0] = ConfigCabinet::$_configABCD[$one];
+        } else {
+            $this->_jsonEn('500', '系统内部错误');
+        }
+        $pwd[1] = $this->getRandomString(3);
+        $two = intval(substr($grid, 1, 2));
+        if ($two < 10) {
+            $pwd[2] = '0' . strval($two);
+        } else {
+            $pwd[2] = strval($two);
+        }
+        return implode($pwd);
+    }
+
+    /**
+     * @return bool
+     */
+    public function _parsePwd($pwd)
+    {
+        $one = $pwd[0];
+        $key = array_search($one, ConfigCabinet::$_configABCD);
+        $two = intval($pwd[4] . $pwd[5]);
+        return strval($key) . strval($two);
+    }
+
     public function checkValiNum()
     {
         $_vail = ParamsController::getSessionParams('web_authnum_num');

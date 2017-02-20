@@ -9,6 +9,14 @@
 class ConfigCabinet
 {
 
+    //柜子类型密码规则对应关系
+    public static $_configABCD = [
+        'A' => '5',
+        'B' => '6',
+        'C' => '7',
+        'D' => '8',
+    ];
+
     // 回收箱 21 => 'A21',
     public static $config = [
         'A' => [

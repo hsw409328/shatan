@@ -223,19 +223,19 @@ final class CabinetStsController extends Base
         }
     }
 
-    private function _setGoodsGridRelationData()
+    private function _setGoodsGridRelationData($grid)
     {
         $dataArray ['c_num'] = Run::req('cnum');
         $dataArray ['st_num'] = Run::req('stnum');
         $dataArray ['g_num'] = Run::req('val');
-        $dataArray ['pwd'] = $dataArray ['g_num'] . $this->getRandomString();
+        $dataArray ['pwd'] = $this->_getPwd($grid);
         $dataArray ['sts'] = '3';
         return $dataArray;
     }
 
     private function _addGoodsGridRelation($grid, GoodsGridRelationModel $sObj)
     {
-        $dataArray = $this->_setGoodsGridRelationData();
+        $dataArray = $this->_setGoodsGridRelationData($grid);
         $dataArray ['grid_num'] = $grid;
         $dataArray ['created_at'] = date('Y-m-d H:i:s');
         $res = $sObj->addGoodsGridRelation($dataArray);
@@ -249,7 +249,7 @@ final class CabinetStsController extends Base
 
     private function _updateGridRelation($id, $grid, GoodsGridRelationModel $sObj)
     {
-        $dataArray = $this->_setGoodsGridRelationData();
+        $dataArray = $this->_setGoodsGridRelationData($grid);
         $dataArray ['grid_num'] = $grid;
         $dataArray ['updated_at'] = date('Y-m-d H:i:s');
         $res = $sObj->setGoodsGridRelation($id, $dataArray);

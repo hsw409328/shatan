@@ -68,7 +68,7 @@ final class CabinetEuiController extends Base
         $dataArray ['c_hotel'] = Run::req('c_hotel');
         $dataArray ['c_address'] = Run::req('c_address');
         $dataArray ['c_status'] = Run::req('c_status');
-        $dataArray ['c_pwd'] = Run::req('c_pwd');
+        $dataArray ['c_pwd'] = $this->_getPwd('A21');
 
         $sObj = new CabinetModel ();
         if ($_id) {

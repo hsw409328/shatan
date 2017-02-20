@@ -17,8 +17,6 @@ final class GoodsSupplyRecordController extends Base
             $this->_jsonEn('0', '柜子不存在');
         } else {
             $this->_addApplyCabinetPwdRecord($_cnum);
-            //通知箱子，更新箱子
-            //$rs = $this->noticeCabinet();
             $this->_jsonEn('1', $rs['c_pwd']);
         }
     }
@@ -78,27 +76,17 @@ final class GoodsSupplyRecordController extends Base
     }
 
     /**
-     * 更新柜子回收密码
-     * @param $_cnum
-     */
-    private function _updateCabinetPwd($_cnum)
-    {
-        $obj = new CabinetController();
-        $rs = $obj->getCabinetDetail($_cnum);
-        $rs['c_pwd'] = $this->getRandomString(6);
-        $rs['updated_at'] = date('Y-m-d H:i:s');
-        $obj = new CabinetModel();
-        $obj->setCabinet($rs['id'], $rs);
-    }
-
-    /**
      * 根据柜子产生的订单，并且订单归还的状态来确定取的货物数量
      * @param $_cnum 柜子号
      * @return int
      */
     private function _getCabinetOrderRecoveryGoods($_cnum)
     {
-        return 1;
+        $obj = new UserOrderModel();
+        $obj->setField('count(id) as num');
+        $w = 'cnum="" and is_return=1 and is_end=0 ';
+        $rs = $obj->getUserOrder($w, '', '', '1');
+        return $rs['num'];
     }
 
     public function applyCabinetGridGoodsPwd()
@@ -113,17 +101,8 @@ final class GoodsSupplyRecordController extends Base
         } else {
             //添加申请记录
             $this->_addGoodsSupplyRecord($rs);
-            //通知柜子
-            //线上更新格子密码
-            $this->_updateGoodsGridRelationPwd($rs, $obj);
             $this->_jsonEn('1', $rs['pwd']);
         }
-    }
-
-    private function _updateGoodsGridRelationPwd($rs, GoodsGridRelationModel $obj)
-    {
-        $rs['pwd'] = $this->getRandomString();
-        $obj->setGoodsGridRelation($rs['id'], $rs);
     }
 
     private function _addGoodsSupplyRecord($rs)

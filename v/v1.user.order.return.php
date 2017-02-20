@@ -89,7 +89,7 @@ $rs = $obj->getUserOrder();
         $('.use_return_g').click(function () {
             var _inputV = $.trim($('#cnum').val());
             var _cv = $('#oid_num').attr('v');
-            if (_inputV != _cv) {
+            if (_inputV.toUpperCase() != _cv.toUpperCase()) {
                 alert('当前柜子编号与订单柜子不一致');
                 return false;
             } else {
