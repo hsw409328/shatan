@@ -6,6 +6,7 @@ $user = $obj->getUserDetail();
 $rs = $obj->getUserOrderDetail(RouteClass::getParams('3'), $user['id']);
 $obj = new GoodsController();
 $rs = $obj->getGoodsDetail($rs['gnum']);
+ParamsController::localSetParams('uor_title', $rs['g_name']);
 ?>
 <div class="use_pay_t center">
     第一步：商品自检，请认真核对

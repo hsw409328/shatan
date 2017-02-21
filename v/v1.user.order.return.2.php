@@ -2,9 +2,11 @@
 Run::c('/user/login');
 $bg1 = ParamsController::getSessionParams('uor2');
 if ($bg1 != 'uor2') {
-    Run::show_msg('','1','/user/order');
+    Run::show_msg('', '1', '/user/order');
 }
 ParamsController::unsetSession('uor2');
+$title = ParamsController::getSessionParams('uor_title');
+ParamsController::unsetSession('uor_title');
 $_id = Run::req('oid');
 $_content = Run::req('content');
 ?>
@@ -12,8 +14,15 @@ $_content = Run::req('content');
     第二步：归还大疆无人机
 </div>
 <div class="use_return_next">
+    <?php
+    if (strpos($title, '无人机') === false) {
+        echo '<img src="/public/images/process_pt.jpg" width="100%"/>';
+    } else {
+        echo '<img src="/public/images/process_wrj.jpg" width="100%"/>';
+    }
+    ?>
     <!--大疆无人机的图片-->
-    <img src="/public/images/process_wrj.jpg" width="100%"/>
+    <!--<img src="/public/images/process_wrj.jpg" width="100%"/>-->
     <!--普通商品图片-->
     <!--<img src="/public/images/process_pt.jpg" width="100%"/>-->
 </div>
