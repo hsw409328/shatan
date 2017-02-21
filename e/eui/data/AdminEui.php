@@ -130,6 +130,7 @@ final class AdminEuiController extends Base
                 ['id' => 'goods.grid.relation.list', 'text' => '初始化柜子商品'],
                 ['id' => 'c.bag.list', 'text' => '配送袋关联'],
                 ['id' => 'index.weather.list', 'text' => '配置天气'],
+                ['id' => 'cabinet.lnglat.list', 'text' => '配置坐标与矩子'],
             ]
         ];
         $_sysTree = array(

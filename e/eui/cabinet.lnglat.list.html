@@ -1,0 +1,136 @@
+<script type="text/javascript" src="src.js"></script>
+<body style="width:100%;height: 100%;">
+<table id="tg" data-options="rownumbers:true,singleSelect:true,pagination:true,
+url:'data/run.php?c=CabinetLngLatEui&f=getCabinetLngLatList',method:'get',toolbar:'#tb',footerbar:'#w',
+onDblClickRow:onDblClickRow"
+>
+    <thead>
+    <tr>
+        <th data-options="field:'c_num',width:120">柜子编号</th>
+        <th data-options="field:'lng',width:200">经度</th>
+        <th data-options="field:'lat',width:200">纬度</th>
+        <th data-options="field:'created_at',width:140">创建时间</th>
+        <th data-options="field:'updated_at',width:140">更新时间</th>
+    </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="reloadBtn" onclick="reloadData()">刷新</a>
+</div>
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+</div>
+<div id="w" class="easyui-window" title="编辑坐标与矩子" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="padding:10px;">
+    <div class="easyui-panel" title="" style="width:600px">
+        <div style="padding:10px 60px 20px 60px">
+            <form id="ff" method="post" enctype="">
+                <input type="hidden" name="id" id="inputId" value="">
+                <table cellpadding="2">
+                    <tr>
+                        <td>柜子编号:</td>
+                        <td><input class="easyui-combobox" id="c_num" name="c_num"
+                                   data-options="url:'data/run.php?c=CgRelationEui&f=getCgRelationCabinet',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>经度:</td>
+                        <td>
+                            <input class="easyui-textbox" name="lng" id="lng" style="width:150px;"
+                                   readonly>
+                            </input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>纬度:</td>
+                        <td>
+                            <input class="easyui-textbox" name="lat" id="lat" style="width:150px;"
+                                   readonly>
+                            </input>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:center;padding:5px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="subBtn" onclick="submitWin()">提交</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()">关闭</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var pager = $('#tg').datagrid().datagrid('getPager'); // get the pager of datagrid       
+        $('#searchBtn').click(function () {
+            $('#tg').datagrid('load', {
+                _id: $('#idInp').val(),
+                _wtype: $('#wid_s').combobox('getValue'),
+            });
+        });
+        $('#addBtn').click(function () {
+            $('#w').window('open');
+            $('#ff').form('reset');
+            $('#ff').form('clear');
+        });
+    });
+
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        $('#ff').form('reset');
+        $('#ff').form('clear');
+
+        $('#inputId').val(row.id);
+        $('#c_num').combobox('setValue', row.c_num);
+        $('#lat').textbox('setValue', row.lat);
+        $('#lng').textbox('setValue', row.lng);
+
+    }
+
+    function closeWin() {
+        $('#w').window('close');
+    }
+
+    function submitWin() {
+        $('#ff').form('submit', {
+            url: 'data/run.php?c=CabinetLngLatEui&f=saveCabinetLngLat',
+            onSubmit: function (param) {
+                $('#subBtn').linkbutton('disable');
+            },
+            success: function (data) {
+                $.messager.alert('提示', data, 'Info');
+                $('#subBtn').linkbutton('enable');
+                closeWin();
+                reloadData();
+            }
+        });
+    }
+
+    function reloadData() {
+        $('#tg').datagrid('reload');
+    }
+
+    var _data = '';
+    function onRowContextMenu(e, rowIndex, rowData) {
+        //三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+        _data = rowData;
+    }
+
+    function loadEv() {
+        $('#w1').window('open');
+        $('#titleDiv').html(_data.title);
+        $('#dg').datagrid().datagrid('getPager');
+        $('#dg').datagrid('load', {
+            _bid: _data.id
+        })
+    }
+</script>
+</body>
