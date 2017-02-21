@@ -50,6 +50,9 @@ $_urlParams = explode('/', $_urlParams);
 
 if (isset($_urlParams ['1']) && isset($_urlParams ['2'])) {
     $view = isset ($_route [$_urlParams ['1'] . '/' . $_urlParams ['2']]) ? $_route [$_urlParams ['1'] . '/' . $_urlParams ['2']] : '';
+
+    TitleClass::setTitle($_urlParams ['1'] . '/' . $_urlParams ['2']);
+
     if ($_urlParams ['1'] == 'api') {
         if (strtoupper($_SERVER['REQUEST_METHOD']) != 'POST') {
             echo json_encode(['code' => 400, 'msg' => '请求方式不正确']);
@@ -66,6 +69,7 @@ if (isset($_urlParams ['1']) && isset($_urlParams ['2'])) {
         RouteClass::setParams($k, $v);
     }
 } else {
+    TitleClass::setTitle('');
     $view = '';
 }
 

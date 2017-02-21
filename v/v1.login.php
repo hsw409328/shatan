@@ -22,14 +22,14 @@ if (!empty($user)) {
     </div>
     <div class="use_login_g">
         <img src="/public/images/icon_1.png"/>
-        <input type="number" placeholder="请输入手机号码" id="mobile"/>
+        <input type="number" placeholder="请输入手机号码" id="mobile" onkeyup="validate_btn($(this));"/>
     </div>
     <div class="use_login_border">
         <div class="use_login_l u_wdx">
             <input placeholder="请输入短信验证码" id="validate_num" type="number" class="icon_3"/>
         </div>
         <!--点击之后添加use_login_dis-->
-        <button class="use_login_dis" id="send_mobile_validate" v="0">发送验证码</button>
+        <button class="use_login_dis" id="send_mobile_validate" v="abc">发送验证码</button>
     </div>
 </div>
 <!--提交-->
@@ -50,6 +50,16 @@ if (!empty($user)) {
             $(".box").hide();
         })
     });
+    var validate_btn = function (obj) {
+        var v = obj.val();
+        if (v.length == 11) {
+            $('#send_mobile_validate').attr('class', '');
+            $('#send_mobile_validate').attr('v', '0');
+        } else {
+            $('#send_mobile_validate').attr('class', 'use_login_dis');
+            $('#send_mobile_validate').attr('v', 'abc');
+        }
+    };
     $('#click_sub_btn').click(function () {
         var _utype = 9;
         var _cnum = $.trim($('#cnum').val());
@@ -94,12 +104,14 @@ if (!empty($user)) {
         var lr = wait - i;
         if (lr == 0) {
             clearInterval(iid);
+            $('#send_mobile_validate').attr('class', '');
             $('#send_mobile_validate').html("发送验证码");
             me.attr('v', '0');
             iid = 0;
             i = 0;
         }
         else {
+            $('#send_mobile_validate').attr('class', 'use_login_dis');
             $('#send_mobile_validate').html(lr + "秒后再发");
             i++;
         }
