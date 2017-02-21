@@ -50,7 +50,7 @@ $rs = $obj->getUserOrder();
                 <table class="use_my_table">
                     <tr>
                         <th>宝贝明细</th>
-                        <th>取货密码</th>
+                        <th>开箱密码</th>
                         <th>金额</th>
                         <?php
                         if ($v['is_return'] == '0') {

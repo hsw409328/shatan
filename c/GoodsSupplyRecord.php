@@ -30,7 +30,7 @@ final class GoodsSupplyRecordController extends Base
     {
         $user = $this->getUserDetail();
         $obj = new CabinetPickGoodsStsModel();
-        $rs = $obj->getCabinetPickGoodsSts('cr_c_num="' . $_cnum . '" and cr_user_id="' . $user['id'] . '"', '', '3');
+        $rs = $obj->getCabinetPickGoodsSts('cr_c_num="' . $_cnum . '" and cr_user_id="' . $user['id'] . '"', '', '5');
         if (empty($rs)) {
             return [];
         } else {

@@ -20,7 +20,7 @@ $rs = $obj->getUserOrder();
         <table class="use_pay_mx">
             <tr>
                 <th>宝贝明细</th>
-                <th>取货密码</th>
+                <th>开箱密码</th>
             </tr>
             <tr>
                 <td><?php echo $rs['odRs']['gnum_name']; ?></td>

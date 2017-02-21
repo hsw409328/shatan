@@ -26,8 +26,8 @@ $obj->initDayCabinet();
                     </dt>
                     <dd>
                         <strong>最近操作记录:</strong>
-                        <span>补货：<?php echo $gsrDate; ?></span>
-                        <span>取货：<?php echo $pickDate; ?></span>
+                        <span>补货：<?php echo $gsrDate == '未补货' ? $gsrDate : Run::getFormatDate($gsrDate, 'm月d日 H:i'); ?></span>
+                        <span>取货：<?php echo $pickDate == '未取货' ? $gsrDate : Run::getFormatDate($pickDate, 'm月d日 H:i'); ?></span>
                     </dd>
                 </dl>
             </a>

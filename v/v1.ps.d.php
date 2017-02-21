@@ -134,9 +134,6 @@ $pickObj = new GoodsSupplyRecordController();
         AjaxCommon.post();
     });
     $('#reload_click').click(function () {
-        _sub1 = 0;
-        $('#apply_click').show();
-        $('#pwd_html').html('');
-        $('#pwd_html').hide();
+        UtilCommon.reload();
     });
 </script>

@@ -4,7 +4,7 @@ $obj = new BuyGoodsListController();
 $rs = $obj->getUserOrder();
 ?>
 <div class="use_pay_t">
-    租取归还必须在同一个柜子上操作完成。
+    租、取归还必须在同一个柜子上操作完成。
 </div>
 <div class="use_pay_b">
     <div class="use_pay_x use_return_r">
@@ -36,7 +36,7 @@ $rs = $obj->getUserOrder();
     </table>
     <div class="background1"></div>
     <div class="use_pay_remin use_return_bor">
-        <h2 class="use_return_time">当前时间:<?php echo date('Y年m月d日 H:i:s'); ?></h2>
+        <h2 class="use_return_time">当前时间:<?php echo date('Y年m月d日 H:i'); ?></h2>
         <?php
         $oldTime = strtotime($rs['rs']['rent_date_end']);
         $ct = time();

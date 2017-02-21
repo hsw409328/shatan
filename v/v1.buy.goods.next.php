@@ -23,7 +23,7 @@ $user = $obj->getUserDetail();
 </div>
 <div class="use_pay_b">
     <div class="use_pay_x">
-        <h3>取货柜编号：<?php echo RouteClass::getParams('3'); ?></h3>
+        <h3>租赁柜编号：<?php echo RouteClass::getParams('3'); ?></h3>
         <p>订单编号：<?php echo $rs['oRs']['oid']; ?></p>
         <p>租赁有效期：<?php echo Run::getFormatDate($rs['oRs']['rent_date_start'], 'm月d日 H:i'); ?>
             至 <?php echo Run::getFormatDate($rs['oRs']['rent_date_end'], 'm月d日 H:i'); ?></p>
@@ -56,9 +56,7 @@ $user = $obj->getUserDetail();
     <div class="background1"></div>
     <div class="use_pay_remin">
         <h2>归还提醒</h2>
-        <p>默认租期为<?php echo RouteClass::getParams('6'); ?>
-            天，请于<strong><?php echo Run::getFormatDate($rs['oRs']['rent_date_end'], 'Y年m月d日 H:i'); ?></strong>
-            前归还，在哪取的就在哪还，超时归还，加收50元/天。
+        <p>默认租期为<?php echo RouteClass::getParams('6'); ?>天，请于<strong><?php echo Run::getFormatDate($rs['oRs']['rent_date_end'], 'Y年m月d日 H:i'); ?></strong>前归还，租取、归还请在同一个柜子上操作完成。
         </p>
     </div>
 </div>

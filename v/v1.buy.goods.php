@@ -1,6 +1,6 @@
 <?php
 Run::c('/user/login');
-ParamsController::localSetParams('bg1','bg1');
+ParamsController::localSetParams('bg1', 'bg1');
 $obj = new BuyGoodsListController();
 $cnum = $obj->getUserDefaultCabinet();
 ?>
@@ -22,7 +22,7 @@ $cnum = $obj->getUserDefaultCabinet();
     }
 </style>
 <div class="use_order_t">
-    <p>每笔订单只可选1个宝贝，如需租多个请反复下单，统一为2天，您当前选择的租赁柜<?php echo $cnum; ?></p>
+    <p>每笔订单只可选1个宝贝，如需租多个请反复下单，租期统一为2天，您当前选择的租赁柜<?php echo $cnum; ?></p>
     <a href="javascript:void(0)" class="update">点击修改>></a>
 </div>
 <div class="use_order_b">
@@ -37,7 +37,7 @@ $cnum = $obj->getUserDefaultCabinet();
             $goods_num = $obj->checkStGoods($cnum, $v['st_num'], $v['c_grid_area']);
             ?>
             <li select="<?php echo $goods_num ? 1 : 0; ?>" stnum="<?php echo $stRs['st_num']; ?>"
-                cnum="<?php echo $cnum; ?>" m="<?php echo $stRs['st_money']; ?>"
+                cnum="<?php echo $cnum; ?>" m="<?php echo floatval($stRs['st_money']); ?>"
                 day="<?php echo $stRs['st_day']; ?>">
                 <img src="<?php echo $stRs['st_img']; ?>">
                 <dl>
@@ -47,10 +47,9 @@ $cnum = $obj->getUserDefaultCabinet();
                     <strong><?php echo $goods_num ? '剩余' . $goods_num : '无货'; ?></strong>
                     </dt>
                     <dd class="use_order_xq"><?php echo $stRs['st_info']; ?></dd>
-                    <dd class="use_order_jg"><strong><?php echo intval($stRs['st_money']); ?>
-                            元</strong>&frasl;<span><?php echo $stRs['st_day']; ?>天</span>
+                    <dd class="use_order_jg">
+                        <strong><?php echo intval($stRs['st_money']);?>元</strong>&frasl;<span><?php echo $stRs['st_day']; ?>天</span>
                         <?php echo $goods_num ? '<div class="use_order_check check"></div>' : ''; ?>
-
                     </dd>
                 </dl>
             </li>
