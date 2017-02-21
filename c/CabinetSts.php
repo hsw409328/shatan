@@ -80,6 +80,42 @@ final class CabinetStsController extends Base
         }
     }
 
+    /**
+     * 根据柜子与用户ID查询最后一次取货记录
+     * @return array|null
+     */
+    public function getCabinetPickGoodsStsEnd($cnum, $uid)
+    {
+        $obj = new CabinetPickGoodsStsModel();
+        $obj->setField('created_at');
+        $w = 'cr_c_num="' . $cnum . '" and cr_user_id="' . $uid . '" ';
+        $rs = $obj->getCabinetPickGoodsSts($w, '', '1', '1');
+        if (empty($rs)) {
+            $rs = '未取货';
+        } else {
+            $rs = $rs['created_at'];
+        }
+        return $rs;
+    }
+
+    /**
+     * 根据柜子与用户ID查询最后一次补货记录
+     * @return array|null
+     */
+    public function getGoodsSupplyRecordEnd($cnum, $uid)
+    {
+        $obj = new GoodsSupplyRecordModel();
+        $obj->setField('created_at');
+        $w = 'r_c_num="' . $cnum . '" and r_user_id="' . $uid . '" ';
+        $rs = $obj->getGoodsSupplyRecord($w, '', '1', '1');
+        if (empty($rs)) {
+            $rs = '未补货';
+        } else {
+            $rs = $rs['created_at'];
+        }
+        return $rs;
+    }
+
     public function getUserManagerCabinetOne()
     {
         $c_num = RouteClass::getParams('3');

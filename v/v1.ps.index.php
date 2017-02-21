@@ -1,5 +1,5 @@
 <?php
-Run::c('/other/login');
+$u = Run::c('/other/login');
 $obj = new CabinetStsController();
 $obj->initDayCabinet();
 
@@ -13,6 +13,8 @@ $obj->initDayCabinet();
     $cabinetObj = new CabinetController();
     foreach ($cabinet_list as $k => $v) {
         $_tmp_detail = $cabinetObj->getCabinetDetail($v['c_num'], 'c_hotel,c_address');
+        $pickDate = $obj->getCabinetPickGoodsStsEnd($v['c_num'], $u['id']);
+        $gsrDate = $obj->getGoodsSupplyRecordEnd($v['c_num'], $u['id']);
         ?>
         <li>
             <a href="/ps/d/<?php echo $v['c_num']; ?>">
@@ -24,8 +26,8 @@ $obj->initDayCabinet();
                     </dt>
                     <dd>
                         <strong>最近操作记录:</strong>
-                        <span>补货：今天12月14日 18:00</span>
-                        <span>取货：今天12月14日 18:00</span>
+                        <span>补货：<?php echo $gsrDate; ?></span>
+                        <span>取货：<?php echo $pickDate; ?></span>
                     </dd>
                 </dl>
             </a>

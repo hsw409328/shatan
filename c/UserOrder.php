@@ -159,10 +159,26 @@ final class UserOrderController extends Base
     {
         $oid = Run::req('oid');
         $uid = Run::req('uid');
+        $sign = Run::req('sign');
+        if (empty($sign)) {
+            $this->_jsonEn('0', '请选择验收状态');
+        }
         $rs = $this->getUserOrderOne($oid, $uid);
         if (empty($rs)) {
             $this->_jsonEn('0', '订单查询失败');
         }
+        if ($sign == 'good') {
+            //如果是完好订单，直接退全额
+            $obj = new UserOrderModel();
+            $data['refund_money'] = $rs['deposit_money'];
+            $data['real_refund_money'] = floatval($rs['deposit_money']) - floatval($rs['overtime_money']);
+
+            $rs['refund_money'] = $data['refund_money'];
+            $rs['real_refund_money'] = $data['real_refund_money'];
+
+            $obj->setUserOrder($rs['id'], $data);
+        }
+        //var_dump($rs);exit;
         if (floatval($rs['real_refund_money']) == 0) {
             $obj = new UserOrderModel();
             $obj->setUserOrder($rs['id'], ['is_end' => 1]);

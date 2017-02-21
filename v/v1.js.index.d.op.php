@@ -41,10 +41,13 @@ $rs = $obj->getUserOrderDetailByGNum(RouteClass::getParams('3'));
             <td class="color"><?php echo $rs['odRs']['gnum']; ?></td>
             <td><?php echo floatval($rs['odRs']['price']); ?>元</td>
             <?php
+            $_tmpJsStr = '';
             if ($rs['odRs']['is_damage'] == '1') {
+                $_tmpJsStr = 'bad';
                 echo '<td><a href="/js/bad-d-next/' . $rs['odRs']['oid'] . '" class="">损坏</a></td>';
             } else {
                 if ($rs['rs']['is_end'] == '1') {
+                    $_tmpJsStr = 'good';
                     echo '<td>完好</td>';
                 } else {
                     echo '<td><span class="set_details_xz">选择</span></td>';
@@ -92,14 +95,16 @@ if ($rs['rs']['is_end'] == '0') {
 
 <div class="set_choose">
     <ul>
-        <li class="wanhaodeyibi">完好</li>
-        <li><a href="/js/index-order-bad/<?php echo $rs['rs']['oid']; ?>/<?php echo $rs['rs']['uid']; ?>">损坏</a></li>
+        <li class="wanhaodeyibi" v="good">完好</li>
+        <li><a href="/js/index-order-bad/<?php echo $rs['rs']['oid']; ?>/<?php echo $rs['rs']['uid']; ?>"
+               v="damage">损坏</a></li>
         <li class="quxiao">取消</li>
     </ul>
 </div>
 <div class="box"></div>
 
 <script type="text/javascript">
+    var sign = '<?php echo $_tmpJsStr;?>';
     $(document).ready(function () {
         $(".set_details_xz").click(function () {
             $(".box").show();
@@ -110,11 +115,13 @@ if ($rs['rs']['is_end'] == '0') {
             $(".set_choose").hide();
         });
         $('.wanhaodeyibi').click(function () {
+            sign = $(this).attr('v');
             $(".box").hide();
             $(".set_choose").hide();
             $('.set_details_xz').html($(this).html());
         });
         $('.quxiao').click(function () {
+            sign = '';
             $(".box").hide();
             $(".set_choose").hide();
         });
@@ -136,6 +143,7 @@ if ($rs['rs']['is_end'] == '0') {
                 'run': 'endOrder',
                 'oid': '<?php echo $rs['rs']['oid']?>',
                 'uid': '<?php echo $rs['rs']['uid']?>',
+                'sign': sign,
             };
             AjaxCommon.callback_func = function (data, sts) {
                 var _d = eval('(' + data + ')');
