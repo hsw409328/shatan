@@ -36,6 +36,8 @@ $_route = array(
     'buy/goods-next' => 'v1.buy.goods.next',
     'buy/success' => 'v1.buy.success',
 
+    //获取柜子
+    'api/v1-get-cabinet' => 'addCabinetLngLat',
     //开关门操作
     'api/v1-open-door' => 'getGridXY',
     'api/v1-close-door' => 'setGridXY',
@@ -54,7 +56,7 @@ if (isset($_urlParams ['1']) && isset($_urlParams ['2'])) {
             exit();
         }
         $obj = new ApiController();
-        $obj->$run();
+        $obj->$view();
         exit();
     }
     foreach ($_urlParams as $k => $v) {

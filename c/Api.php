@@ -164,4 +164,39 @@ final class ApiController extends Base
             $this->_jsonEn(402, '参数错误，未检测到city或者为空');
         }
     }
+
+    /**
+     * 获取柜子号，根据坐标，如果没有，添加一个新的
+     */
+    public function addCabinetLngLat()
+    {
+        $lng = Run::req('lng');
+        if (empty($lng)) {
+            $this->_jsonEn(402, '参数错误，未检测到或者为空');
+        }
+        $lat = Run::req('lat');
+        if (empty($lat)) {
+            $this->_jsonEn(402, '参数错误，未检测到或者为空');
+        }
+
+        $obj = new CabinetLngLatModel();
+        $obj->setField('id,c_num');
+        $w = 'lng="' . $lng . '" and lat="' . $lat . '" ';
+        $rs = $obj->getCabinetLngLat($w, '', '', '1');
+        if (empty($rs)) {
+            $data['c_num'] = '';
+            $data['lng'] = $lng;
+            $data['lat'] = $lat;
+            $data['created_at'] = date('Y-m-d H:i:s');
+            $data['updated_at'] = '';
+            $obj->addCabinetLngLat($data);
+            $this->_jsonEn(403, '查询结果为空');
+        } else {
+            if (empty($rs['c_num'])) {
+                $this->_jsonEn(406, '未分配柜子');
+            } else {
+                $this->_jsonEn(200, $rs);
+            }
+        }
+    }
 }
