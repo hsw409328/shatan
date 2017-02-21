@@ -126,6 +126,11 @@ final class WechatPayController extends Base
                     //更新格子商品状态
                     $ggrObj->setGoodsGridRelation($ggrRs['id'], ['updated_at' => date('Y-m-d H:i:s'), 'sts' => '5']);
 
+                    //通知用户
+                    $uObj = new UsersController();
+                    $ud = $uObj->getUserByUid($odRs['uid']);
+                    WangYiCloudController::sendNoticeMsg($ud['mobile_num'], [$ggrRs['pwd'], $orderRes['cnum'], $orderRes['address'], $odRs['gnum_name']]);
+
 
                     echo '<xml>
 						  <return_code><![CDATA[SUCCESS]]></return_code>

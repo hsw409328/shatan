@@ -46,7 +46,7 @@ final class ApiController extends Base
         $gridnum = $this->_parsePwd($pwd);
         if ($gridnum == 'A21') {
             //正式上线要关闭
-            $this->_jsonEn(200, ['c_grid_num' => 'A21']);
+            //$this->_jsonEn(200, ['c_grid_num' => 'A21']);
             $this->_cabinetSpe($pwd, $cnum);
         }
         $obj->setField('id,grid_num,sts');

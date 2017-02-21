@@ -29,7 +29,7 @@ final class WangYiCloudController
     {
         $url = 'https://api.netease.im/sms/sendcode.action';
         $data ['mobile'] = $mobile;
-        $data = 'mobile=' . $mobile;
+        $data = 'mobile=' . $mobile . '&templateid=3050114';
         $header_arr = self::getHeaders();
         $rs = Run::getHttpPostRes($data, $url, $header_arr);
         $rs = json_decode($rs, true);
@@ -49,6 +49,24 @@ final class WangYiCloudController
         $url = 'https://api.netease.im/sms/verifycode.action';
         $data ['mobile'] = $mobile;
         $data ['code'] = $num;
+        $header_arr = self::getHeaders();
+        $rs = Run::getHttpPostRes($data, $url, $header_arr);
+        $rs = json_decode($rs, true);
+        if (empty($rs)) {
+            return false;
+        } else {
+            if ($rs['code'] == '200') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public static function sendNoticeMsg($mobile, $params)
+    {
+        $url = 'https://api.netease.im/sms/sendtemplate.action';
+        $data = 'templateid=3050115&mobiles=["' . $mobile . '"]&params=["' . implode('","', $params) . '"]';
         $header_arr = self::getHeaders();
         $rs = Run::getHttpPostRes($data, $url, $header_arr);
         $rs = json_decode($rs, true);
