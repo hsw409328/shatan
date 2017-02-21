@@ -35,15 +35,28 @@ $_route = array(
     'buy/goods' => 'v1.buy.goods',
     'buy/goods-next' => 'v1.buy.goods.next',
     'buy/success' => 'v1.buy.success',
+
+    //开关门操作
+    'api/v1-open-door' => 'getGridXY',
+    'api/v1-close-door' => 'setGridXY',
+    //潮汐时间
+    'api/v1-get-weather' => 'getWeather',
 );
 
 $_urlParams = $_SERVER ['REQUEST_URI'];
 $_urlParams = explode('/', $_urlParams);
 
-Run::loadStart('v1.header');
-
 if (isset($_urlParams ['1']) && isset($_urlParams ['2'])) {
     $view = isset ($_route [$_urlParams ['1'] . '/' . $_urlParams ['2']]) ? $_route [$_urlParams ['1'] . '/' . $_urlParams ['2']] : '';
+    if ($_urlParams ['1'] == 'api') {
+        if (strtoupper($_SERVER['REQUEST_METHOD']) != 'POST') {
+            echo json_encode(['code' => 400, 'msg' => '请求方式不正确']);
+            exit();
+        }
+        $obj = new ApiController();
+        $obj->$run();
+        exit();
+    }
     foreach ($_urlParams as $k => $v) {
         if ($k < 3) {
             continue;
@@ -54,7 +67,7 @@ if (isset($_urlParams ['1']) && isset($_urlParams ['2'])) {
     $view = '';
 }
 
-//var_dump($_urlParams ['1'] . '/' . $_urlParams ['2']);
+Run::loadStart('v1.header');
 
 if ($view != '') {
     Run::loadStart($view);
