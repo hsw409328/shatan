@@ -78,6 +78,7 @@ if ($rs['is_damage'] == '1') {
             'action': 'UserOrder',
             'run': 'addBadOrder',
             'oid': '<?php echo $rs['oid']?>',
+            'uid':'<?php echo $rs['uid']?>',
             'img': _tmpv,
             'content': _c,
             'money': _d_m,

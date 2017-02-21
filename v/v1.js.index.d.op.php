@@ -3,6 +3,9 @@ $_sessio_str = 0;
 include_once 'v1.js.index.head.php';
 $obj = new UserOrderController();
 $rs = $obj->getUserOrderDetailByGNum(RouteClass::getParams('3'));
+if ($rs['rs']['is_abnormal'] == '1') {
+    Run::show_msg('异常订单，需要去异常订单模块处理', '1', '/js/abnormal');
+}
 ?>
 <div class="set_details_c">
     <div class="dis_details_bm">
@@ -78,7 +81,19 @@ $rs = $obj->getUserOrderDetailByGNum(RouteClass::getParams('3'));
         <tr>
             <td class="color">实际退还押金</td>
             <td></td>
-            <td class="color"><?php echo floatval($rs['rs']['real_refund_money']); ?>元</td>
+            <?php
+            if ($rs['rs']['is_damage'] == '1') {
+                ?>
+                <td class="color"><?php echo floatval($rs['rs']['real_refund_money']); ?>元</td>
+                <?php
+            } else {
+                $_real_refund_money = floatval($rs['rs']['deposit_money']) - floatval($rs['rs']['overtime_money']);
+                ?>
+                <td class="color"><?php echo $_real_refund_money; ?>元</td>
+                <?php
+            }
+            ?>
+
         </tr>
     </table>
     <div class="set_thbz">

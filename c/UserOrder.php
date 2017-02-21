@@ -163,7 +163,7 @@ final class UserOrderController extends Base
     {
         $oid = Run::req('oid');
         $user = $this->getUserDetail();
-        $uid = $user['id'];
+        $uid = Run::req('uid');
         $img = Run::req('img');
         $damage_explain = Run::req('content');
         $damage_m = Run::req('money');
@@ -181,11 +181,19 @@ final class UserOrderController extends Base
         //同步更新订单 损坏扣款 损坏状态 退款 真实退款
         $uoObj = new UserOrderModel();
         $uoRs = $this->getUserOrderOne($oid, $uid);
+        $new_money = floatval($uoRs['overtime_money']) + floatval($data['damage_money']);
+
+        if ($new_money < floatval($uoRs['deposit_money'])) {
+            $real_refund_money = floatval($uoRs['deposit_money']) - $new_money;
+        } else {
+            $real_refund_money = 0;
+        }
+
         $_tmp = [
             'damage_money' => floatval($data['damage_money']),
             'is_damage' => 1,
             'refund_money' => $uoRs['deposit_money'],
-            'real_refund_money' => floatval($uoRs['deposit_money']) - floatval($data['damage_money']),
+            'real_refund_money' => $real_refund_money,
         ];
         $uoObj->setUserOrder($uoRs['id'], $_tmp);
         //更新订单详情 损坏状态 损坏扣款
@@ -300,7 +308,7 @@ final class UserOrderController extends Base
     public function getUserOrderByAbnormal()
     {
         $obj = new UserOrderModel();
-        $w = 'is_pay=1 and is_return=0 and is_abnormal=1 and is_pickup=1 and is_end=0';
+        $w = 'is_pay=1 and is_abnormal=1 and is_pickup=1 and is_end=0';
         $rs = $obj->getUserOrder($w);
         if (empty($rs)) {
             $rs = [];
