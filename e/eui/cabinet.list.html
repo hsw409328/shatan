@@ -14,7 +14,7 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
         <th data-options="field:'c_type_name',width:200">类型</th>
         <th data-options="field:'c_lng',width:200" formatter="formateLatLng">坐标</th>
         <th data-options="field:'c_province',width:60">省</th>
-        <th data-options="field:'c_city',width:120">市</th>
+        <th data-options="field:'c_city_name',width:120">市</th>
         <th data-options="field:'c_area',width:120">区域</th>
         <th data-options="field:'c_hotel',width:120">酒店</th>
         <th data-options="field:'c_address',width:120">摆放位置</th>
@@ -69,7 +69,10 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
                         <td>省:</td>
                         <td><input class="easyui-textbox" name="c_province" id="c_province"></input></td>
                         <td>市:</td>
-                        <td><input class="easyui-textbox" name="c_city" id="c_city"></input></td>
+                        <td>
+                            <input class="easyui-combobox" id="c_city" name="c_city"
+                                   data-options="url:'data/run.php?c=WebTypeEui&f=getWebTypeParentChil&_pid=6',method:'get',valueField:'id',textField:'text'">
+                        </td>
                     </tr>
                     <tr>
                         <td>区域:</td>
@@ -140,7 +143,7 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
         $('#c_lat').textbox({value: row.c_lat});
         $('#c_lng').textbox({value: row.c_lng});
         $('#c_province').textbox({value: row.c_province});
-        $('#c_city').textbox({value: row.c_city});
+        $('#c_city').combobox('setValue', row.c_city);
         $('#c_area').textbox({value: row.c_area});
         $('#c_hotel').textbox({value: row.c_hotel});
         $('#c_address').textbox({value: row.c_address});
@@ -155,7 +158,8 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
     function submitWin() {
         $('#ff').form('submit', {
             url: 'data/run.php?c=CabinetEui&f=saveCabinet',
-            onSubmit: function () {
+            onSubmit: function (params) {
+                params.c_city_name = $('#c_city').combobox('getText');
                 $('#subBtn').linkbutton('disable');
             },
             success: function (data) {

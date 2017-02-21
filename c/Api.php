@@ -195,7 +195,12 @@ final class ApiController extends Base
             if (empty($rs['c_num'])) {
                 $this->_jsonEn(406, '未分配柜子');
             } else {
-                $this->_jsonEn(200, $rs);
+                $obj = new CabinetController();
+                $cRs = $obj->getCabinetDetail($rs['c_num'], 'c_city,c_city_name');
+                $data['c_num'] = $rs['c_num'];
+                $data['city_id'] = $cRs['c_city'];
+                $data['city_name'] = $cRs['c_city_name'];
+                $this->_jsonEn(200, $data);
             }
         }
     }
