@@ -75,14 +75,62 @@ final class UserOrderController extends Base
         $oid = Run::req('oid');
         $content = Run::req('content');
         $user = $this->getUserDetail();
-        $oRs = $this->getUserOrderDetail($oid, $user['id']);
+        $oRs = $this->getUserOrderOne($oid, $user['id']);
+        $overtime_money = $this->_sumOverTimeMoney($oRs['rent_date_end']);
+        if ($overtime_money[0] != 0) {
+            if ($overtime_money[0] < $oRs['deposit_money']) {
+                $data['overtime_money'] = floatval($overtime_money[0]);
+                $data['overtime_desc'] = $overtime_money[1];
+            } else {
+                $data['overtime_money'] = $oRs['deposit_money'];
+                $data['overtime_desc'] = '超时扣款大于押金，为异常订单，退款0';
+                $data['is_abnormal'] = 1;
+            }
+        } else {
+
+        }
+        $data['refund_money'] = $oRs['deposit_money'];
+        $data['return_date'] = date('Y-m-d H:i:s');
+        $data['is_return'] = 1;
+        $data['order_bak'] = $content;
         $obj = new UserOrderModel();
-        $rs = $obj->setUserOrder($oRs['id'], ['is_return' => 1, 'return_date' => date('Y-m-d H:i:s'), 'order_bak' => $content]);
+        $rs = $obj->setUserOrder($oRs['id'], $data);
         if ($rs) {
             $this->_jsonEn('1', '归还成功');
         } else {
             $this->_jsonEn('0', '归还失败');
         }
+    }
+
+    /**
+     * 计算超时扣款
+     */
+    private function _sumOverTimeMoney($end_return_date)
+    {
+        $end_time = strtotime($end_return_date);
+        $current_time = time();
+        if ($end_time >= $current_time) {
+            //最后归还时间大于当前归还时间不扣款
+            return [0, '未超时'];
+        }
+        //计算小时
+        $h = intval(($current_time - $end_time) / (60 * 60));
+        if ($h <= 6) {
+            //6小时内不扣款
+            return [0, '未超时'];
+        }
+        if ($h > 6 && $h <= 24) {
+            //6-24小时内 扣50
+            return [50, '超时' . $h . '小时'];
+        }
+
+        //超过一天的，每天加一百，向上取整
+        $d = ceil($h / 24);
+        $t = 0;
+        for ($i = 1; $i <= $d; $i++) {
+            $t += 100;
+        }
+        return [$t, '超时' . $d . '天，每天100'];
     }
 
     /**
