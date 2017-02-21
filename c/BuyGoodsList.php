@@ -42,7 +42,7 @@ final class BuyGoodsListController extends Base
     {
         $obj = new CgRelationModel();
         $obj->setField('st_num,c_grid_area,c_num');
-        $rs = $obj->getCgRelation('c_num="' . $c_num . '"');
+        $rs = $obj->getCgRelation('c_num="' . $c_num . '"','st_sort asc');
         if (empty($rs)) {
             $rs = [];
         }

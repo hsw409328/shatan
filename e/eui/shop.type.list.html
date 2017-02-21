@@ -10,6 +10,7 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
     <thead>
     <tr>
         <th data-options="field:'st_num',width:100">编号</th>
+        <th data-options="field:'st_sort',width:100">排序</th>
         <th data-options="field:'st_name',width:200">名称</th>
         <th data-options="field:'st_img',width:200" formatter="picF">图片</th>
         <th data-options="field:'st_span',width:200">标签</th>
@@ -96,6 +97,10 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
                         <td>天数:</td>
                         <td><input class="easyui-numberbox" name="st_day" id="st_day"></input></td>
                     </tr>
+                    <tr>
+                        <td>排序:</td>
+                        <td><input class="easyui-numberbox" name="st_sort" id="st_sort"></input></td>
+                    </tr>
                 </table>
             </form>
             <div style="text-align:center;padding:5px">
@@ -144,6 +149,7 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
         $('#st_bad_info').textbox({value: row.st_bad_info});
         $('#st_money').textbox({value: row.st_money});
         $('#st_day').textbox({value: row.st_day});
+        $('#st_sort').textbox({value: row.st_sort});
 
     }
 

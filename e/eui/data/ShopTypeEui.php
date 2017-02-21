@@ -13,7 +13,7 @@ final class ShopTypeEuiController extends Base
         $ueObj = new ShopTypeModel ();
         $ueObj->setField(' * ');
         $w = $this->getWhere();
-        $res = $ueObj->getShopType($w, '', $limit);
+        $res = $ueObj->getShopType($w, 'st_sort asc,id desc', $limit);
         $ueObj->setField('count(id) as total');
         $totalRes = $ueObj->getShopType($w, '', '', '1');
         $_tmpRes = array('total' => $totalRes ['total'], 'rows' => $res);
@@ -60,6 +60,7 @@ final class ShopTypeEuiController extends Base
         $dataArray ['st_money'] = Run::req('st_money');
         $dataArray ['st_day'] = Run::req('st_day');
         $dataArray ['st_leveal'] = Run::req('st_leveal');
+        $dataArray ['st_sort'] = Run::req('st_sort');
         $listImg = $this->uploadImg($_FILES ['st_img_path']);
         if ($listImg) {
             $dataArray ['st_img'] = $listImg;
