@@ -201,14 +201,14 @@ final class ApiController extends Base
         if (empty($lng)) {
             $this->_jsonEn(402, '参数错误，未检测到或者为空');
         }
-        $lng = substr($lng, 0, 7);
-        $lng .= '0000';
+        //$lng = substr($lng, 0, 7);
+        //$lng .= '0000';
         $lat = Run::req('lat');
         if (empty($lat)) {
             $this->_jsonEn(402, '参数错误，未检测到或者为空');
         }
-        $lat = substr($lat, 0, 6);
-        $lat .= '0000';
+        //$lat = substr($lat, 0, 6);
+        //$lat .= '0000';
 
         $obj = new CabinetLngLatModel();
         $obj->setField('id,c_num');
