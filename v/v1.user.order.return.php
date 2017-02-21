@@ -4,11 +4,11 @@ $obj = new BuyGoodsListController();
 $rs = $obj->getUserOrder();
 ?>
 <div class="use_pay_t">
-    租、取归还必须在同一个柜子上操作完成。
+    租取、归还必须在同一个柜子上操作完成。
 </div>
 <div class="use_pay_b">
     <div class="use_pay_x use_return_r">
-        <h3><label>柜子编号</label><input type="text" placeholder="请输入柜子编号" id="cnum"/><span class="use_sk">查看示例</span></h3>
+        <h3><label>柜子编号</label><input type="text" placeholder="请输入您眼前柜子的编号" id="cnum"/><span class="use_sk">查看示例</span></h3>
         <p><strong id="oid_num"
                    v="<?php echo strtolower($rs['rs']['cnum']); ?>">订单编号：<?php echo $rs['rs']['oid']; ?></strong></p>
         <p>租赁有效期：<?php echo Run::getFormatDate($rs['rs']['rent_date_start'], 'm月d日 H:i'); ?>
@@ -90,7 +90,7 @@ $rs = $obj->getUserOrder();
             var _inputV = $.trim($('#cnum').val());
             var _cv = $('#oid_num').attr('v');
             if (_inputV.toUpperCase() != _cv.toUpperCase()) {
-                alert('当前柜子编号与订单柜子不一致');
+                alert('您输入的柜子编号与下单时的柜子不一致，租取、归还请务必在同一个柜子上操作完成。');
                 return false;
             } else {
                 UtilCommon.href('/user/order-return-1/<?php echo $rs['rs']['oid']; ?>');

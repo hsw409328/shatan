@@ -44,6 +44,11 @@ final class ApiController extends Base
         //确定商品及格子
         $obj = new GoodsGridRelationModel();
         $gridnum = $this->_parsePwd($pwd);
+        if ($gridnum == 'A21') {
+            //正式上线要关闭
+            $this->_jsonEn(200, ['c_grid_num' => 'A21']);
+            $this->_cabinetSpe($pwd, $cnum);
+        }
         $obj->setField('id,grid_num,sts');
         $w = 'c_num="' . $cnum . '" and pwd="' . $pwd . '" and grid_num="' . $gridnum . '" and sts in (3,5)';
         $rs = $obj->getGoodsGridRelation($w, '', '', '1');
@@ -55,6 +60,25 @@ final class ApiController extends Base
             }
             $this->_updateGridPwdSts($rs['id'], $gridnum, $rs['sts'], $obj);
             $this->_jsonEn(200, ['c_grid_num' => $rs['grid_num']]);
+        }
+    }
+
+    /**
+     * 取货A21专属密码
+     * @param $pwd 密码
+     * @param $cnum 矩子号
+     */
+    private function _cabinetSpe($pwd, $cnum)
+    {
+        $obj = new CabinetModel();
+        $rs = $obj->getCabinet('c_num="' . $cnum . '" and c_pwd="' . $pwd . '" ', '', '', '1');
+        if (empty($rs)) {
+            $this->_jsonEn(404, '密码输入错误');
+        } else {
+            $data['c_pwd'] = $this->_getPwd('A21');
+            $data['updated_at'] = date('Y-m-d H:i:s');
+            $obj->setCabinet($rs['id'], $data);
+            $this->_jsonEn(200, ['c_grid_num' => 'A21']);
         }
     }
 
@@ -110,6 +134,9 @@ final class ApiController extends Base
         $cnum = Run::req('c_num');
         $grid = Run::req('grid');
         $grid = strtoupper($grid);
+        if ($grid == 'A21') {
+            $this->_jsonEn(200, '取货完成');
+        }
 
         //确定商品状态
         $obj = new GoodsGridRelationModel();
