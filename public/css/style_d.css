@@ -1,4 +1,4 @@
-@charset "utf-8";
+﻿@charset "utf-8";
 /* CSS Document */
 * {
 	margin:0;
@@ -79,6 +79,7 @@ textarea{resize:none}
 	filter:alpha(opacity=70);
 	-moz-opacity: 0.7;
 	opacity: 0.7; display:none;}
+.submit_order .bg1{ background: #ccc;}
 
 
 /*登录页*/

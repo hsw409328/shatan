@@ -8,7 +8,8 @@ $rs = $obj->getUserOrder();
 </div>
 <div class="use_pay_b">
     <div class="use_pay_x use_return_r">
-        <h3><label>柜子编号</label><input type="text" placeholder="请输入您眼前柜子的编号" id="cnum"/><span class="use_sk">查看示例</span></h3>
+        <h3><label>柜子编号</label><input type="text" placeholder="请输入您眼前柜子的编号" id="cnum"/><span class="use_sk">查看示例</span>
+        </h3>
         <p><strong id="oid_num"
                    v="<?php echo strtolower($rs['rs']['cnum']); ?>">订单编号：<?php echo $rs['rs']['oid']; ?></strong></p>
         <p>租赁有效期：<?php echo Run::getFormatDate($rs['rs']['rent_date_start'], 'm月d日 H:i'); ?>
@@ -66,18 +67,20 @@ $rs = $obj->getUserOrder();
     <a href="/user/order" class="use_return_n">暂不归还</a>
 </div>
 <!--弹出层-->
+<img src="/public/images/share-bg-btn.png" width="100%;" class="close" style="display: none">
 <div class="box_close">
-    <img src="images/share-bg-btn.png" width="100%;" class="close">
 </div>
 <div class="box"></div>
 <script type="text/javascript">
     $(document).ready(function () {
         $(".use_sk").click(function () {
             $(".box_close").show();
+            $('.close').show();
         })
-        $(".close").click(function () {
+        $(".box_close").click(function () {
             $(".box_close").hide();
-        });
+            $('.close').hide();
+        })
         $(".use_return_kk").click(function () {
             $(".box").show();
             $(".use_pay_return").show();

@@ -97,12 +97,18 @@ final class GoodsEuiController extends Base
             $dataArray ['g_list_img_path'] = Run::req('g_list_img_path');
         }
 
+        $listImg1 = $this->uploadImg($_FILES ['upload1']);
+        if ($listImg) {
+            $dataArray ['g_check_img'] = $listImg1;
+        } else {
+            $dataArray ['g_check_img'] = Run::req('g_check_img');
+        }
+
         $dataArray ['g_img_content'] = '';
         $dataArray ['g_deposit'] = Run::req('g_deposit');
         $dataArray ['g_rent'] = Run::req('g_rent');
         $dataArray ['g_buy_num'] = Run::req('g_buy_num');
         $dataArray ['g_check_info'] = Run::req('g_check_info');
-        $dataArray ['g_check_img'] = Run::req('g_check_img');
 
         $sObj = new GoodsModel ();
         if ($_id) {

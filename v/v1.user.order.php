@@ -13,7 +13,7 @@ $rs = $obj->getUserOrder();
 <div class="use_myorders">
     <?php
     if (empty($rs)) {
-        echo '<div class="background1"></div>';
+        echo '<div class="background12"></div>';
     } else {
         foreach ($rs as $k => $v) {
             ?>

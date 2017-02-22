@@ -67,6 +67,7 @@ a,button,input,optgroup,select,textarea{
 input,button,select,textarea{outline:none}
 textarea{resize:none}
 .background1{height:5px;background:#f1f1f1}
+.background12{height:8px;background:#f1f1f1}
 .box{height:100%; width:100%; position:fixed; _position:absolute; top:0; z-index:2;
 	background-color:#000;
 	filter:alpha(opacity=80);
@@ -78,7 +79,7 @@ textarea{resize:none}
 	filter:alpha(opacity=80);
 	-moz-opacity: 0.8;
 	opacity: 0.8; display:none;}
-
+.close{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);display: none; z-index: 5; }
 
 /*登录页*/
 .use_login_top{ position: relative;}
@@ -103,7 +104,7 @@ textarea{resize:none}
 .icon_3{ background: url(../images/icon_3.png) left center no-repeat; background-size:40px 20px;}
 .use_login_border .use_see{float:left;height:28px;line-height:14px;color:#83b9ff;margin-left:18px;font-size: 12px;padding:7px 0;}
 .use_login_border button{ width: 35%;margin-left:3%;height:42px;line-height:42px;background: #ffc04d;border: none;color:#fff;font-size:14px}
-.use_login_border .use_login_dis{background: #eee;color:#999;float: right;}
+.use_login_border .use_login_dis{background: #ccc;color:#fff;float: right;}
 .submit_order {margin:0 3% 20px 3%}
 .submit_order a {display:block;  width:94%; background: #FFC04D; text-align: center;height:40px;line-height:40px;color:#fff;font-size:16px;position: fixed;bottom:10px; left:3%;}
 .submit_order p{color:#999;line-height:20px;margin-top:10px;}
@@ -112,6 +113,7 @@ textarea{resize:none}
 .submit_order1 a {display:block;  width:100%; background: #FFC04D; text-align: center;height:40px;line-height:40px;color:#fff;font-size:16px;}
 .submit_order1 p{color:#999;line-height:20px;margin-top:10px;}
 
+.submit_order1 .bg1{ background: #ccc;}
 /*下单页*/
 .use_order_t{background: #999;color:#fff;padding:7px 5px;position: fixed;top:0;left:0;}
 .use_order_t p{font-size:12px;display: inline;margin-right:10px;line-height:18px;}
@@ -121,8 +123,8 @@ textarea{resize:none}
 .use_order_b ul li img{ width: 80px;height:80px;float: left;margin-right:10px;}
 .use_order_xq{word-spacing:normal; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;margin-bottom:8px;color:#999}
 .use_order_bt {overflow: hidden;zoom:1;margin-bottom:8px;}
-.use_order_bt h1{float:left;font-size:14px;line-height:25px;margin-right:10px;}
-.use_order_bt span{float:left;padding:2px 5px;color:#fff;background: #83B9FF; margin-top:2px;}
+.use_order_bt h1{float:left;font-size:14px;line-height:25px;margin-right:5px;}
+.use_order_bt span{float:left;color:#fff;background: #83B9FF; margin-top:5px;padding:0 1px;}
 .use_order_bt strong{ float: right;font-weight:normal;line-height:25px;color:#666}
 .use_order_jg{color:#FFC04D}
 .use_order_jg strong{font-size:14px;margin-right:5px;}
@@ -202,7 +204,7 @@ position: fixed;height:90px;left:50%;top:50%;margin-left:-37%;margin-top:-75px;-
 /*支付成功页*/
 .use_pay_succt{ width: 100px;margin:30px auto; text-align: center;}
 .use_pay_succt img{ width: 80px;height: 80px;}
-.use_pay_succt p{ text-align: center; line-height:30px;color:#83B9FF;}
+.use_pay_succt p{ text-align: center; line-height:30px;color:#83B9FF;font-size:14px;}
 .use_pay_sxx{margin:3%}
 .use_pay_sxx dl{border-bottom:#f1f1f1 solid 1px;padding:10px 0; position: relative;}
 .use_pay_sxx dl dt{font-size:14px;font-weight: bold;color:#333;line-height:20px;}
@@ -255,9 +257,12 @@ position: fixed;height:90px;left:50%;top:50%;margin-left:-37%;margin-top:-75px;-
 .use_my_nav p a.cur{color:#83B9FF;font-weight: bold;}
 
 
-.use_myorder{border-top:#f1f1f1 solid 5px;}
-.use_myorder_dd{margin:13px 3% ; position: relative;}
+.use_myorder{border-top:#f1f1f1 solid 8px;}
+.use_myorder_dd{margin:15px 3% ; position: relative;}
 .use_myorder_dd p{line-height:20px;color:#666;margin:5px 0;height:20px; }
+
+.use_myorder_dd p:first-of-type{padding-left:17px; background:url(../images/fk.png) left center no-repeat; }
+
 .use_myorder_dd p .use_myzt{ float: right;border:#83B9FF solid 1px;color:#83B9FF;padding:2px 13px;line-height:16px;height:16px;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;}
 
 .use_myorder_dd p .use_mycs{background:#FFC04D;color:#fff;padding:2px 5px;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;}
@@ -308,7 +313,9 @@ textarea{ width: 94%;color:#999;border:none;height:100px; line-height:20px;paddi
 /*归还*/
 .use_return_r h3{ overflow: hidden;zoom:1;border-bottom:#f1f1f1 solid 1px;padding-bottom:8px;height:22px;line-height:22px;}
 .use_return_r h3 label{float: left;margin-right:10px;}
-.use_return_r h3 input{ width: 100px;float: left;border:none;line-height:24px;}
+.use_return_r h3 input{ width: 150px;float: left;border:none;line-height:24px;}
+
+.wubiyk{ width: 100%;margin-bottom: 10px;}
 .use_return_r h3 span{float: right; font-weight:normal; text-decoration: underline;font-size:12px;}
 .use_return_bor{border-bottom:#f1f1f1 solid 1px;padding-bottom:10px;}
 .use_return_re{ position: fixed;bottom:0;left:0;height:52px; width: 97%;background:#f1f1f1;padding-left:3%}

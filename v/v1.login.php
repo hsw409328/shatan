@@ -26,7 +26,8 @@ if (!empty($user)) {
     </div>
     <div class="use_login_border">
         <div class="use_login_l u_wdx">
-            <input placeholder="请输入短信验证码" id="validate_num" type="number" class="icon_3"/>
+            <input placeholder="请输入4位短信验证码" id="validate_num" onkeyup="submit_change_cls($(this));" type="number"
+                   class="icon_3"/>
         </div>
         <!--点击之后添加use_login_dis-->
         <button class="use_login_dis" id="send_mobile_validate" v="abc">发送验证码</button>
@@ -34,21 +35,24 @@ if (!empty($user)) {
 </div>
 <!--提交-->
 <div class="submit_order1">
-    <a href="javascript:void(0)" id="click_sub_btn">提交</a>
+    <a href="javascript:void(0)" id="click_sub_btn" class="bg1" v="abc">提交</a>
     <p>* 您的租取、归还都将在此柜子上自助操作完成</p>
 </div>
 <!--弹出层-->
+<img src="/public/images/share-bg-btn.png" width="100%;" class="close" style="display: none">
 <div class="box">
-    <img src="/public/images/share-bg-btn.png" width="100%;" class="close">
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
         $(".use_see").click(function () {
             $(".box").show();
+            $('.close').show();
         })
-        $(".close").click(function () {
+        $(".box").click(function () {
             $(".box").hide();
+            $('.close').hide();
         })
+
     });
     var validate_btn = function (obj) {
         var v = obj.val();
@@ -60,7 +64,21 @@ if (!empty($user)) {
             $('#send_mobile_validate').attr('v', 'abc');
         }
     };
+    var submit_change_cls = function (obj) {
+        var v = obj.val();
+        if (v.length == 4) {
+            $('#click_sub_btn').attr('class', '');
+            $('#click_sub_btn').attr('v', '123');
+        } else {
+            $('#click_sub_btn').attr('class', 'bg1');
+            $('#click_sub_btn').attr('v', 'abc');
+        }
+    };
     $('#click_sub_btn').click(function () {
+        var v = $(this).attr('v');
+        if (v != '123') {
+            return false;
+        }
         var _utype = 9;
         var _cnum = $.trim($('#cnum').val());
         if (_cnum == '') {

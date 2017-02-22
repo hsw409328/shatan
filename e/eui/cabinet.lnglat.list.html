@@ -7,6 +7,7 @@ onDblClickRow:onDblClickRow"
     <thead>
     <tr>
         <th data-options="field:'c_num',width:120">柜子编号</th>
+        <th data-options="field:'dev_uuid',width:200">设备UUID</th>
         <th data-options="field:'lng',width:200">经度</th>
         <th data-options="field:'lat',width:200">纬度</th>
         <th data-options="field:'created_at',width:140">创建时间</th>
@@ -31,6 +32,14 @@ onDblClickRow:onDblClickRow"
                         <td>柜子编号:</td>
                         <td><input class="easyui-combobox" id="c_num" name="c_num"
                                    data-options="url:'data/run.php?c=CgRelationEui&f=getCgRelationCabinet',method:'get',valueField:'id',textField:'text'">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>设备号:</td>
+                        <td>
+                            <input class="easyui-textbox" name="dev_uuid" id="dev_uuid" style="width:150px;"
+                                   readonly>
+                            </input>
                         </td>
                     </tr>
                     <tr>
@@ -82,6 +91,7 @@ onDblClickRow:onDblClickRow"
 
         $('#inputId').val(row.id);
         $('#c_num').combobox('setValue', row.c_num);
+        $('#dev_uuid').textbox('setValue', row.dev_uuid);
         $('#lat').textbox('setValue', row.lat);
         $('#lng').textbox('setValue', row.lng);
 

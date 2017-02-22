@@ -197,27 +197,31 @@ final class ApiController extends Base
      */
     public function addCabinetLngLat()
     {
-        $lng = Run::req('lng');
-        if (empty($lng)) {
-            $this->_jsonEn(402, '参数错误，未检测到或者为空');
-        }
+        //$lng = Run::req('lng');
+        //if (empty($lng)) {
+        //  $this->_jsonEn(402, '参数错误，未检测到或者为空');
+        //}
         //$lng = substr($lng, 0, 7);
         //$lng .= '0000';
-        $lat = Run::req('lat');
-        if (empty($lat)) {
-            $this->_jsonEn(402, '参数错误，未检测到或者为空');
-        }
+        //$lat = Run::req('lat');
+        //if (empty($lat)) {
+        //  $this->_jsonEn(402, '参数错误，未检测到或者为空');
+        //}
         //$lat = substr($lat, 0, 6);
         //$lat .= '0000';
 
+        $dev_uuid = Run::req('dev_uuid');
+
         $obj = new CabinetLngLatModel();
         $obj->setField('id,c_num');
-        $w = 'lng="' . $lng . '" and lat="' . $lat . '" ';
+        //$w = 'lng="' . $lng . '" and lat="' . $lat . '" ';
+        $w = 'dev_uuid = "' . $dev_uuid . '"';
         $rs = $obj->getCabinetLngLat($w, '', '', '1');
         if (empty($rs)) {
             $data['c_num'] = '';
-            $data['lng'] = $lng;
-            $data['lat'] = $lat;
+            $data['lng'] = '';
+            $data['lat'] = '';
+            $data['dev_uuid'] = $dev_uuid;
             $data['created_at'] = date('Y-m-d H:i:s');
             $data['updated_at'] = '';
             $obj->addCabinetLngLat($data);
