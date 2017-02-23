@@ -11,14 +11,14 @@ $_id = Run::req('oid');
 $_content = Run::req('content');
 ?>
 <div class="use_pay_t center">
-    第二步：归还大疆无人机
+    第二步：归还商品说明
 </div>
-<div class="use_return_next">
+<div class="use_return_next margin40">
     <?php
-    if (strpos($title, '无人机') === false) {
-        echo '<img src="/public/images/process_pt.jpg" width="100%"/>';
-    } else {
+    if (strpos($title, '无人机') !== false) {
         echo '<img src="/public/images/process_wrj.jpg" width="100%"/>';
+    } else {
+        echo '<img src="/public/images/process_pt.jpg" width="100%"/>';
     }
     ?>
     <!--大疆无人机的图片-->

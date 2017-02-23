@@ -8,7 +8,7 @@ $rs = $obj->getUserOrder();
 </div>
 <div class="use_pay_b">
     <div class="use_pay_x use_return_r">
-        <h3><label>柜子编号</label><input type="text" placeholder="请输入您眼前柜子的编号" id="cnum"/><span class="use_sk">查看示例</span>
+        <h3><label>柜子编号</label><input type="text" placeholder="请站在柜子前查看" id="cnum"/><span class="use_sk">查看示例</span>
         </h3>
         <p><strong id="oid_num"
                    v="<?php echo strtolower($rs['rs']['cnum']); ?>">订单编号：<?php echo $rs['rs']['oid']; ?></strong></p>

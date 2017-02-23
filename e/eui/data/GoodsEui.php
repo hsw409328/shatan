@@ -98,7 +98,7 @@ final class GoodsEuiController extends Base
         }
 
         $listImg1 = $this->uploadImg($_FILES ['upload1']);
-        if ($listImg) {
+        if ($listImg1) {
             $dataArray ['g_check_img'] = $listImg1;
         } else {
             $dataArray ['g_check_img'] = Run::req('g_check_img');

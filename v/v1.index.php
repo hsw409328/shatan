@@ -25,7 +25,7 @@ $tqRs = $obj->getTianQi();
         $rs = $obj->countUserIsReturn();
         ?>
         <li class="use_bg_1"><a href="/buy/goods"><h3>在线下单</h3>
-                <p><?php echo count($listRs); ?>款宝贝任意下单</p></a></li>
+                <p><?php echo count($listRs); ?>款宝贝开心玩</p></a></li>
         <li class="none"><a href="#"><h3>暂时没有</h3>
                 <p>暂时没有</p></a></li>
         <li class="use_bg_3"><a href="#"><h3>使用攻略</h3>
