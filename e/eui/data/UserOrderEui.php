@@ -46,10 +46,10 @@ final class UserOrderEuiController extends Base
         }
         if (empty($_day)) {
             if ($_start) {
-                $w .= ' and rent_date_start >= "' . $_start . ' 00:00:00" ';
+                $w .= ' and created_at >= "' . $_start . ' 00:00:00" ';
             }
             if ($_end) {
-                $w .= ' and rent_date_end <= "' . $_end . ' 00:00:00" ';
+                $w .= ' and created_at <= "' . $_end . ' 00:00:00" ';
             }
         } else {
             $_overdate = date('Y-m-d', strtotime('-' . $_day . ' day'));
