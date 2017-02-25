@@ -13,7 +13,7 @@ $u = $obj->getCabinetPsUser($cnum);
         <dt><?php echo $cnum; ?></dt>
         <dd class="sorting_det_bt"><strong><span><?php echo $rs['c_hotel']; ?></span>
                 <span><?php echo $rs['c_address']; ?></span></strong></dd>
-        <dd><span><?php echo $rs['c_city']; ?></span>·<span><?php echo $rs['c_area']; ?></span></dd>
+        <dd><span><?php echo $rs['c_city_name']; ?></span>·<span><?php echo $rs['c_area']; ?></span></dd>
         <dd class=" set_details">
             <h3>配送</h3>
             <p><?php echo $u['u_name'];?></p>

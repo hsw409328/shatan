@@ -47,7 +47,7 @@ $uRs = $obj->getUserByUid($oRs['uid']);
         <tr>
             <td><?php echo $odRs['gnum_name']; ?></td>
             <td class="color"><?php echo $odRs['gnum']; ?></td>
-            <td><?php echo $odRs['price']; ?>元</td>
+            <td><?php echo floatval($odRs['price']); ?>元</td>
             <td><a href="/js/bad-d-next/<?php echo $oRs['oid']; ?>" class="set_details_xz">损坏</a></td>
         </tr>
         <tr class="table_border">
@@ -58,22 +58,22 @@ $uRs = $obj->getUserByUid($oRs['uid']);
         <tr>
             <td>订单押金</td>
             <td></td>
-            <td><?php echo $oRs['deposit_money']; ?>元</td>
+            <td><?php echo floatval($oRs['deposit_money']); ?>元</td>
         </tr>
         <tr>
             <td>超时归还扣款</td>
             <td></td>
-            <td><?php echo $oRs['overtime_money']; ?>元</td>
+            <td><?php echo floatval($oRs['overtime_money']); ?>元</td>
         </tr>
         <tr>
             <td>损坏扣款</td>
             <td></td>
-            <td><?php echo $oRs['damage_money']; ?>元</td>
+            <td><?php echo floatval($oRs['damage_money']); ?>元</td>
         </tr>
         <tr>
             <td class="color">实际退还押金</td>
             <td></td>
-            <td class="color"><?php echo $oRs['real_refund_money']; ?>元</td>
+            <td class="color"><?php echo floatval($oRs['real_refund_money']); ?>元</td>
         </tr>
     </table>
 </div>

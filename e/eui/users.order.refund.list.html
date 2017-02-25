@@ -1,0 +1,92 @@
+<script type="text/javascript" src="src.js"></script>
+
+<table id="dg"
+       data-options="rownumbers:true,singleSelect:true,pageSize: 30,pagination:true,url:'data/run.php?c=UserOrderRefundEui&f=getUserOrderRefundList',method:'get',toolbar:'#tb'">
+    <thead>
+    <tr>
+        <th data-options="field:'oid',width:170">
+            订单ID
+        </th>
+        <th data-options="field:'uid',width:120">
+            用用户ID
+        </th>
+        <th data-options="field:'refund_oid',width:170">
+            退款订单ID
+        </th>
+        <th data-options="field:'wx_code',width:210">
+            微信支付单号
+        </th>
+        <th data-options="field:'wx_refund_code',width:210">
+            微信退款单号
+        </th>
+        <th data-options="field:'total_money',width:120">
+            原总金额
+        </th>
+        <th data-options="field:'refund_money',width:120">
+            原退款
+        </th>
+        <th data-options="field:'real_refund_money',width:100">
+            真实退款
+        </th>
+        <th data-options="field:'sts',width:60" formatter="formatSts">
+            退款状态
+        </th>
+        <th data-options="field:'created_at',width:160">
+            创建时间
+        </th>
+        <th data-options="field:'updated_at',width:160">
+            更新时间
+        </th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb" style="padding:2px 5px;">
+    用户ID: <input class="easyui-textbox" id="inpUID" style="width:110px">
+    订单ID: <input class="easyui-textbox" id="inpID" style="width:110px">
+    退款ID: <input class="easyui-textbox" id="inpRefundID" style="width:110px">
+    微信退款ID: <input class="easyui-textbox" id="inpWxRefundID" style="width:110px">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="sBtn">Search</a>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var pager = $('#dg').datagrid().datagrid('getPager');
+        $('#sBtn').click(function () {
+            var _id = $('#inpID').val();
+            var _uid = $('#inpUID').val();
+            var _rid = $('#inpRefundID').val();
+            var _wxrid = $('#inpWxRefundID').val();
+            $('#dg').datagrid('load', {
+                _id: _id,
+                _uid: _uid,
+                _rid: _rid,
+                _wxrid: _wxrid,
+            });
+        });
+    });
+
+    function picImg(val) {
+        var _v = val.split(',');
+        var _html = '';
+        for (o in _v) {
+            if (_v[o] != '') {
+                _html += '<a href="' + _v[o] + '" target="_blank"><img src="' + _v[o] + '" width="50px" height="50px"/></a>'
+            }
+        }
+        return _html;
+    }
+
+    function formatSts(val) {
+        if (val == '0') {
+            var _str = '失败';
+        } else {
+            var _str = '<b><strong style="color:orangered">成功</strong></b>';
+        }
+        return _str;
+    }
+
+    function closeWin() {
+        $('#w1').window('close');
+    }
+</script>

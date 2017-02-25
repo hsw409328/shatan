@@ -30,7 +30,7 @@ $rs = $obj->getUserOrder();
                         ?>
                     </span>
                     </p>
-                    <p>租赁柜:<?php echo $v['cnum']; ?></p>
+                    <p>租赁柜:<?php echo $v['cnum'],$v['address']; ?></p>
                     <p>租赁有效期:<?php echo Run::getFormatDate($v['rent_date_start'], 'm/d H:i'); ?>
                         至 <?php echo Run::getFormatDate($v['rent_date_end'], 'm/d H:i'); ?></p>
                     <?php

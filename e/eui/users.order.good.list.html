@@ -1,0 +1,197 @@
+<script type="text/javascript" src="src.js"></script>
+
+<table id="dg"
+       data-options="rownumbers:true,singleSelect:true,pageSize: 30,pagination:true,url:'data/run.php?c=UserOrderEui&f=getUserOrderList',method:'get',toolbar:'#tb',onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu">
+    <thead>
+    <tr>
+        <th data-options="field:'oid',width:170">
+            订单ID
+        </th>
+        <th data-options="field:'uid',width:120">
+            用户ID
+        </th>
+        <th data-options="field:'mobile_num',width:120">
+            手机号
+        </th>
+        <th data-options="field:'cnum',width:60">
+            柜子
+        </th>
+        <th data-options="field:'rent_date_start',width:140">
+            租期开始
+        </th>
+        <th data-options="field:'rent_date_end',width:140">
+            租期结束
+        </th>
+        <th data-options="field:'return_date',width:140">
+            归还时间
+        </th>
+        <th data-options="field:'rent_money',width:100">
+            租金
+        </th>
+        <th data-options="field:'deposit_money',width:100">
+            押金
+        </th>
+        <th data-options="field:'refund_money',width:100">
+            退款
+        </th>
+        <th data-options="field:'real_refund_money',width:100">
+            真实退款
+        </th>
+        <th data-options="field:'real_pay_money',width:100">
+            实际支付金额
+        </th>
+        <th data-options="field:'wx_code',width:260">
+            交易流水号
+        </th>
+        <th data-options="field:'overtime_money',width:100">
+            超时扣款
+        </th>
+        <th data-options="field:'overtime_desc',width:100">
+            超时说明
+        </th>
+        <th data-options="field:'damage_money',width:100">
+            损坏扣款
+        </th>
+        <th data-options="field:'is_pay',width:60" formatter="formatSts">
+            是否支付
+        </th>
+        <th data-options="field:'is_pickup',width:60" formatter="formatSts">
+            是否取货
+        </th>
+        <th data-options="field:'is_return',width:60" formatter="formatSts">
+            是否归还
+        </th>
+        <th data-options="field:'is_abnormal',width:60" formatter="formatSts">
+            是否异常
+        </th>
+        <th data-options="field:'is_damage',width:60" formatter="formatSts">
+            是否损坏
+        </th>
+        <th data-options="field:'is_end',width:60" formatter="formatSts">
+            验收完成
+        </th>
+        <th data-options="field:'order_bak',width:260">
+            归还备注
+        </th>
+    </tr>
+    </thead>
+</table>
+
+<!-- 子订单开始 -->
+<div id="w" class="easyui-window" title="订单详情数据" data-options="modal:true,closed:true,iconCls:'icon-save'"
+     style="width: 90%;padding:10px;">
+    <div class="easyui-panel" title="" style="">
+        <table id="c_dg" data-options="rownumbers:true,singleSelect:true,pagination:true,method:'get'">
+            <thead>
+            <tr>
+                <th data-options="field:'oid',width:180">
+                    订单号
+                </th>
+                <th data-options="field:'uid',width:120">
+                    用户ID
+                </th>
+                <th data-options="field:'gnum_name',width:200">
+                    商品名称
+                </th>
+                <th data-options="field:'price',width:100">
+                    单价
+                </th>
+                <th data-options="field:'deposit',width:100">
+                    押金
+                </th>
+                <th data-options="field:'pwd',width:100">
+                    开箱密码
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="easyui-panel" title="" style="" id="adsHtml">
+    </div>
+</div>
+<!-- 子订单结束 -->
+
+<div id="menu" class="easyui-menu" style="width: 50px; display: none;">
+    <!--放置一个隐藏的菜单Div-->
+    <div data-options="iconCls:'icon-blank'">
+        <a href="javascript:void(0);" onclick="updateAbnormal()" style="width: 200px;">标记异常-慎用</a>
+    </div>
+
+</div>
+
+<div id="tb" style="padding:2px 5px;">
+    用户ID: <input class="easyui-textbox" id="inpUID" style="width:110px">
+    订单ID: <input class="easyui-textbox" id="inpID" style="width:110px">
+    交易流水ID: <input class="easyui-textbox" id="inpPAYID" style="width:110px">
+    开始日期：<input class="easyui-datebox" id="d15" style="width:110px"/>
+    结束日期：<input class="easyui-datebox" id="d16" style="width:110px"/>
+    超时天数：<input class="easyui-numberbox" id="inpOverTime" style="width:110px"/>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="sBtn">Search</a>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var pager = $('#dg').datagrid().datagrid('getPager');
+        $('#sBtn').click(function () {
+            var _id = $('#inpID').val();
+            var _uid = $('#inpUID').val();
+            var _paycode = $('#inpPAYID').val();
+            var _start = $('#d15').datebox('getValue');
+            var _end = $('#d16').datebox('getValue');
+            var _day = $('#inpOverTime').val();
+            $('#dg').datagrid('load', {
+                _id: _id,
+                _uid: _uid,
+                _paycode: _paycode,
+                _start: _start,
+                _end: _end,
+                _day: _day
+            });
+        });
+    });
+
+    function formatSts(val) {
+        if (val == '0') {
+            var _str = '否';
+        } else {
+            var _str = '<b><strong style="color:orangered">是</strong></b>';
+        }
+        return _str;
+    }
+
+    function onDblClickRow(field, row) {
+        $('#w').window('open');
+        var _oid = row.oid;
+        $('#c_dg').datagrid({
+            url: 'data/run.php?c=UserOrderDetailEui&f=getUserOrderDetailList',
+            queryParams: {
+                _oid: _oid
+            }
+        });
+    }
+    var _rowTmpData = '';
+    function onRowContextMenu(e, rowIndex, rowData) {
+        //三个参数：e里面的内容很多，真心不明白，rowIndex就是当前点击时所在行的索引，rowData当前行的数据
+        e.preventDefault(); //阻止浏览器捕获右键事件
+        $(this).datagrid("clearSelections"); //取消所有选中项
+        $(this).datagrid("selectRow", rowIndex); //根据索引选中该行
+        //显示右键菜单
+        $('#menu').menu('show', {
+            left: e.pageX,//在鼠标点击处显示菜单
+            top: e.pageY
+        });
+        //_data = rowData;
+        _rowTmpData = rowData;
+    }
+
+    var updateAbnormal = function () {
+        $.post('data/run.php?c=UserOrderEui&f=updateAbnormal', {"_oid": _rowTmpData.oid}, function (data, sts) {
+            $.messager.alert('提示', data, 'Info');
+            $('#dg').datagrid('reload');
+        });
+    }
+
+    function closeWin() {
+        $('#w1').window('close');
+    }
+</script>

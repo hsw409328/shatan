@@ -29,7 +29,7 @@ final class WangYiCloudController
     {
         $url = 'https://api.netease.im/sms/sendcode.action';
         $data ['mobile'] = $mobile;
-        $data = 'mobile=' . $mobile . '&templateid=3050114';
+        $data = 'mobile=' . $mobile . '&templateid=3050114&codeLen=6';
         $header_arr = self::getHeaders();
         $rs = Run::getHttpPostRes($data, $url, $header_arr);
         $rs = json_decode($rs, true);

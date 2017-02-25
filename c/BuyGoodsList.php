@@ -30,7 +30,7 @@ final class BuyGoodsListController extends Base
         $user['u_lately_cabinet'] = $_cnum;
         $rs = $obj->setUsers($user['id'], $user);
         if ($rs) {
-            ParamsController::localSetParams('userDeatil', $user);
+            ParamsController::localSetParams('userDetail', $user);
             $this->_jsonEn('1', '更新成功');
         } else {
             $this->_jsonEn('0', '更新失败');
@@ -42,7 +42,7 @@ final class BuyGoodsListController extends Base
     {
         $obj = new CgRelationModel();
         $obj->setField('st_num,c_grid_area,c_num');
-        $rs = $obj->getCgRelation('c_num="' . $c_num . '"','');
+        $rs = $obj->getCgRelation('c_num="' . $c_num . '"', '');
         if (empty($rs)) {
             $rs = [];
         }
@@ -116,6 +116,7 @@ final class BuyGoodsListController extends Base
 
         $data ['oid'] = $_oid;
         $data ['uid'] = $user['id'];
+        $data ['mobile_num'] = $user['mobile_num'];
         $data ['cnum'] = $cgRs['c_num'];
         $data ['stnum'] = $cgRs['st_num'];
         $data ['rent_date_start'] = $_d;

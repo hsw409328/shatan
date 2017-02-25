@@ -117,6 +117,16 @@ final class AdminEuiController extends Base
             'children' => array(
                 array('id' => 'user.reg.list', 'text' => '注册用户'),
                 ['id' => 'users.info.sys.list', 'text' => '审核用户'],
+                array('id' => 'user.feedback.list', 'text' => '意见反馈'),
+            )
+        );
+        $_user_orderTree = array(
+            'text' => '订单',
+            'state' => 'open',
+            'children' => array(
+                ['id' => 'users.order.good.list', 'text' => '订单列表'],
+                ['id' => 'users.order.damage.list', 'text' => '损坏订单'],
+                ['id' => 'users.order.refund.list', 'text' => '退款订单'],
             )
         );
         $_goodsTree = [
@@ -142,7 +152,7 @@ final class AdminEuiController extends Base
             )
         );
         $_endTree = array(
-            $_userTree, $_goodsTree, $_sysTree
+            $_userTree,$_user_orderTree, $_goodsTree, $_sysTree
         );
         return $_endTree;
     }

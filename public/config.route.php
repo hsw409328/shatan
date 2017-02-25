@@ -65,7 +65,7 @@ class TitleClass
         'js/abnormal' => '异常订单',
         'js/ab-d' => '异常订单详情',
 
-        'user/login' => '注册',
+        'user/login' => '趣海边',
         'user/order' => '我的主页',
         'user/order-return' => '立即归还',
         'user/order-return-1' => '宝贝自检',

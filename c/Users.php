@@ -153,6 +153,7 @@ final class UsersController extends Base
         $rs = $obj->addUserFeedback([
             'uid' => $user['id'],
             'uname' => $user['u_nickname'],
+            'utel' => $user['mobile_num'],
             'msg' => $msg,
             'created_at' => date('Y-m-d H:i:s')]);
         if ($rs) {

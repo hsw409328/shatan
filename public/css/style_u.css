@@ -155,7 +155,7 @@ position: fixed;height:386px;left:-50%;top:-50%;margin-left:-140px;margin-top:-1
 .product_about{padding:10px 15px;}
 .product_about h2{line-height:30px;height:30px;}
 .product_about h2 strong{font-size:14px;color:#333}
-.product_level{float: right; width: 90px;height:20px;margin-top:8px; text-indent: -999px;}
+.product_level{float: right; width: 90px;height:20px;margin-top:6px; text-indent: -999px;}
 .level_5{background: url(../images/icon_6.png) no-repeat;background-size:90px 18px; }
 .level_4{background: url(../images/icon_7.png) no-repeat;background-size:90px 18px; }
 
@@ -265,7 +265,7 @@ position: fixed;height:90px;left:50%;top:50%;margin-left:-37%;margin-top:-75px;-
 
 .use_myorder_dd p .use_myzt{ float: right;border:#83B9FF solid 1px;color:#83B9FF;padding:2px 13px;line-height:16px;height:16px;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;}
 
-.use_myorder_dd p .use_mycs{background:#FFC04D;color:#fff;padding:2px 5px;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;}
+.use_myorder_dd p .use_mycs{background:#FFC04D;color:#fff;padding:2px 5px;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;margin-left:8px;}
 
 .use_ljgh{ position: absolute;right:0;bottom:0; background:#FFC04D;height:40px;color:#fff;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px; width: 64px; text-align: center;line-height:40px;font-weight:normal}
 

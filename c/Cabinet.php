@@ -17,7 +17,7 @@ final class CabinetController extends Base
     public function getCabinetDetail($c_num, $filed = '*')
     {
         $obj = new CabinetModel();
-        $obj->setField($filed);
+        $obj->setField($filed.',(select sName from website_type wt where wt.id=c_city) as c_city_name');
         $rs = $obj->getCabinet('c_num="' . $c_num . '"', '', '', '1');
         return $rs;
     }

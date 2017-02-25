@@ -1,0 +1,36 @@
+<script type="text/javascript" src="src.js"></script>
+<body  style="width:100%;height: 100%;">
+<table id="dg" data-options="rownumbers:true,singleSelect:true,pagination:true,url:'data/run.php?c=UserFeedbackEui&f=getUserFeedbackList',method:'get',toolbar:'#tb'">
+    <thead>
+        <tr>
+            <th data-options="field:'uid',width:120">
+                用户ID
+            </th>
+            <th data-options="field:'uname',width:100">
+                用户姓名
+            </th>
+            <th data-options="field:'utel',width:100">
+                电话
+            </th>
+            <th data-options="field:'msg',width:100">
+                内容
+            </th>
+            <th data-options="field:'created_at',width:140">
+                注册时间
+            </th>
+        </tr>
+    </thead>
+</table>
+<div id="tb" style="padding:2px 5px;">
+		<a href="#" class="easyui-linkbutton" iconCls="icon-search" id="sBtn">Search</a>
+</div>
+<script type="text/javascript">
+    $(function(){
+        var pager = $('#dg').datagrid().datagrid('getPager'); 
+		$('#sBtn').click(function(){
+			$('#dg').datagrid('load', {
+			});
+		});
+    });
+</script>
+</body>

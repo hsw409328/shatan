@@ -66,7 +66,7 @@ if (!empty($user)) {
     };
     var submit_change_cls = function (obj) {
         var v = obj.val();
-        if (v.length == 4) {
+        if (v.length == 6) {
             $('#click_sub_btn').attr('class', '');
             $('#click_sub_btn').attr('v', '123');
         } else {

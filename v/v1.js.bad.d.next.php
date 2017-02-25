@@ -20,12 +20,12 @@ $odRs = $obj->getUserOrderDetail($rs['oid'], $rs['uid']);
     <tr>
         <td class="color"> <?php echo $odRs['gnum_name']; ?></td>
         <td class="color"><?php echo $odRs['gnum']; ?></td>
-        <td class="color"><?php echo $odRs['price']; ?>元</td>
+        <td class="color"><?php echo floatval($odRs['price']); ?>元</td>
         <td class="color"> 损坏</td>
     </tr>
 </table>
 <div class="use_set_kk">
-    <span>扣款</span><strong><?php echo $rs['damage_money']; ?>元</strong>
+    <span>扣款</span><strong><?php echo floatval($rs['damage_money']); ?>元</strong>
 </div>
 <div class="use_set_kk">
     <p>

@@ -47,7 +47,7 @@ $uRs = $obj->getUserByUid($oRs['uid']);
             <tr>
                 <td><?php echo $odRs['gnum_name']; ?></td>
                 <td class="color"><?php echo $odRs['gnum']; ?></td>
-                <td><?php echo $odRs['price']; ?>元</td>
+                <td><?php echo floatval($odRs['price']); ?>元</td>
                 <td> 未归还</td>
             </tr>
             <tr class="table_border">
@@ -58,7 +58,7 @@ $uRs = $obj->getUserByUid($oRs['uid']);
             <tr>
                 <td>订单押金</td>
                 <td></td>
-                <td><?php echo $oRs['deposit_money']; ?>元</td>
+                <td><?php echo floatval($oRs['deposit_money']); ?>元</td>
             </tr>
             <tr>
                 <td>超时归还扣款</td>

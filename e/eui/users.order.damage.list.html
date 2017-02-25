@@ -1,0 +1,59 @@
+<script type="text/javascript" src="src.js"></script>
+
+<table id="dg"
+       data-options="rownumbers:true,singleSelect:true,pageSize: 30,pagination:true,url:'data/run.php?c=UserOrderDamageEui&f=getUserOrderDamageList',method:'get',toolbar:'#tb'">
+    <thead>
+    <tr>
+        <th data-options="field:'oid',width:170">
+            订单ID
+        </th>
+        <th data-options="field:'uid',width:120">
+            用户ID
+        </th>
+        <th data-options="field:'damage_money',width:120">
+            损坏赔偿
+        </th>
+        <th data-options="field:'damage_img',width:200" formatter="picImg">
+            图片
+        </th>
+        <th data-options="field:'damage_explain',width:260">
+            文字说明
+        </th>
+    </tr>
+    </thead>
+</table>
+
+<div id="tb" style="padding:2px 5px;">
+    用户ID: <input class="easyui-textbox" id="inpUID" style="width:110px">
+    订单ID: <input class="easyui-textbox" id="inpID" style="width:110px">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" id="sBtn">Search</a>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var pager = $('#dg').datagrid().datagrid('getPager');
+        $('#sBtn').click(function () {
+            var _id = $('#inpID').val();
+            var _uid = $('#inpUID').val();
+            $('#dg').datagrid('load', {
+                _id: _id,
+                _uid: _uid,
+            });
+        });
+    });
+
+    function picImg(val) {
+        var _v = val.split(',');
+        var _html = '';
+        for (o in _v) {
+            if (_v[o] != '') {
+                _html += '<a href="' + _v[o] + '" target="_blank"><img src="' + _v[o] + '" width="50px" height="50px"/></a>'
+            }
+        }
+        return _html;
+    }
+
+    function closeWin() {
+        $('#w1').window('close');
+    }
+</script>

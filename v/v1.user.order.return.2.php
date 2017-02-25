@@ -11,7 +11,7 @@ $_id = Run::req('oid');
 $_content = Run::req('content');
 ?>
 <div class="use_pay_t center">
-    第二步：归还商品说明
+    第二步：归还<?php echo $title;?>
 </div>
 <div class="use_return_next margin40">
     <?php

@@ -11,7 +11,7 @@ final class CgRelationEuiController extends Base
         $_page_prev = intval($_p) * intval($_page);
         $limit = $_page_prev . ',' . $_page;
         $ueObj = new CgRelationModel ();
-        $ueObj->setField(' * ');
+        $ueObj->setField(' *,(select st_name from shop_type where shop_type.st_num=c_g_relation.st_num) as st_num_name ');
         $w = $this->getWhere();
         $res = $ueObj->getCgRelation($w, '', $limit);
         $ueObj->setField('count(id) as total');
