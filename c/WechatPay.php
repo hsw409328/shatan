@@ -131,6 +131,11 @@ final class WechatPayController extends Base
                     $ud = $uObj->getUserByUid($odRs['uid']);
                     WangYiCloudController::sendNoticeMsg($ud['mobile_num'], [$ggrRs['pwd'], $orderRes['cnum'], $orderRes['address'], $odRs['gnum_name']]);
 
+                    //推送订单信息到用户手机
+                    $this->_sendCustomWechatMessageUserOrder($ud['open_id'], $odRs['gnum_name'], $orderRes['rent_date_start'],
+                        $orderRes['rent_date_end'], $orderRes['cnum'], $orderRes['address'], $ggrRs['pwd']);
+                    //推送攻略到用户手机
+                    $this->_sendCustomWechatMessageUserRaiders($ud['open_id'], $orderRes['stnum']);
 
                     echo '<xml>
 						  <return_code><![CDATA[SUCCESS]]></return_code>
@@ -141,6 +146,47 @@ final class WechatPayController extends Base
         } else {
 
         }
+    }
+
+    /**
+     * 推送订单详细信息到用户手机
+     * @param $open_id 用户open_id
+     * @param $title 物品名称
+     * @param $r_s 开始时间
+     * @param $r_e 结束时间
+     * @param $cnum 柜子号
+     * @param $ads 地址
+     * @param $pwd 密码
+     */
+    private function _sendCustomWechatMessageUserOrder($open_id, $title, $r_s, $r_e, $cnum, $ads, $pwd)
+    {
+        $str = "租取的宝贝：{$title}\n租赁有效期：{$r_s} 至 {$r_e}\n柜子编号：{$cnum}\n柜子位置：{$ads}\n开箱码：{$pwd}\n";
+        $rs = WechatMessage::SendText($open_id, $str);
+        //$this->wlog(APP_PATH . 'public/log/wechat-message', json_encode($rs));
+    }
+
+    /**
+     * 推送攻略到用户手机
+     * @param $openid 用户openid
+     * @param $st_num 类目
+     */
+    private function _sendCustomWechatMessageUserRaiders($openid, $st_num)
+    {
+        $obj = new ShopTypeController();
+        $rs = $obj->getShopTypeDetail($st_num);
+        if (empty($rs['st_ts_title'])) {
+            return false;
+        }
+        $data = [
+            [
+                'title' => $rs['st_ts_title'],
+                'description' => $rs['st_ts_desc'],
+                'url' => $rs['st_ts_url'],
+                'picurl' => $rs['st_ts_pic']
+            ]
+        ];
+        $rs = WechatMessage::SendNews($openid, $data);
+        //$this->wlog(APP_PATH . 'public/log/wechat-message', json_encode($rs));
     }
 
     /**

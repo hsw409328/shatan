@@ -42,7 +42,7 @@ final class BuyGoodsListController extends Base
     {
         $obj = new CgRelationModel();
         $obj->setField('st_num,c_grid_area,c_num');
-        $rs = $obj->getCgRelation('c_num="' . $c_num . '"', '');
+        $rs = $obj->getCgRelation('c_num="' . $c_num . '"', ' cgr_sort desc , id desc ');
         if (empty($rs)) {
             $rs = [];
         }
@@ -121,8 +121,8 @@ final class BuyGoodsListController extends Base
         $data ['stnum'] = $cgRs['st_num'];
         $data ['rent_date_start'] = $_d;
         $data ['rent_date_end'] = $_end_d;
-        $data ['city'] = '';
-        $data ['city_name'] = $cRs['c_city'];
+        $data ['city'] = $cRs['c_city'];
+        $data ['city_name'] = $cRs['c_city_name'];
         $data ['address'] = $cRs['c_area'] . $cRs['c_hotel'] . $cRs['c_address'];
         $data ['total_money'] = floatval($gRs['g_deposit']) + floatval($gRs['g_rent']);
         $data ['rent_money'] = floatval($gRs['g_rent']);

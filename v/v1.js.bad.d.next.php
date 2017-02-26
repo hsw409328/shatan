@@ -47,7 +47,13 @@ $odRs = $obj->getUserOrderDetail($rs['oid'], $rs['uid']);
 <p class="use_set_time">2016-01-01 19:00</p>
 <div class="use_set_dj">
     <h2>损坏定价规范</h2>
-    <p>① 按照商品市场价格的50%<br/>② 请多理理解<br/>③ 客服电话：4008-008-5880</p>
+    <p>
+        <?php
+        $stObj = new ShopTypeController();
+        $rs1 = $stObj->getShopTypeDetail($odRs['stnum']);
+        echo $rs1['st_bad_info'];
+        ?>
+    </p>
 </div>
 <div class="use_set_re">
     <a href="javascript:UtilCommon.back();">返回</a>

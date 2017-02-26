@@ -13,7 +13,7 @@ final class CgRelationEuiController extends Base
         $ueObj = new CgRelationModel ();
         $ueObj->setField(' *,(select st_name from shop_type where shop_type.st_num=c_g_relation.st_num) as st_num_name ');
         $w = $this->getWhere();
-        $res = $ueObj->getCgRelation($w, '', $limit);
+        $res = $ueObj->getCgRelation($w, ' cgr_sort desc , id desc ', $limit);
         $ueObj->setField('count(id) as total');
         $totalRes = $ueObj->getCgRelation($w, '', '', '1');
         $_tmpRes = array('total' => $totalRes ['total'], 'rows' => $res);
@@ -112,6 +112,21 @@ final class CgRelationEuiController extends Base
         $_id = Run::req('_id');
         $obj = new CgRelationModel ();
         $data ['cgr_status'] = $_s;
+        $data ['updated_at'] = date('Y-m-d H:i:s');
+        $res = $obj->setCgRelation($_id, $data);
+        if ($res) {
+            echo '操作成功';
+        } else {
+            echo '操作失败';
+        }
+    }
+
+    public function updateSort()
+    {
+        $_sort = Run::req('_sort');
+        $_id = Run::req('_id');
+        $obj = new CgRelationModel ();
+        $data ['cgr_sort'] = $_sort;
         $data ['updated_at'] = date('Y-m-d H:i:s');
         $res = $obj->setCgRelation($_id, $data);
         if ($res) {

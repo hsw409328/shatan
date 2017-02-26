@@ -46,7 +46,13 @@ if ($rs['is_damage'] == '1') {
 <div class="background1"></div>
 <div class="use_pay_return">
     <h2>损坏定价规范</h2>
-    <p>① 按照商品市场价格的50%<br/>② 请多理理解<br/>③ 客服电话：4008-008-5880</p>
+    <p>
+        <?php
+        $stObj = new ShopTypeController();
+        $rs = $stObj->getShopTypeDetail($rs['stnum']);
+        echo $rs['st_bad_info'];
+        ?>
+    </p>
 </div>
 <div class="set_detailsx_b">
     <a href="javascript:void(0)" id="sv_btn">保存</a><a href="javascript:UtilCommon.back();" class="cancel">取消</a>
@@ -78,7 +84,7 @@ if ($rs['is_damage'] == '1') {
             'action': 'UserOrder',
             'run': 'addBadOrder',
             'oid': '<?php echo $rs['oid']?>',
-            'uid':'<?php echo $rs['uid']?>',
+            'uid': '<?php echo $rs['uid']?>',
             'img': _tmpv,
             'content': _c,
             'money': _d_m,

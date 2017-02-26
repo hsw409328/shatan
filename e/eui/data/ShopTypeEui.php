@@ -85,6 +85,16 @@ final class ShopTypeEuiController extends Base
         } else {
             $dataArray ['st_img3'] = Run::req('st_img3');
         }
+        $listImg = $this->uploadImg($_FILES ['st_ts_pic_upload']);
+        if ($listImg) {
+            $dataArray ['st_ts_pic'] = $listImg;
+        } else {
+            $dataArray ['st_ts_pic'] = Run::req('st_ts_pic');
+        }
+        $dataArray ['st_ts_media_id'] = Run::req('st_ts_media_id');
+        $dataArray ['st_ts_title'] = Run::req('st_ts_title');
+        $dataArray ['st_ts_desc'] = Run::req('st_ts_desc');
+        $dataArray ['st_ts_url'] = Run::req('st_ts_url');
 
         $sObj = new ShopTypeModel ();
         if ($_id) {

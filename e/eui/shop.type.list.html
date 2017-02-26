@@ -42,6 +42,7 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
                 <input type="hidden" name="st_img1" id="st_img1" value="">
                 <input type="hidden" name="st_img2" id="st_img2" value="">
                 <input type="hidden" name="st_img3" id="st_img3" value="">
+                <input type="hidden" name="st_ts_pic" id="st_ts_pic" value="">
                 <table cellpadding="2">
                     <tr>
                         <td>编号:</td>
@@ -101,6 +102,26 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
                         <td>排序:</td>
                         <td><input class="easyui-numberbox" name="st_sort" id="st_sort"></input></td>
                     </tr>
+                    <tr>
+                        <td>微信素材ID:</td>
+                        <td><input class="easyui-textbox" name="st_ts_media_id" id="st_ts_media_id"></input></td>
+                    </tr>
+                    <tr>
+                        <td>推送标题:</td>
+                        <td><input class="easyui-textbox" name="st_ts_title" id="st_ts_title"></input></td>
+                    </tr>
+                    <tr>
+                        <td>图片:</td>
+                        <td><input class="easyui-filebox" name="st_ts_pic_upload" id="st_ts_pic_upload"></input></td>
+                    </tr>
+                    <tr>
+                        <td>描述:</td>
+                        <td><input class="easyui-textbox" name="st_ts_desc" id="st_ts_desc"></input></td>
+                    </tr>
+                    <tr>
+                        <td>素材地址:</td>
+                        <td><input class="easyui-textbox" name="st_ts_url" id="st_ts_url"></input></td>
+                    </tr>
                 </table>
             </form>
             <div style="text-align:center;padding:5px">
@@ -140,6 +161,7 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
         $('#st_img1').val(row.st_img1);
         $('#st_img2').val(row.st_img2);
         $('#st_img3').val(row.st_img3);
+        $('#st_ts_pic').val(row.st_ts_pic);
 
         $('#st_leveal').textbox({value: row.st_leveal});
         $('#st_num').textbox({value: row.st_num});
@@ -150,6 +172,12 @@ onDblClickRow:onDblClickRow,onRowContextMenu:onRowContextMenu"
         $('#st_money').textbox({value: row.st_money});
         $('#st_day').textbox({value: row.st_day});
         $('#st_sort').textbox({value: row.st_sort});
+
+        $('#st_ts_media_id').textbox({value: row.st_ts_media_id});
+        $('#st_ts_desc').textbox({value: row.st_ts_desc});
+        $('#st_ts_url').textbox({value: row.st_ts_url});
+        $('#st_ts_title').textbox({value: row.st_ts_title});
+
 
     }
 
