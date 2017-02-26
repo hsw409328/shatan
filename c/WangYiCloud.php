@@ -63,10 +63,37 @@ final class WangYiCloudController
         }
     }
 
+    /**
+     * 支付成功发送短信
+     * @param $mobile
+     * @param $params
+     * @return bool
+     */
     public static function sendNoticeMsg($mobile, $params)
     {
         $url = 'https://api.netease.im/sms/sendtemplate.action';
         $data = 'templateid=3050115&mobiles=["' . $mobile . '"]&params=["' . implode('","', $params) . '"]';
+        $header_arr = self::getHeaders();
+        $rs = Run::getHttpPostRes($data, $url, $header_arr);
+        $rs = json_decode($rs, true);
+        if (empty($rs)) {
+            return false;
+        } else {
+            if ($rs['code'] == '200') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 退款发送短信
+     */
+    public static function sendNoticeMsgRefund($mobile, $params)
+    {
+        $url = 'https://api.netease.im/sms/sendtemplate.action';
+        $data = 'templateid=&mobiles=["' . $mobile . '"]&params=["' . implode('","', $params) . '"]';
         $header_arr = self::getHeaders();
         $rs = Run::getHttpPostRes($data, $url, $header_arr);
         $rs = json_decode($rs, true);

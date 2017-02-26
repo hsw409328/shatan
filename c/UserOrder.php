@@ -280,6 +280,8 @@ final class UserOrderController extends Base
         if ($refund_rs) {
             $obj = new UserOrderModel();
             $obj->setUserOrder($rs['id'], ['is_end' => 1]);
+            $odRs = $this->getUserOrderDetail($oid, $uid);
+            WangYiCloudController::sendNoticeMsgRefund($rs['mobile_num'], [$odRs['gnum_name'], $rs['real_refund_money']]);
             $this->_jsonEn('1', '微信申请退款成功');
         } else {
             $this->_jsonEn('0', '微信申请退款失败');

@@ -49,8 +49,8 @@ if ($rs['is_damage'] == '1') {
     <p>
         <?php
         $stObj = new ShopTypeController();
-        $rs = $stObj->getShopTypeDetail($rs['stnum']);
-        echo $rs['st_bad_info'];
+        $rs1 = $stObj->getShopTypeDetail($rs['stnum']);
+        echo $rs1['st_bad_info'];
         ?>
     </p>
 </div>
