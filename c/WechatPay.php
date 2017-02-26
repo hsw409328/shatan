@@ -160,6 +160,8 @@ final class WechatPayController extends Base
      */
     private function _sendCustomWechatMessageUserOrder($open_id, $title, $r_s, $r_e, $cnum, $ads, $pwd)
     {
+        $r_s = Run::getFormatDate($r_s, 'm月d日 H:i');
+        $r_e = Run::getFormatDate($r_e, 'm月d日 H:i');
         $str = "租取的宝贝：{$title}\n租赁有效期：{$r_s} 至 {$r_e}\n柜子编号：{$cnum}\n柜子位置：{$ads}\n开箱码：{$pwd}\n";
         $rs = WechatMessage::SendText($open_id, $str);
         //$this->wlog(APP_PATH . 'public/log/wechat-message', json_encode($rs));
