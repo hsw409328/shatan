@@ -28,7 +28,7 @@ final class WechatMessage
     public static function SendOrderPayTemplateMessage()
     {
         $str = '';
-        
+
         return self::runTemplate($str);
     }
 
@@ -81,13 +81,22 @@ final class WechatMessage
      */
     public static function SendNews($openId, $data)
     {
-        $str = json_encode([
-            'touser' => $openId,
-            'msgtype' => 'news',
-            'news' => [
-                'articles' => $data
-            ]
-        ]);
+        $_tmpStr = '';
+        foreach ($data as $dk => $dv) {
+            $_tmpStr .= '{';
+            foreach ($dv as $k => $v) {
+                $_tmpStr .= '"' . $k . '":"' . $v . '"';
+            }
+            $_tmpStr .= '},';
+        }
+        $_tmpStr = rtrim($_tmpStr, ',');
+        $str = '{
+                    "touser":"' . $openId . '",
+                    "msgtype":"news",
+                    "news":{
+                        "articles": [' . $_tmpStr . ']
+                    }
+                }';
         return self::run($str);
     }
 }

@@ -93,7 +93,7 @@ final class WangYiCloudController
     public static function sendNoticeMsgRefund($mobile, $params)
     {
         $url = 'https://api.netease.im/sms/sendtemplate.action';
-        $data = 'templateid=&mobiles=["' . $mobile . '"]&params=["' . implode('","', $params) . '"]';
+        $data = 'templateid=3051091&mobiles=["' . $mobile . '"]&params=["' . implode('","', $params) . '"]';
         $header_arr = self::getHeaders();
         $rs = Run::getHttpPostRes($data, $url, $header_arr);
         $rs = json_decode($rs, true);
