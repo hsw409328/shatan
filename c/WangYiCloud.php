@@ -8,8 +8,8 @@
  */
 final class WangYiCloudController
 {
-    private static $_appkey = '0ce2da85ef52bcc4160414446104e49c';
-    private static $_appsecret = 'b09cf0f8197f';
+    private static $_appkey = '';
+    private static $_appsecret = '';
 
     private static function getHeaders()
     {

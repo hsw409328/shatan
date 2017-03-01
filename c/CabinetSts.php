@@ -247,7 +247,7 @@ final class CabinetStsController extends Base
         $obj->setField('id');
         $ggrRs = $obj->getGoodsGridRelation('g_num="' . $_num . '"', '', '', '1');
         if (!empty($ggrRs)) {
-            $this->_jsonEn('0', '该商品已经存在，请勿重新添加');
+            //$this->_jsonEn('0', '该商品已经存在，请勿重新添加');
         }
         //var_dump($rs);exit;
         $w = 'c_num="' . $_c_num . '"  and st_num="' . $_st_num . '"  and grid_num="' . $rs[0] . '" ';
