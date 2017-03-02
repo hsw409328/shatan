@@ -25,10 +25,43 @@ final class WechatMessage
         return $rs;
     }
 
-    public static function SendOrderPayTemplateMessage()
+    public static function SendOrderPayTemplateMessage($open_id,$title,$r_s,$r_e,$cnum,$ads,$pwd)
     {
-        $str = '';
-
+        $str = '{
+                   "touser":"'.$open_id.'",
+                   "template_id":"0qhtwQqXRENEzdZlgtKabrkP06flUVmYVBk0TcUzVUA",
+                   "url":"",            
+                   "data":{
+                           "first": {
+                               "value":"亲，您的订单支付成功。",
+                               "color":"#173177"
+                           },
+                           "keyword1":{
+                               "value":"'.$title.'",
+                               "color":"#173177"
+                           },
+                           "keyword2": {
+                               "value":"'.$r_s.' 至 '.$r_e.'",
+                               "color":"#173177"
+                           },
+                           "keyword3": {
+                               "value":"'.$cnum.'",
+                               "color":"#173177"
+                           },
+                           "keyword4": {
+                               "value":"'.$ads.'",
+                               "color":"#173177"
+                           },
+                           "keyword5": {
+                               "value":"'.$pwd.'",
+                               "color":"#173177"
+                           },
+                           "remark":{
+                               "value":"祝您在海边玩的开心！",
+                               "color":"#173177"
+                           }
+                   }
+               }';
         return self::runTemplate($str);
     }
 

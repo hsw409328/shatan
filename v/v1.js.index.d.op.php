@@ -164,7 +164,7 @@ if ($rs['rs']['is_end'] == '0') {
                 var _d = eval('(' + data + ')');
                 if (_d.code == '1') {
                     alert(_d.msg);
-                    UtilCommon.reload();
+                    UtilCommon.href('/js/index-d/<?php echo ParamsController::getSessionParams('js_cabinet_bag');?>');
                 } else {
                     alert(_d.msg);
                     _submit_val = 0;
