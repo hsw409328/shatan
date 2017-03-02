@@ -144,7 +144,7 @@ final class UserOrderController extends Base
         $obj->setField('pwd');
         $rs = $obj->getGoodsGridRelation('g_num="' . $gnum . '"', '', '', '1');
         if (empty($rs)) {
-            Run::show_msg('未找到商品');
+            //Run::show_msg('未找到商品');
         }
         $w = 'gnum="' . $gnum . '" and pwd<>"" ';
         $obj = new UserOrderDetailModel();
@@ -281,7 +281,7 @@ final class UserOrderController extends Base
             $obj = new UserOrderModel();
             $obj->setUserOrder($rs['id'], ['is_end' => 1]);
             $odRs = $this->getUserOrderDetail($oid, $uid);
-            WangYiCloudController::sendNoticeMsgRefund($rs['mobile_num'], [$odRs['gnum_name'], $rs['real_refund_money']]);
+            WangYiCloudController::sendNoticeMsgRefund($rs['mobile_num'], [$odRs['gnum_name'], intval($rs['real_refund_money'])]);
             $this->_jsonEn('1', '微信申请退款成功');
         } else {
             $this->_jsonEn('0', '微信申请退款失败');

@@ -105,7 +105,7 @@ $rs = $obj->getUserOrder();
                         <tr>
                             <td class="color">退还押金</td>
                             <td></td>
-                            <td class="color"><?php echo floatval($v['refund_money']); ?>元</td>
+                            <td class="color"><?php echo floatval($v['real_refund_money']); ?>元</td>
                         </tr>
                         <?php
                     }

@@ -85,11 +85,10 @@ final class WechatMessage
         foreach ($data as $dk => $dv) {
             $_tmpStr .= '{';
             foreach ($dv as $k => $v) {
-                $_tmpStr .= '"' . $k . '":"' . $v . '"';
+                $_tmpStr .= '"' . $k . '":"' . $v . '",';
             }
             $_tmpStr .= '},';
         }
-        $_tmpStr = rtrim($_tmpStr, ',');
         $str = '{
                     "touser":"' . $openId . '",
                     "msgtype":"news",
