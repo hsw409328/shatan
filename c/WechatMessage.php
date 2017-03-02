@@ -33,7 +33,7 @@ final class WechatMessage
                    "url":"",            
                    "data":{
                            "first": {
-                               "value":"亲，您的订单支付成功。",
+                               "value":"您的订单支付成功。\n",
                                "color":"#173177"
                            },
                            "keyword1":{
@@ -57,7 +57,7 @@ final class WechatMessage
                                "color":"#173177"
                            },
                            "remark":{
-                               "value":"祝您在海边玩的开心！",
+                               "value":"\n祝您在海边玩的开心！",
                                "color":"#173177"
                            }
                    }
