@@ -58,6 +58,7 @@ $user = $obj->getUserDetail();
         <h2>归还提醒</h2>
         <p>默认租期为<?php echo RouteClass::getParams('6'); ?>天，请于<strong><?php echo Run::getFormatDate($rs['oRs']['rent_date_end'], 'Y年m月d日 H:i'); ?></strong>前归还，租取、归还请在同一个柜子上操作完成。
         </p>
+        <p>押金会在归还后的48小时内退还至您的微信钱包。</p>
     </div>
 </div>
 <div class="use_order_next">

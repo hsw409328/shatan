@@ -22,7 +22,7 @@ $cnum = $obj->getUserDefaultCabinet();
     }
 </style>
 <div class="use_order_t">
-    <p>每笔订单只可选1个宝贝，如需租多个请反复下单，租期统一为2天，您当前选择的租赁柜<?php echo $cnum; ?></p>
+    <p>每笔订单只可选1个宝贝，如需租多个请反复下单，租期统一为1天，您当前选择的租赁柜<?php echo $cnum; ?></p>
     <a href="javascript:void(0)" class="update">点击修改>></a>
 </div>
 <div class="use_order_b">

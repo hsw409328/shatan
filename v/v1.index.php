@@ -28,7 +28,7 @@ $tqRs = $obj->getTianQi();
                 <p><?php echo count($listRs); ?>款宝贝开心玩</p></a></li>
         <li class="none"><a href="#"><h3>暂时没有</h3>
                 <p>暂时没有</p></a></li>
-        <li class="use_bg_3"><a href="#"><h3>使用攻略</h3>
+        <li class="use_bg_3"><a href="http://mp.weixin.qq.com/s/oTHQYK2FpX_Y6xKxicPcgQ"><h3>使用攻略</h3>
                 <p>参考攻略玩的更尽兴</p></a></li>
         <li class="use_bg_4"><a href="/user/order"><h3>我的订单</h3>
                 <?php
